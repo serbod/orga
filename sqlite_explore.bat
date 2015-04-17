@@ -1,0 +1,1 @@
+start SQLiteExplorer.exe D:\WORK\Orga\DATA\orga_local.sqlite
