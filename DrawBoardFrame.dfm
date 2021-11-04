@@ -3,6 +3,12 @@ object FrameDrawBoard: TFrameDrawBoard
   Top = 0
   Width = 731
   Height = 483
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  ParentFont = False
   TabOrder = 0
   object toolbarDBoardTools: TToolBar
     Left = 0
@@ -119,7 +125,6 @@ object FrameDrawBoard: TFrameDrawBoard
       Width = 121
       Height = 22
       Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbIncludeDefault, cbCustomColor, cbPrettyNames]
-      ItemHeight = 16
       TabOrder = 6
     end
     object btnRect: TBitBtn

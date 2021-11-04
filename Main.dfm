@@ -1,24 +1,24 @@
 object frmMain: TfrmMain
   Left = 228
   Top = 140
-  Width = 798
-  Height = 582
   Caption = 'Orga (Organizer G-1)'
+  ClientHeight = 543
+  ClientWidth = 782
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Height = -13
+  Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 16
   object StatusBar: TStatusBar
     Left = 0
-    Top = 529
-    Width = 790
+    Top = 524
+    Width = 782
     Height = 19
     Panels = <
       item
@@ -32,16 +32,17 @@ object frmMain: TfrmMain
   object pcMain: TPageControl
     Left = 0
     Top = 0
-    Width = 790
-    Height = 529
-    ActivePage = tsCommunication
+    Width = 782
+    Height = 524
+    ActivePage = tsEnterprise
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'MS Sans Serif'
-    Font.Style = [fsBold]
+    Font.Name = 'Tahoma'
+    Font.Style = []
     HotTrack = True
+    Images = ilIcons16
     MultiLine = True
     ParentFont = False
     TabOrder = 1
@@ -50,14 +51,14 @@ object frmMain: TfrmMain
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
       object pcTasks: TPageControl
         Left = 0
         Top = 0
-        Width = 782
-        Height = 498
+        Width = 774
+        Height = 493
         ActivePage = tsAllTasks
         Align = alClient
         HotTrack = True
@@ -67,57 +68,56 @@ object frmMain: TfrmMain
           inline FrameTasksAll: TFrameTasksAll
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited Splitter1: TSplitter
-              Height = 467
-            end
-            inherited toolbarMain: TToolBar
-              Height = 467
+              Height = 462
+              ExplicitHeight = 467
             end
             inherited panelLeft: TPanel
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited lvAllTasks: TListView
-                Height = 467
+                Height = 462
+                StateImages = ilIcons16
+                ExplicitHeight = 462
               end
             end
             inherited panelRight: TPanel
-              Width = 325
-              Height = 467
+              Width = 316
+              Height = 462
+              ExplicitLeft = 450
+              ExplicitWidth = 316
+              ExplicitHeight = 462
               inherited gbTaskDetails: TGroupBox
-                Width = 325
-                Height = 431
-                inherited Label1: TLabel
-                  Width = 75
-                  Height = 16
-                end
-                inherited Label2: TLabel
-                  Width = 50
-                  Height = 16
-                end
-                inherited Label3: TLabel
-                  Width = 40
-                  Height = 16
-                end
-                inherited Label4: TLabel
-                  Width = 70
-                  Height = 16
+                Width = 316
+                Height = 462
+                ExplicitTop = 0
+                ExplicitWidth = 316
+                ExplicitHeight = 462
+                inherited lbFiles: TLabel
+                  Top = 434
+                  ExplicitTop = 434
                 end
                 inherited reTaskText: TRichEdit
-                  Width = 310
-                  Height = 283
+                  Width = 297
+                  Height = 319
+                  ExplicitWidth = 297
+                  ExplicitHeight = 319
                 end
-                inherited dtpBegin: TDateTimePicker
-                  Height = 24
+                inherited cbbTaskStatus: TComboBoxEx
+                  Images = nil
                 end
-                inherited dtpEnd: TDateTimePicker
-                  Height = 24
-                end
-              end
-              inherited toolbarTaskEdit: TToolBar
-                Width = 325
               end
             end
           end
@@ -146,9 +146,9 @@ object frmMain: TfrmMain
       object pcMail: TPageControl
         Left = 0
         Top = 0
-        Width = 782
-        Height = 498
-        ActivePage = tsContacts
+        Width = 774
+        Height = 493
+        ActivePage = tsMailBox
         Align = alClient
         HotTrack = True
         TabOrder = 0
@@ -158,48 +158,60 @@ object frmMain: TfrmMain
           inline FrameContacts: TFrameContacts
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
             TabOrder = 0
+            ExplicitHeight = 462
             inherited Splitter8: TSplitter
-              Height = 467
+              Height = 462
+              ExplicitHeight = 467
             end
             inherited toolbarContacts: TToolBar
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
             end
             inherited panRight: TPanel
-              Width = 505
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited gbContactMain: TGroupBox
-                Width = 505
-                inherited edContData1: TEdit
-                  Width = 492
+                Font.Style = []
+                inherited lbContData1: TLabel
+                  Width = 90
+                  ExplicitWidth = 90
                 end
-                inherited edContData2: TEdit
-                  Width = 492
+                inherited lbContData2: TLabel
+                  Width = 144
+                  ExplicitWidth = 144
                 end
-                inherited edContData3: TEdit
-                  Width = 492
+                inherited lbContData3: TLabel
+                  Width = 76
+                  ExplicitWidth = 76
                 end
-                inherited edName: TEdit
-                  Width = 300
+                inherited lbName: TLabel
+                  Width = 106
+                  ExplicitWidth = 106
                 end
               end
               inherited gbContactExtra: TGroupBox
-                Width = 505
-                Height = 275
+                Height = 270
+                Font.Style = []
+                ExplicitHeight = 270
                 inherited vledExtraData: TValueListEditor
-                  Width = 501
-                  Height = 258
-                  ColWidths = (
-                    150
-                    345)
+                  Height = 250
+                  ExplicitHeight = 250
                 end
               end
             end
             inherited tvContacts: TTreeView
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
             end
           end
         end
@@ -208,45 +220,66 @@ object frmMain: TfrmMain
           inline FrameMailboxGeneral: TFrameMailbox
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited Splitter1: TSplitter
-              Height = 467
+              Height = 462
+              ExplicitHeight = 467
             end
             inherited toolbarMailbox: TToolBar
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
             end
             inherited panLeft: TPanel
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited lvMessages: TListView
-                Height = 281
+                Height = 276
+                ExplicitHeight = 276
               end
             end
             inherited panRight: TPanel
-              Width = 425
-              Height = 467
+              Width = 417
+              Height = 462
+              ExplicitWidth = 417
+              ExplicitHeight = 462
               inherited toolbarMsg: TToolBar
-                Width = 423
+                Width = 415
+                ExplicitWidth = 415
                 inherited ToolButton6: TToolButton
                   ImageIndex = 26
                 end
               end
               inherited richedMsgText: TRichEdit
-                Width = 423
-                Height = 374
+                Width = 415
+                Height = 369
+                Font.Height = -13
+                ExplicitWidth = 415
+                ExplicitHeight = 369
               end
               inherited panMailHeader: TPanel
-                Width = 423
+                Width = 415
+                ExplicitWidth = 415
                 inherited lbFromText: TLabel
-                  Width = 5
-                  Height = 16
+                  Width = 4
+                  ExplicitWidth = 4
                 end
                 inherited lbTopicText: TLabel
-                  Width = 5
+                  Width = 4
                   Height = 16
                   AutoSize = True
+                  ExplicitWidth = 4
+                  ExplicitHeight = 16
                 end
               end
             end
@@ -258,41 +291,61 @@ object frmMain: TfrmMain
           inline FrameMailboxNews: TFrameMailbox
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited Splitter1: TSplitter
-              Height = 467
+              Height = 462
+              ExplicitHeight = 467
             end
             inherited toolbarMailbox: TToolBar
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
             end
             inherited panLeft: TPanel
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited lvMessages: TListView
-                Height = 281
+                Height = 276
+                ExplicitHeight = 276
               end
             end
             inherited panRight: TPanel
-              Width = 425
-              Height = 467
+              Width = 417
+              Height = 462
+              ExplicitWidth = 417
+              ExplicitHeight = 462
               inherited toolbarMsg: TToolBar
-                Width = 423
+                Width = 415
+                ExplicitWidth = 415
               end
               inherited richedMsgText: TRichEdit
-                Width = 423
-                Height = 374
+                Width = 415
+                Height = 369
+                ExplicitWidth = 415
+                ExplicitHeight = 369
               end
               inherited panMailHeader: TPanel
-                Width = 423
+                Width = 415
+                ExplicitWidth = 415
                 inherited lbFromText: TLabel
-                  Width = 5
-                  Height = 16
+                  Width = 4
+                  ExplicitWidth = 4
                 end
                 inherited lbTopicText: TLabel
                   Width = 48
                   Height = 16
+                  ExplicitWidth = 48
+                  ExplicitHeight = 16
                 end
               end
             end
@@ -310,19 +363,19 @@ object frmMain: TfrmMain
     end
     object tsCommunication: TTabSheet
       Caption = #1054#1073#1097#1077#1085#1080#1077
-      ImageIndex = 4
+      ImageIndex = 2
       object pcCommunication: TPageControl
         Left = 0
         Top = 0
-        Width = 782
-        Height = 498
-        ActivePage = tsDrawing
+        Width = 774
+        Height = 493
+        ActivePage = tsMsgBoard
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
-        Font.Name = 'MS Sans Serif'
-        Font.Style = [fsBold]
+        Font.Name = 'Tahoma'
+        Font.Style = []
         HotTrack = True
         ParentFont = False
         TabOrder = 0
@@ -332,44 +385,55 @@ object frmMain: TfrmMain
           inline FrameLocalOrders: TFrameLocalOrders
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited Splitter1: TSplitter
-              Height = 467
+              Height = 462
+              ExplicitHeight = 467
             end
             inherited toolbarLocOrders: TToolBar
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
             end
             inherited panRight: TPanel
-              Width = 498
-              Height = 467
+              Width = 490
+              Height = 462
+              ExplicitWidth = 490
+              ExplicitHeight = 462
               inherited gbInfo: TGroupBox
-                Width = 498
-                inherited lbFrom: TLabel
-                  Width = 49
-                  Height = 16
-                end
-                inherited lbTo: TLabel
-                  Width = 33
-                  Height = 16
-                end
+                Width = 490
+                ExplicitWidth = 490
               end
               inherited gbReply: TGroupBox
-                Top = 362
-                Width = 498
+                Top = 357
+                Width = 490
+                ExplicitTop = 357
+                ExplicitWidth = 490
               end
               inherited gbText: TGroupBox
-                Width = 498
-                Height = 289
+                Width = 490
+                Height = 284
+                ExplicitWidth = 490
+                ExplicitHeight = 284
               end
             end
             inherited gbList: TGroupBox
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited lvOrdersList: TListView
-                Top = 18
-                Height = 447
+                Height = 442
+                ExplicitTop = 18
+                ExplicitHeight = 442
               end
             end
             inherited ilSignOnIcons: TImageList
@@ -527,61 +591,259 @@ object frmMain: TfrmMain
           inline FrameMsgBoard: TFrameMsgBoard
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited Splitter4: TSplitter
-              Height = 467
+              Height = 462
+              ExplicitHeight = 467
             end
             inherited toolbarMsgBoard: TToolBar
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
             end
             inherited panRight: TPanel
-              Width = 553
-              Height = 467
+              Width = 545
+              Height = 462
+              ExplicitWidth = 545
+              ExplicitHeight = 462
               inherited panTop: TPanel
-                Width = 553
-                Height = 467
+                Width = 545
+                Height = 462
+                ExplicitWidth = 545
+                ExplicitHeight = 462
                 inherited panItemInfo: TPanel
-                  Width = 551
+                  Width = 543
+                  ExplicitWidth = 543
                   inherited lbAuthorName: TLabel
                     Width = 50
-                    Height = 16
+                    ExplicitWidth = 50
                   end
                   inherited lbAuthorText: TLabel
                     Width = 88
-                    Height = 16
+                    ExplicitWidth = 88
                   end
                 end
                 inherited TextEditor: TFrameTextEditor
-                  Width = 551
-                  Height = 424
+                  Width = 543
+                  Height = 419
+                  ExplicitWidth = 543
+                  ExplicitHeight = 419
                   inherited pcEditorControls: TPageControl
-                    Width = 551
+                    Width = 543
+                    ExplicitWidth = 543
                     inherited tsFile: TTabSheet
+                      ExplicitWidth = 535
                       inherited toolbarFile: TToolBar
-                        Width = 543
-                        Height = 31
+                        Width = 535
+                        ExplicitWidth = 535
                       end
                     end
                     inherited tsEdit: TTabSheet
+                      ExplicitTop = 27
+                      ExplicitHeight = 31
                       inherited toolbarEdit: TToolBar
+                        Width = 389
                         Height = 31
+                        ExplicitWidth = 389
+                        ExplicitHeight = 31
+                        inherited tbUndo: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbRedo: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbSepEdit1: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbCut: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbCopy: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbPaste: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbDelete: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbSelectAll: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited ToolButton3: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbSearch: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbReplace: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
                       end
+                    end
+                    inherited tsInsert: TTabSheet
+                      ExplicitTop = 27
+                      ExplicitHeight = 31
+                      inherited toolbarInsert: TToolBar
+                        Width = 389
+                        Height = 31
+                        ExplicitWidth = 389
+                        ExplicitHeight = 31
+                        inherited tbInsDate: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbInsTime: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbInsAuthorSign: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited ToolButton1: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbInsURL: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbInsNote: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbInsBookmark: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbInsHLine: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited ToolButton2: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbInsPicture: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbInsFile: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                      end
+                    end
+                    inherited tsFormat: TTabSheet
+                      ExplicitTop = 27
+                      ExplicitHeight = 31
+                      inherited toolbarFormat: TToolBar
+                        Width = 389
+                        Height = 31
+                        ExplicitWidth = 389
+                        ExplicitHeight = 31
+                        inherited tbFont: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbFontColor: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbSepFormat1: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbBold: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbItalic: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbUnderline: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbStrikeout: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbSepFormat2: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbAlignLeft: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbAlignCenter: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                        inherited tbAlignRight: TToolButton
+                          Top = 0
+                          ExplicitTop = 0
+                        end
+                      end
+                    end
+                    inherited tsTable: TTabSheet
+                      ExplicitTop = 27
+                      ExplicitHeight = 31
+                    end
+                    inherited tsRecent: TTabSheet
+                      ExplicitTop = 27
+                      ExplicitHeight = 31
+                      inherited toolbarRecent: TToolBar
+                        Width = 389
+                        Height = 31
+                        ExplicitWidth = 389
+                        ExplicitHeight = 31
+                      end
+                    end
+                    inherited tsCustom: TTabSheet
+                      ExplicitTop = 27
+                      ExplicitHeight = 31
                     end
                   end
                   inherited reText: TRichEdit
-                    Width = 551
-                    Height = 362
+                    Width = 543
+                    Height = 357
+                    ExplicitWidth = 543
+                    ExplicitHeight = 357
                   end
                 end
               end
             end
             inherited panLeft: TPanel
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited tvMsgBoardList: TTreeView
-                Height = 465
+                Height = 460
+                ExplicitHeight = 460
               end
             end
           end
@@ -590,30 +852,34 @@ object frmMain: TfrmMain
           Caption = #1063#1072#1090
           ImageIndex = 1
           object Splitter6: TSplitter
-            Left = 572
+            Left = 564
             Top = 0
-            Height = 467
+            Height = 462
             Align = alRight
+            ExplicitLeft = 572
+            ExplicitHeight = 467
           end
           object Panel5: TPanel
             Left = 33
             Top = 0
-            Width = 539
-            Height = 467
+            Width = 531
+            Height = 462
             Align = alClient
             TabOrder = 0
             object Splitter7: TSplitter
               Left = 1
-              Top = 413
-              Width = 537
+              Top = 408
+              Width = 529
               Height = 3
               Cursor = crVSplit
               Align = alBottom
+              ExplicitTop = 413
+              ExplicitWidth = 537
             end
             object Panel7: TPanel
               Left = 1
-              Top = 416
-              Width = 537
+              Top = 411
+              Width = 529
               Height = 50
               Align = alBottom
               TabOrder = 0
@@ -621,46 +887,55 @@ object frmMain: TfrmMain
             object RichEdit4: TRichEdit
               Left = 1
               Top = 1
-              Width = 537
-              Height = 412
+              Width = 529
+              Height = 407
               Align = alClient
+              Font.Charset = RUSSIAN_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -13
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
               Lines.Strings = (
                 '[11:15:02] '#1052#1080#1093#1072#1081#1083#1086#1074#1042#1052'> '#1055#1086#1081#1076#1077#1084' '#1087#1086#1082#1091#1088#1080#1084
                 '[11:16:22] '#1057#1077#1084#1077#1085#1086#1074#1043#1052'> '#1055#1086#1090#1077#1088#1087#1080', '#1086#1073#1077#1076' '#1089#1082#1086#1088#1086
                 '[11:25:24] '#1050#1091#1079#1085#1077#1094#1086#1074#1072#1058#1055'> '#1059' '#1084#1077#1085#1103' '#1073#1091#1084#1072#1075#1072' '#1082#1086#1085#1095#1080#1083#1072#1089#1100'!')
+              ParentFont = False
               TabOrder = 1
+              Zoom = 100
             end
           end
           object Panel6: TPanel
-            Left = 575
+            Left = 567
             Top = 0
             Width = 199
-            Height = 467
+            Height = 462
             Align = alRight
             TabOrder = 1
             object TreeView5: TTreeView
               Left = 1
               Top = 1
               Width = 197
-              Height = 465
+              Height = 460
               Align = alClient
               Indent = 19
               TabOrder = 0
-              Items.Data = {
-                05000000230000000000000000000000FFFFFFFFFFFFFFFF0000000000000000
-                0ACCE8F5E0E9EBEEE2C2CC220000000000000000000000FFFFFFFFFFFFFFFF00
-                0000000000000009CFE0F5EEECEEE2D1C5250000000000000000000000FFFFFF
-                FFFFFFFFFF00000000000000000CC7E0E1EEEBEEF6EAE0FFCEC8220000000000
-                000000000000FFFFFFFFFFFFFFFF000000000000000009D1E5ECE5EDEEE2C3CC
-                240000000000000000000000FFFFFFFFFFFFFFFF00000000000000000BCAF3E7
-                EDE5F6EEE2E0D2CF}
+              Items.NodeData = {
+                0305000000320000000000000000000000FFFFFFFFFFFFFFFF00000000000000
+                0000000000010A1C0438044504300439043B043E04320412041C043000000000
+                00000000000000FFFFFFFFFFFFFFFF00000000000000000000000001091F0430
+                0445043E043C043E04320421041504360000000000000000000000FFFFFFFFFF
+                FFFFFF000000000000000000000000010C1704300431043E043B043E0446043A
+                0430044F041E041804300000000000000000000000FFFFFFFFFFFFFFFF000000
+                0000000000000000000109210435043C0435043D043E04320413041C04340000
+                000000000000000000FFFFFFFFFFFFFFFF000000000000000000000000010B1A
+                04430437043D04350446043E043204300422041F04}
             end
           end
           object ToolBar5: TToolBar
             Left = 0
             Top = 0
             Width = 33
-            Height = 467
+            Height = 462
             Align = alLeft
             ButtonHeight = 30
             ButtonWidth = 31
@@ -689,35 +964,47 @@ object frmMain: TfrmMain
           inline FrameDrawBoard: TFrameDrawBoard
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited toolbarDBoardTools: TToolBar
-              Height = 467
+              Height = 462
+              Images = nil
+              ExplicitHeight = 462
             end
             inherited panLeft: TPanel
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
             end
             inherited panImage: TPanel
-              Width = 613
-              Height = 467
-              inherited img1: TImage
-                Width = 595
-                Height = 425
-              end
+              Width = 605
+              Height = 462
+              ExplicitWidth = 605
+              ExplicitHeight = 462
               inherited panTop: TPanel
-                Width = 611
+                Width = 603
+                ExplicitWidth = 603
                 inherited lbCursorPos: TLabel
                   Width = 177
                   Height = 16
+                  ExplicitWidth = 177
+                  ExplicitHeight = 16
                 end
               end
-              inherited scrollH: TScrollBar
-                Width = 596
-              end
-              inherited scrollV: TScrollBar
-                Height = 425
+              inherited scrollBox: TScrollBox
+                Width = 603
+                Height = 436
+                ExplicitWidth = 603
+                ExplicitHeight = 436
               end
             end
           end
@@ -725,56 +1012,17 @@ object frmMain: TfrmMain
         object tsVideoPhone: TTabSheet
           Caption = #1042#1080#1076#1077#1086#1092#1086#1085
           ImageIndex = 4
-          inline FrameVideoPhone: TFrameVideoPhone
-            Left = 0
-            Top = 0
-            Width = 774
-            Height = 467
-            Align = alClient
-            TabOrder = 0
-            inherited Splitter1: TSplitter
-              Height = 467
-            end
-            inherited toolbarVideoPhone: TToolBar
-              Height = 467
-            end
-            inherited Panel1: TPanel
-              Height = 467
-            end
-            inherited Panel2: TPanel
-              Width = 514
-              Height = 467
-              inherited Splitter2: TSplitter
-                Width = 514
-                Height = 484
-              end
-              inherited gbVideo: TGroupBox
-                Width = 514
-                inherited VideoWindow: TVideoWindow
-                  Top = 18
-                  Width = 450
-                end
-              end
-              inherited gbInfo: TGroupBox
-                Top = 797
-                Width = 514
-              end
-            end
-            inherited Filter: TFilter
-              BaseFilter.data = {00000000}
-            end
-          end
         end
       end
     end
     object tsCalendar: TTabSheet
       Caption = #1050#1072#1083#1077#1085#1076#1072#1088#1100
-      ImageIndex = 5
+      ImageIndex = 3
       object pcCalendar: TPageControl
         Left = 0
         Top = 0
-        Width = 782
-        Height = 498
+        Width = 774
+        Height = 493
         ActivePage = tsYearCalendar
         Align = alClient
         TabOrder = 0
@@ -783,106 +1031,142 @@ object frmMain: TfrmMain
           inline FrameCalendarYear: TFrameCalendarYear
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited Panel1: TPanel
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited GroupBox1: TGroupBox
                 inherited Calendar1: TCalendar
-                  Top = 18
-                  Height = 120
+                  ExplicitTop = 18
+                  ExplicitHeight = 120
+                  ColWidths = (
+                    25
+                    25
+                    25
+                    25
+                    25
+                    25
+                    25)
                 end
               end
               inherited GroupBox2: TGroupBox
                 inherited Calendar2: TCalendar
-                  Top = 18
-                  Height = 120
+                  ExplicitTop = 18
+                  ExplicitHeight = 120
                 end
               end
               inherited GroupBox3: TGroupBox
-                Height = 185
+                Height = 180
+                ExplicitHeight = 180
                 inherited Calendar3: TCalendar
-                  Top = 18
-                  Height = 165
+                  Height = 160
+                  ExplicitTop = 18
+                  ExplicitHeight = 160
                 end
               end
             end
             inherited Panel2: TPanel
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited GroupBox4: TGroupBox
                 inherited Calendar4: TCalendar
-                  Top = 18
-                  Height = 120
+                  ExplicitTop = 18
+                  ExplicitHeight = 120
                 end
               end
               inherited GroupBox5: TGroupBox
                 inherited Calendar5: TCalendar
-                  Top = 18
-                  Height = 120
+                  ExplicitTop = 18
+                  ExplicitHeight = 120
                 end
               end
               inherited GroupBox6: TGroupBox
-                Height = 185
+                Height = 180
+                ExplicitHeight = 180
                 inherited Calendar6: TCalendar
-                  Top = 18
-                  Height = 165
+                  Height = 160
+                  ExplicitTop = 18
+                  ExplicitHeight = 160
                 end
               end
             end
             inherited Panel3: TPanel
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited GroupBox7: TGroupBox
                 inherited Calendar7: TCalendar
-                  Top = 18
-                  Height = 120
+                  ExplicitTop = 18
+                  ExplicitHeight = 120
                 end
               end
               inherited GroupBox8: TGroupBox
                 inherited Calendar8: TCalendar
-                  Top = 18
-                  Height = 120
+                  ExplicitTop = 18
+                  ExplicitHeight = 120
                 end
               end
               inherited GroupBox9: TGroupBox
-                Height = 185
+                Height = 180
+                ExplicitHeight = 180
                 inherited Calendar9: TCalendar
-                  Top = 18
-                  Height = 165
+                  Height = 160
+                  ExplicitTop = 18
+                  ExplicitHeight = 160
                 end
               end
             end
             inherited ToolBar1: TToolBar
-              Height = 467
+              Height = 462
               Images = ImageList24
+              ExplicitHeight = 462
             end
             inherited Panel4: TPanel
-              Width = 181
-              Height = 467
+              Width = 173
+              Height = 462
+              ExplicitWidth = 173
+              ExplicitHeight = 462
               inherited GroupBox10: TGroupBox
-                Width = 179
+                Width = 171
+                ExplicitWidth = 171
                 inherited Calendar10: TCalendar
-                  Top = 18
-                  Width = 175
-                  Height = 120
+                  Width = 167
+                  ExplicitTop = 18
+                  ExplicitWidth = 167
+                  ExplicitHeight = 120
                 end
               end
               inherited GroupBox11: TGroupBox
-                Width = 179
+                Width = 171
+                ExplicitWidth = 171
                 inherited Calendar11: TCalendar
-                  Top = 18
-                  Width = 175
-                  Height = 120
+                  Width = 167
+                  ExplicitTop = 18
+                  ExplicitWidth = 167
+                  ExplicitHeight = 120
                 end
               end
               inherited GroupBox12: TGroupBox
-                Width = 179
-                Height = 185
+                Width = 171
+                Height = 180
+                ExplicitWidth = 171
+                ExplicitHeight = 180
                 inherited Calendar12: TCalendar
-                  Top = 18
-                  Width = 175
-                  Height = 165
+                  Width = 167
+                  Height = 160
+                  ExplicitTop = 18
+                  ExplicitWidth = 167
+                  ExplicitHeight = 160
                 end
               end
             end
@@ -894,13 +1178,23 @@ object frmMain: TfrmMain
           inline FrameDayShedule: TFrameDayShedule
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited sgDayShedule: TStringGrid
-              Width = 774
-              Height = 467
+              Width = 766
+              Height = 462
+              ExplicitWidth = 766
+              ExplicitHeight = 462
             end
           end
         end
@@ -912,13 +1206,13 @@ object frmMain: TfrmMain
     end
     object tsArchive: TTabSheet
       Caption = #1040#1088#1093#1080#1074
-      ImageIndex = 7
+      ImageIndex = 4
       object pcArchive: TPageControl
         Left = 0
         Top = 0
-        Width = 782
-        Height = 498
-        ActivePage = tsArchivePersonal
+        Width = 774
+        Height = 493
+        ActivePage = tsArchiveSearch
         Align = alClient
         TabOrder = 0
         object tsArchivePersonal: TTabSheet
@@ -927,37 +1221,55 @@ object frmMain: TfrmMain
           inline FrameArchivePrivate: TFrameArchive
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited Splitter1: TSplitter
-              Height = 467
+              Height = 462
+              ExplicitHeight = 467
             end
             inherited ToolBar1: TToolBar
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited ToolButton1: TToolButton
                 OnClick = FrameArchivePrivateToolButton1Click
               end
             end
             inherited panLeft: TPanel
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited Splitter2: TSplitter
-                Top = 326
+                Top = 321
+                ExplicitTop = 326
               end
               inherited tvArchiveTree: TTreeView
-                Height = 325
+                Height = 320
+                ExplicitHeight = 320
               end
               inherited gbInfo: TGroupBox
-                Top = 329
+                Top = 324
+                ExplicitTop = 324
               end
             end
             inherited panRight: TPanel
-              Width = 481
-              Height = 467
+              Width = 473
+              Height = 462
+              ExplicitWidth = 473
+              ExplicitHeight = 462
               inherited Image1: TImage
-                Width = 479
-                Height = 465
+                Width = 471
+                Height = 460
+                ExplicitWidth = 479
+                ExplicitHeight = 465
               end
             end
           end
@@ -968,66 +1280,50 @@ object frmMain: TfrmMain
           inline FrameArchiveSearch: TFrameArchiveSearch
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited Splitter1: TSplitter
-              Height = 467
+              Height = 462
+              ExplicitHeight = 467
             end
             inherited ToolBar1: TToolBar
-              Height = 467
+              Height = 462
               Images = ImageList24
+              ExplicitHeight = 462
             end
             inherited panLeft: TPanel
-              Height = 467
-              inherited gbSearchParams: TGroupBox
-                inherited lbSearchName: TLabel
-                  Width = 79
-                  Height = 16
-                end
-                inherited lbSearchDate: TLabel
-                  Width = 101
-                  Height = 16
-                end
-                inherited Label3: TLabel
-                  Width = 20
-                  Height = 16
-                end
-                inherited Label4: TLabel
-                  Width = 19
-                  Height = 16
-                end
-                inherited Label5: TLabel
-                  Width = 50
-                  Height = 16
-                end
-                inherited edSearchName: TEdit
-                  Height = 24
-                end
-                inherited edSearchAuthor: TEdit
-                  Height = 24
-                end
-                inherited dtpSearchBeginDate: TDateTimePicker
-                  Height = 24
-                end
-                inherited dtpSearchEndDate: TDateTimePicker
-                  Height = 24
-                end
-              end
+              Height = 462
+              ExplicitHeight = 462
               inherited gbSearchResults: TGroupBox
-                Height = 305
+                Height = 300
+                ExplicitHeight = 300
                 inherited ListView1: TListView
-                  Top = 18
-                  Height = 285
+                  Height = 280
+                  ExplicitTop = 18
+                  ExplicitHeight = 280
                 end
               end
             end
             inherited PanRight: TPanel
-              Width = 441
-              Height = 467
+              Width = 433
+              Height = 462
+              ExplicitWidth = 433
+              ExplicitHeight = 462
               inherited Image1: TImage
-                Height = 422
+                Width = 431
+                Height = 460
+                ExplicitWidth = 431
+                ExplicitHeight = 422
               end
             end
           end
@@ -1038,43 +1334,67 @@ object frmMain: TfrmMain
           inline FrameArchivePublic: TFrameArchive
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited Splitter1: TSplitter
               Left = 341
-              Height = 467
+              Height = 462
+              ExplicitLeft = 341
+              ExplicitHeight = 467
             end
             inherited ToolBar1: TToolBar
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
               inherited ToolButton1: TToolButton
                 OnClick = FrameArchivePublicToolButton1Click
               end
             end
             inherited panLeft: TPanel
               Width = 308
-              Height = 467
+              Height = 462
+              ExplicitWidth = 308
+              ExplicitHeight = 462
               inherited Splitter2: TSplitter
-                Top = 326
+                Top = 321
                 Width = 306
+                ExplicitTop = 326
+                ExplicitWidth = 306
               end
               inherited tvArchiveTree: TTreeView
                 Width = 306
-                Height = 325
+                Height = 320
+                ExplicitWidth = 306
+                ExplicitHeight = 320
               end
               inherited gbInfo: TGroupBox
-                Top = 329
+                Top = 324
                 Width = 306
+                ExplicitTop = 324
+                ExplicitWidth = 306
               end
             end
             inherited panRight: TPanel
               Left = 344
-              Width = 430
-              Height = 467
+              Width = 422
+              Height = 462
+              ExplicitLeft = 344
+              ExplicitWidth = 422
+              ExplicitHeight = 462
               inherited Image1: TImage
-                Width = 428
-                Height = 465
+                Width = 420
+                Height = 460
+                ExplicitWidth = 428
+                ExplicitHeight = 465
               end
             end
           end
@@ -1083,13 +1403,13 @@ object frmMain: TfrmMain
     end
     object tsEnterprise: TTabSheet
       Caption = #1055#1088#1077#1076#1087#1088#1080#1103#1090#1080#1077
-      ImageIndex = 7
+      ImageIndex = 5
       object pcEnterprise: TPageControl
         Left = 0
         Top = 0
-        Width = 782
-        Height = 498
-        ActivePage = tsBudget
+        Width = 774
+        Height = 493
+        ActivePage = tsPersonnel
         Align = alClient
         TabOrder = 0
         object tsStructure: TTabSheet
@@ -1097,76 +1417,91 @@ object frmMain: TfrmMain
           inline FrameEnterpiseStructure: TFrameEnterpiseStructure
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
             ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited Splitter1: TSplitter
-              Height = 467
+              Height = 462
+              ExplicitHeight = 467
             end
-            inherited Panel1: TPanel
-              Height = 467
+            inherited panLeft: TPanel
+              Height = 462
+              ExplicitHeight = 462
               inherited Splitter2: TSplitter
                 Top = 289
+                ExplicitTop = 289
               end
-              inherited Panel3: TPanel
+              inherited panLeftBottom: TPanel
                 Top = 292
-                Height = 174
-                Caption = ''
-                Font.Style = [fsBold]
-                ParentFont = False
-                inherited GroupBox1: TGroupBox
-                  Height = 172
+                Height = 169
+                ExplicitTop = 292
+                ExplicitHeight = 169
+                inherited gbDeptInfo: TGroupBox
+                  Height = 167
+                  ExplicitHeight = 167
                 end
               end
-              inherited TreeView1: TTreeView
+              inherited tvDepartments: TTreeView
                 Height = 288
-                Font.Style = [fsBold]
-                ParentFont = False
+                ExplicitHeight = 288
               end
             end
-            inherited Panel2: TPanel
-              Width = 442
-              Height = 467
-              inherited GroupBox2: TGroupBox
-                Width = 440
+            inherited panRight: TPanel
+              Width = 467
+              Height = 462
+              ExplicitWidth = 434
+              ExplicitHeight = 462
+              inherited gbPersonnel: TGroupBox
+                Width = 465
                 Height = 160
-                Font.Style = [fsBold]
-                ParentFont = False
-                inherited ListView1: TListView
-                  Anchors = [akLeft, akTop, akRight, akBottom]
+                ExplicitWidth = 432
+                ExplicitHeight = 160
+                inherited lvDeptPersonnel: TListView
+                  Width = 451
+                  Height = 130
+                  HelpContext = 162
+                  ExplicitWidth = 452
+                  ExplicitHeight = 135
                 end
               end
-              inherited GroupBox3: TGroupBox
+              inherited gbTasks: TGroupBox
                 Top = 161
-                Width = 440
+                Width = 465
                 Height = 160
-                Font.Style = [fsBold]
-                ParentFont = False
-                inherited ListView2: TListView
-                  Anchors = [akLeft, akTop, akRight, akBottom]
+                ExplicitTop = 161
+                ExplicitWidth = 432
+                ExplicitHeight = 160
+                inherited lvDeptTasks: TListView
+                  Width = 451
+                  Height = 130
+                  ExplicitWidth = 450
+                  ExplicitHeight = 134
                 end
               end
-              inherited GroupBox4: TGroupBox
+              inherited gbDeptExtraInfo: TGroupBox
                 Top = 321
-                Width = 440
-                Height = 145
-                inherited Memo1: TMemo
-                  Top = 16
-                  Width = 424
-                  Height = 120
-                  Anchors = [akLeft, akTop, akRight, akBottom]
+                Width = 465
+                Height = 140
+                ExplicitTop = 321
+                ExplicitWidth = 432
+                ExplicitHeight = 140
+                inherited MemoDeptExtraInfo: TMemo
+                  Width = 451
+                  Height = 110
+                  ExplicitTop = 16
+                  ExplicitWidth = 449
+                  ExplicitHeight = 115
                 end
               end
-            end
-            inherited ToolBar1: TToolBar
-              Height = 467
             end
           end
         end
@@ -1176,81 +1511,117 @@ object frmMain: TfrmMain
           inline FramePersonnel: TFramePersonnel
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited panCentral: TPanel
-              Width = 741
-              Height = 467
+              Width = 766
+              Height = 462
+              ExplicitWidth = 733
+              ExplicitHeight = 462
               inherited Splitter1: TSplitter
-                Width = 739
+                Width = 764
+                ExplicitWidth = 739
               end
               inherited panTop: TPanel
-                Width = 739
+                Width = 764
+                ExplicitWidth = 731
                 inherited lvPersonnel: TListView
-                  Width = 548
+                  Width = 573
+                  ExplicitWidth = 540
                 end
               end
               inherited panBottom: TPanel
-                Width = 739
-                Height = 237
+                Width = 764
+                Height = 232
+                ExplicitWidth = 731
+                ExplicitHeight = 232
                 inherited pcPersInfo: TPageControl
-                  Width = 739
-                  Height = 237
+                  Width = 764
+                  Height = 232
+                  Images = nil
+                  ExplicitWidth = 731
+                  ExplicitHeight = 232
                   inherited tsEmpInfo: TTabSheet
+                    ExplicitWidth = 756
+                    ExplicitHeight = 201
                     inherited Splitter3: TSplitter
-                      Height = 206
+                      Height = 201
+                      ExplicitHeight = 206
                     end
                     inherited gbEmployeeInfo: TGroupBox
-                      Width = 495
-                      Height = 206
+                      Width = 560
+                      Height = 201
                       inherited vledPersInfo: TValueListEditor
-                        Top = 18
-                        Width = 491
-                        Height = 186
+                        Width = 556
+                        Height = 181
+                        ExplicitWidth = 483
+                        ExplicitHeight = 181
                         ColWidths = (
                           150
-                          335)
+                          400)
                       end
                     end
                     inherited gbEmployeePhoto: TGroupBox
-                      Height = 206
+                      Height = 201
+                      ExplicitHeight = 201
                       inherited imgPersPhoto: TImage
-                        Top = 18
-                        Height = 186
+                        Height = 181
+                        Proportional = True
+                        ExplicitTop = 18
+                        ExplicitHeight = 186
                       end
                     end
                   end
-                  inherited tsPersOrders: TTabSheet
-                    inherited Splitter5: TSplitter
-                      Height = 206
+                  inherited tsPersTasks: TTabSheet
+                    ExplicitWidth = 756
+                    ExplicitHeight = 201
+                    inherited Splitter4: TSplitter
+                      Height = 201
+                      ExplicitHeight = 201
                     end
-                    inherited lvPersLocalOrders: TListView
-                      Height = 206
+                    inherited gbPersTaskInfo: TGroupBox
+                      Width = 371
+                      Height = 201
                     end
-                    inherited gbPersLocalOrdersInfo: TGroupBox
-                      Width = 391
-                      Height = 206
+                    inherited lvPersTasks: TListView
+                      Height = 201
+                      StateImages = nil
                     end
                   end
+                  inherited tsPersOrders: TTabSheet
+                    ExplicitWidth = 756
+                    ExplicitHeight = 201
+                    inherited Splitter5: TSplitter
+                      Height = 201
+                      ExplicitHeight = 206
+                    end
+                    inherited lvPersLocalOrders: TListView
+                      Height = 201
+                      StateImages = nil
+                      ExplicitHeight = 201
+                    end
+                    inherited gbPersLocalOrdersInfo: TGroupBox
+                      Width = 416
+                      Height = 201
+                      ExplicitWidth = 383
+                      ExplicitHeight = 201
+                    end
+                  end
+                  inherited tsPersChat: TTabSheet
+                    ExplicitWidth = 756
+                    ExplicitHeight = 201
+                  end
                 end
-              end
-            end
-            inherited toolbarPersonnel: TToolBar
-              Height = 467
-              inherited tbSaveList: TToolButton
-                Wrap = False
-              end
-              inherited ToolButton1: TToolButton
-                Top = 60
-              end
-              inherited tbTableEdit: TToolButton
-                Top = 98
-              end
-              inherited ToolButton3: TToolButton
-                Top = 128
-                Wrap = False
               end
             end
           end
@@ -1263,12 +1634,12 @@ object frmMain: TfrmMain
     end
     object tsOther: TTabSheet
       Caption = #1055#1088#1086#1095#1077#1077
-      ImageIndex = 8
+      ImageIndex = 6
       object pcOther: TPageControl
         Left = 0
         Top = 0
-        Width = 782
-        Height = 498
+        Width = 774
+        Height = 493
         ActivePage = tsDbBrowser
         Align = alClient
         TabOrder = 0
@@ -1278,8 +1649,8 @@ object frmMain: TfrmMain
           inline FrameUserOptions: TFrameUserOptions
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -1288,12 +1659,55 @@ object frmMain: TfrmMain
             Font.Style = []
             ParentFont = False
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited toolbarUserOptions: TToolBar
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
             end
             inherited panCenter: TPanel
-              Width = 741
-              Height = 467
+              Width = 733
+              Height = 462
+              ExplicitWidth = 733
+              ExplicitHeight = 462
+              inherited gbDbOptions: TGroupBox
+                inherited Label1: TLabel
+                  Width = 91
+                  Height = 13
+                  ExplicitWidth = 91
+                  ExplicitHeight = 13
+                end
+                inherited Label2: TLabel
+                  Width = 88
+                  Height = 13
+                  ExplicitWidth = 88
+                  ExplicitHeight = 13
+                end
+                inherited comboxDbType: TComboBox
+                  Height = 21
+                  ExplicitHeight = 21
+                end
+              end
+              inherited GroupBox1: TGroupBox
+                inherited Label3: TLabel
+                  Width = 88
+                  Height = 13
+                  ExplicitWidth = 88
+                  ExplicitHeight = 13
+                end
+                inherited Label4: TLabel
+                  Width = 96
+                  Height = 13
+                  ExplicitWidth = 96
+                  ExplicitHeight = 13
+                end
+                inherited Label5: TLabel
+                  Width = 49
+                  Height = 13
+                  ExplicitWidth = 49
+                  ExplicitHeight = 13
+                end
+              end
             end
           end
         end
@@ -1311,7 +1725,7 @@ object frmMain: TfrmMain
             Left = 0
             Top = 0
             Width = 357
-            Height = 467
+            Height = 462
             Align = alLeft
             BevelOuter = bvNone
             TabOrder = 0
@@ -1325,7 +1739,7 @@ object frmMain: TfrmMain
               object Label1: TLabel
                 Left = 12
                 Top = 24
-                Width = 73
+                Width = 55
                 Height = 16
                 Caption = #1055#1088#1086#1090#1086#1090#1080#1087
               end
@@ -1340,7 +1754,7 @@ object frmMain: TfrmMain
               object Label2: TLabel
                 Left = 12
                 Top = 24
-                Width = 113
+                Width = 88
                 Height = 16
                 Caption = #1041#1086#1076#1088#1086#1074' '#1057#1077#1088#1075#1077#1081
               end
@@ -1349,8 +1763,8 @@ object frmMain: TfrmMain
           object Memo1: TMemo
             Left = 357
             Top = 0
-            Width = 417
-            Height = 467
+            Width = 409
+            Height = 462
             Align = alClient
             Lines.Strings = (
               'TODO:'
@@ -1382,13 +1796,14 @@ object frmMain: TfrmMain
           object Splitter1: TSplitter
             Left = 337
             Top = 0
-            Height = 467
+            Height = 462
+            ExplicitHeight = 467
           end
           object gbDebugMsg: TGroupBox
             Left = 0
             Top = 0
             Width = 337
-            Height = 467
+            Height = 462
             Align = alLeft
             Caption = 'Debug messages'
             TabOrder = 0
@@ -1396,7 +1811,7 @@ object frmMain: TfrmMain
               Left = 2
               Top = 15
               Width = 333
-              Height = 450
+              Height = 445
               Align = alClient
               Lines.Strings = (
                 'memoDebugMsg')
@@ -1406,16 +1821,16 @@ object frmMain: TfrmMain
           object gbDebugSQL: TGroupBox
             Left = 340
             Top = 0
-            Width = 434
-            Height = 467
+            Width = 426
+            Height = 462
             Align = alClient
             Caption = 'SQL debug'
             TabOrder = 1
             object memoDebugSQL: TMemo
               Left = 2
               Top = 15
-              Width = 430
-              Height = 450
+              Width = 422
+              Height = 445
               Align = alClient
               Lines.Strings = (
                 'memoDebugSQL')
@@ -1430,25 +1845,34 @@ object frmMain: TfrmMain
           inline FrameDbBrowser: TFrameDbBrowser
             Left = 0
             Top = 0
-            Width = 774
-            Height = 467
+            Width = 766
+            Height = 462
             Align = alClient
             TabOrder = 0
+            ExplicitWidth = 766
+            ExplicitHeight = 462
             inherited toolbarDbBrowser: TToolBar
-              Height = 467
+              Height = 462
+              ExplicitHeight = 462
             end
             inherited panCenter: TPanel
-              Width = 741
-              Height = 467
+              Width = 733
+              Height = 462
+              ExplicitWidth = 733
+              ExplicitHeight = 462
               inherited splH1: TSplitter
-                Width = 741
+                Width = 733
+                ExplicitWidth = 741
               end
               inherited tvDbTree: TTreeView
-                Width = 741
+                Width = 733
+                ExplicitWidth = 733
               end
               inherited lvDbTable: TListView
-                Width = 741
-                Height = 319
+                Width = 733
+                Height = 314
+                ExplicitWidth = 733
+                ExplicitHeight = 314
               end
             end
           end
@@ -16159,5 +16583,676 @@ object frmMain: TfrmMain
       Caption = 'WindowDock'
       ImageIndex = 2
     end
+  end
+  object ilIcons16: TImageList
+    Left = 192
+    Top = 446
+    Bitmap = {
+      494C010111003800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      0000000000003600000028000000400000005000000001002000000000000050
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FFD3D3
+      D300BBC2BB007FA07E00538E53003C803A003C803A00538E53007FA07E00BBC2
+      BB00D1D1D100000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FFB3C9
+      B10044953F002BA6220024C4160021D2110021D2110024C416002BA622004495
+      3F00B3C9B100000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFB4D6B1003C9D
+      340027C4180023D1120022B6110022D1110022D1110022D1110022D1110024C2
+      16003A9D3200B4D6B100000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF4AA541002DC0
+      1E0023C8120022B21100E6E6E60022B2110022C8110022C8110022C8110022C8
+      110025BC160048A53F00000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF97CB920039B02B0026C0
+      150022AD1100DEDEDE00E2E2E200E6E6E60022AD110022BE110022BE110022BE
+      110022BE11002EA9220097CB9200000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF60B2570041BD320023AE
+      1200D5D5D500DADADA00DEDEDE00E2E2E200E6E6E60022A8110022B4110022B4
+      110022B4110028B0190060B25700000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF46A93A0050C63F00A9D7
+      A200D5D5D500EBEBEB0022A51100DEDEDE00E2E2E200E6E6E60022A3110022AA
+      110022AA110028AC170046A93A00000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF46AC3A0053C942003CB3
+      2B00F8F8F8002DA81C0023A21200229F1100DEDEDE00E2E2E200E6E6E600229E
+      110022A111002CA91B0046AC3A00000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF62BB570056CB450047BE
+      36003EB52D0047BE360041B9300037AF26002DA41C00E2E2E200E3E3E300E7E7
+      E700269E15003AB12A0062BB5700000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF9AD4920051C4420054CB
+      43004EC53D004EC53D004EC53D004EC53D004EC53D0044BB3300FFFFFF00A7E2
+      9E0052C941004ABF3B009AD49200000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF51BB440060D6
+      500058CF470057CE460057CE460057CE460057CE460057CE46004AC1390052C9
+      41005BD14A0051BA4200000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FFB7E2B1004CBD
+      3C0063D9520063DA52005FD64E005FD64E005FD64E005FD64E0062D9510061D8
+      50004ABC3A00B7E2B100000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FFB7E3
+      B10053C0440055CC440063DB53006AE159006AE1580063DA530054CB430053C0
+      4400B7E3B100000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF9AD9920066C658004ABC3A004ABC3A0066C658009AD992000000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+      00FF000000FF000000FF000000FF000000FF0000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000DADADA004D81
+      A300A4B0BA00CFCFCF00D3D3D300D7D7D700DCDCDC0000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000CBC1BE00CF938400EA7C6100EC6A4A00EC6A4A00EA7C6100CF938400CABF
+      BD00000000000000000000000000000000000000000000000000000000005F95
+      B8005F95B800B3C3CD0000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000005A5D7F0032386C003238
+      6C0032386C0032386C0032386C0032386C0032386C0032386C0032386C003238
+      6C0032386C0032386C005A5D7F00000000000000000000000000000000000000
+      0000CBC1BE00CF938400EA7C6100EC6A4A00EC6A4A00EA7C6100CF938400CABF
+      BD0000000000000000000000000000000000000000000000000000000000E0BA
+      B000EE785B00F5A28F00FAD1CA00FCE7E500FCE6E500F9D1C900F4A18E00EE77
+      5A00E0BAB000000000000000000000000000000000000000000000000000689D
+      C100B7EDFC00689DC100689DC100689DC1007DAACA00A9C7DB00000000000000
+      0000000000000000000000000000000000000000000032427C003D70B400386B
+      AF00386BAF00386BAF00386BAF00386BAF00386BAF00386BAF00386BAF00386B
+      AF00386BAF003D70B40032427C0000000000000000000000000000000000E0BA
+      B000EE785B00F5A28F00FAD1CA00FCE7E500FCE6E500F9D1C900F4A18E00EE77
+      5A00E0BAB0000000000000000000000000000000000000000000F7C3B700ED77
+      5B00F7D4CE00F7E9E900F7E8E800FCF4F400FCF4F400F7E8E800F7E9E900F6D1
+      CA00ED775A00F7C3B7000000000000000000000000000000000082B0CE0083BB
+      D600ADECF800A8EAF700A7EAF700A6E9F70099DAEC007BB9D50082B0CE000000
+      00000000000000000000000000000000000000000000324D88003265A900295C
+      A000295CA000295CA000295CA000295CA000295CA000295CA000295CA000295C
+      A000295CA0003265A900324D8800000000000000000000000000F7C3B700ED77
+      5B00F7D4CE00F7E9E900F7E8E800FCF4F400FCF4F400F7E8E800F7E9E900F6D1
+      CA00ED775A00F7C3B700000000000000000000000000F9EAE600E6745600F3D3
+      CD00F0E5E500EFE4E400EFE4E400E5613F00E5613F00EFE4E400EFE4E400EFE4
+      E400EFCDC700E6745600F9EAE6000000000000000000A4C5DD0093C4DD00A5E9
+      F40096E4F10095E4F10095E4F10095E4F10095E4F10097E5F10083BFDB00A4C5
+      DD00000000000000000000000000000000000000000032508C002C5FA3002356
+      9A0023569A0023569A001B4A8900123D7800123D78001B4A890023569A002356
+      9A0023569A002C5FA30032508C000000000000000000F9EAE600E6745600F3D3
+      CD00F0E5E500EFE4E400EFE4E400E5613F00E5613F00EFE4E400EFE4E400EFE4
+      E400EFCDC700E6745600F9EAE6000000000000000000E7A59400E59D8A00EAE2
+      E200E7DFDF00E7DFDF00E7DFDF00D6593700D6593700E7DFDF00E7DFDF00E7DF
+      DF00E8E0E000E1978400E7A5940000000000000000007FB1D200D1EEF900ABE8
+      F60089E1EC0085E1EB0085E1EB0085E1EB0085E1EB0085E1EB00A5E2EE007FB1
+      D2000000000000000000000000000000000000000000325491001A4D88001A4D
+      88001A4D88001A4D88000D386F00BBBBBB00999999000D386F001A4D88001A4D
+      88001A4D88001A4D8800325491000000000000000000E7A59400E59D8A00EAE2
+      E200E7DFDF00E7DFDF00E7DFDF00D6593700D6593700E7DFDF00E7DFDF00E7DF
+      DF00E8E0E000E1978400E7A594000000000000000000CE6F5400EAD0C800E1DA
+      DA00E0D9D900E0D9D900E0D9D900C5502E00C5502E00E0D9D900E0D9D900E0D9
+      D900E0D9D900E1C4BD00CE6F5400000000000000000083B5D500D6F1F900D0F0
+      FF00C0EDFB009CE5F10072B0C90072BFD30080DFE8008FE2ED00BAE7F40083B5
+      D5000000000000000000000000000000000000000000325695004B7EC200487B
+      BF00477ABE004679BD00376AAA00295C9800295C98003669A9004275B9004275
+      B9004275B9004275B900325695000000000000000000CE6F5400EAD0C800E1DA
+      DA00E0D9D900E0D9D900E0D9D900F1EDED00F1EDED00E0D9D900E0D9D900E0D9
+      D900E0D9D900E1C4BD00CE6F54000000000000000000B84D2E00F4EEED00E7E5
+      E500DAD6D600D8D4D400D8D4D400B7482600B7482600D8D4D400D8D4D400D8D4
+      D400D8D4D400E1D8D600B84D2E000000000000000000ABCEE300A8CFE500E0F9
+      FF00D7F4FF00D6F3FF007FACC900699CBD00A4CCE200DDF7FF00A2CDE500ABCE
+      E300000000000000000000000000000000000000000032599900497CC0003D70
+      B4003D70B4003D70B4003D70B4003D70B4003D70B4003D70B4003D70B4003D70
+      B4003D70B4003E71B400325999000000000000000000B84D2E00F4EEED00E7E5
+      E500DAD6D600D8D4D400D8D4D400B7482600B7482600E3DFDF00D8D4D400D8D4
+      D400D8D4D400E1D8D600B84D2E000000000000000000AE4A2900F4EFED00EEEE
+      EE00EAEAEA00DCDBDB00D3D1D100AD442200AD442200D2D0D000D2D0D000D2D0
+      D000D2D0D000DFD8D700AE4A290000000000000000000000000095C0DE00A2CD
+      E400D5EEF600D5EDF70070A2C400B7EDFC006EA0C2006EA0C2006EA0C2007FAB
+      C900ACC8DC0000000000000000000000000000000000325C9C005184C8004275
+      B9004174B8003D70B400386BAF00386BAF00386BAF00386BAF00386BAF00386B
+      AF00386BAF003B6EB200325C9C000000000000000000AE4A2900F4EFED00EEEE
+      EE00EAEAEA00DCDBDB00D3D1D100C7A69C00AE472500C1735A00DEDCDC00D2D0
+      D000D2D0D000DFD8D700AE4A29000000000000000000B8664B00EAD5CD00F0F0
+      F000F0F0F000F0F0F000EBEBEB00E9E9E900E7E6E600D2D1D100CECECE00CECE
+      CE00D2D1D100DCC7C000B8664B0000000000000000000000000000000000BAD6
+      E90094BFDD0078AACB0083BBD600ADECF800A8EAF700A7EAF700A6E9F70099DA
+      EB007DB9D50082B0CD00000000000000000000000000325EA000578ACE004A7D
+      C1004A7DC1004A7DC100477ABE004174B8003A6DB100376AAE003467AB003467
+      AB00376AAE004174B800325EA0000000000000000000B8664B00EAD5CD00F0F0
+      F000F0F0F000F0F0F000EBEBEB00E0E0E000C89C8D00AB462400BD8A7900CECE
+      CE00D2D1D100DCC7C000B8664B000000000000000000D5A08E00D49D8A00F5F5
+      F500F3F3F300F3F3F300F3F3F300B34F2D00B34F2D00F3F3F300F3F3F300F3F3
+      F300F5F5F500D49C8900D5A08E00000000000000000000000000000000000000
+      0000A4C5DB0094C5DD00A5E9F40096E4F10095E4F10095E4F10095E4F10095E4
+      F10097E5F10083BFD900A4C5DB0000000000000000003261A3005B8ED2005083
+      C7005083C7005083C7005083C7005083C7005083C7005083C7005083C7005083
+      C7005083C7005689CD003261A3000000000000000000D5A08E00D49D8A00F5F5
+      F500F3F3F300F3F3F300DAA99800DAA99800CF8E7800B34F2D00D3A19000F3F3
+      F300F5F5F500D49C8900D5A08E000000000000000000F5EAE500C7715400F2DF
+      D900F8F8F800F7F7F700F7F7F700C15D3B00C15D3B00F7F7F700F7F7F700F8F8
+      F800F2DFD900C7715400F5EAE500000000000000000000000000000000000000
+      000081B1D100D1EEF900ABE8F60089E1EC0085E1EB0085E1EB0085E1EB0085E1
+      EB0085E1EB00A5E2EE0081B1D10000000000000000003264A6006295D9005D90
+      D400487BBA003265A100487BBA005D90D4005D90D400477ABA003265A100477A
+      BA005B8ED2005E91D5003264A6000000000000000000F5EAE500C7715400F2DF
+      D900F8F8F800F7F7F700C15D3B00C15D3B00C15D3B00C15D3B00E9D0C800F8F8
+      F800F2DFD900C7715400F5EAE500000000000000000000000000EBC5B900D680
+      6300F6E3DC00FCFCFC00FBFBFB00FBFBFB00FBFBFB00FBFBFB00FCFCFC00F6E3
+      DC00D6806300EBC5B90000000000000000000000000000000000000000000000
+      000084B4D400D6F1F900D0F0FF00C0EDFB009CE5F10087E1EA007BDEE70080DF
+      E8008FE2ED00BAE7F40084B4D4000000000000000000658ABD003265A8003265
+      A80032569A009999990032569A003265A8003265A80032569A00999999003256
+      9A003265A8003265A800658ABD00000000000000000000000000EBC5B900D680
+      6300F6E3DC00FCFCFC00FBFBFB00FBFBFB00FBFBFB00FBFBFB00FCFCFC00F6E3
+      DC00D6806300EBC5B9000000000000000000000000000000000000000000F1CB
+      BF00E38C6E00EFB7A400FAE4DD00FEF9F700FEF9F700FAE4DD00EFB7A400E38C
+      6E00F1CBBF000000000000000000000000000000000000000000000000000000
+      0000ACCDE300A8CFE500E0F9FF00D7F4FF00D6F3FF00D6F3FF00D6F3FF00D7F3
+      FF00DDF7FF00A2CDE500ACCDE300000000000000000000000000000000000000
+      0000000000003251950000000000000000000000000000000000325195000000
+      000000000000000000000000000000000000000000000000000000000000F1CB
+      BF00E38C6E00EFB7A400FAE4DD00FEF9F700FEF9F700FAE4DD00EFB7A400E38C
+      6E00F1CBBF000000000000000000000000000000000000000000000000000000
+      0000FAEEEA00F3BDAB00EE9A8000EA896800EA896800EE9A8000F3BDAB00FAEE
+      EA00000000000000000000000000000000000000000000000000000000000000
+      00000000000095C0DD00A2CCE400D5EEF600E6FBFF00E4FAFF00E5FAFF00D3EC
+      F600A1CBE40095C0DD0000000000000000000000000000000000000000000000
+      000000000000325C9F0098ADCF00000000000000000098ADCF00325C9F000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000FAEEEA00F3BDAB00EE9A8000EA896800EA896800EE9A8000F3BDAB00FAEE
+      EA00000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000BAD6E90096C2DF0085B8DA0085B8DA0085B8DA0096C2
+      DF00BAD6E9000000000000000000000000000000000000000000000000000000
+      000000000000CBD6E7003264A7003264A7003264A7003264A700CBD6E7000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000CBCBCD00A5A5C6006161D5005454DC005454DC006161D500A5A5C600CACA
+      CD0000000000000000000000000000000000000000000000000000000000D7D7
+      D700C9C9CB00A5A5C6006161D5005454DC005454DC006161D500A5A5C600C9C9
+      CB00D5D5D5000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000C4C4F3004A52DE00619DEB00ABE0F700ABE0F700619DEB004A52DE00C4C4
+      F30000000000000000000000000000000000D7D7F4007C7CE2006262E0007676
+      DC008E8ECF004850DC00619DEB00ABE0F700ABE0F700619DEB004850DC008E8E
+      CF007676DC006262E0007C7CE200D7D7F4000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00007070E6003D8DE9007CDBF500E3F7FB00E8F7FC0088DEF6003F8EE9007070
+      E600000000000000000000000000000000008585EA006DA4ED00A2E5F700699B
+      EB004545DF003C8CE9007CDBF500E3F7FB00E8F7FC0088DEF6003E8DE9004545
+      DF00699BEB00A2E5F7006DA4ED008585EA000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00005858E60037BCEF0061D3F300BFEDF900E4F7FC0088DEF6003BBEEF005757
+      E500000000000000000000000000000000007777EB006ED7F400B7EAF90062BF
+      F0003E3EE20036BBEE0061D3F300BFEDF900E4F7FC0088DEF6003ABDEE003E3E
+      E20062BFF000B7EAF9006ED7F4007777EB000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00006161E90035BCEF003CCAF10069D6F300A8E7F7006ED7F30036C7F0005A5A
+      E800000000000000000000000000000000008989EF005FCDF20063D4F3006499
+      EE004949E60034BCEF003CCAF10069D6F300A8E7F7006ED7F30036C7F0004646
+      E6006498EE0063D4F3005FCDF2008989EF000000000000000000000000000000
+      000000000000A5B9A400368632009CB19B00DEDEDE0000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000A5815E00AD713500A37F5B0000000000A37F5B00AD713500A47F5C000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00008787EF004595ED0032C7EF0039C9F00054D0F30045CCF10038BDEF006C6C
+      EC0000000000000000000000000000000000A6A6F4006BB9F20070ADF1009393
+      F2007878ED004595ED0032C7EF0039C9F00054D0F30045CCF10038BDEF006363
+      EB008D8DF10070ADF1006BB9F200A6A6F4000000000000000000000000000000
+      0000B9DBB6003C9B32002EDF1D003C9B3200B9D1B60000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000B77C3C00FDBE2700B77C3C0000000000B77C3C00FDB61300B77C3C000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000CECEF800737AEE004898EE0032C7EF0034C7EF0034C7EF0040AAEF008B8B
+      F00000000000000000000000000000000000C7C7F80088A7F30089ACF400D5D5
+      F900CCCCF800737AEE004898EE0032C7EF0034C7EF0034C7EF0040AAEF008A8A
+      F000C7C7F80089ACF40088A7F300C7C7F8000000000000000000000000000000
+      00003DA3320046E435003DA3320046E435003DA33200B9DDB600000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000C2864500EDB44200C286450000000000C2864500EAAC3400C28645000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000D0D0F8008282F0004C9BEF0037BFF00037BFF0005A8EEF00ACAC
+      F5000000000000000000000000000000000000000000B1B4F7009DB1F500D8D8
+      FA0000000000D0D0F8008282F0004C9BEF0037BFF00037BFF0005A8EEF00AAAA
+      F400CFCFF9009DB1F500B1B4F700000000000000000000000000000000000000
+      000040AB320040AB32008BCB830040AB320060EA4F0040AB3200BBE0B6000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000CD924D00ECBC6E00CD924D0000000000CD924D00DBA65700CD924D000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000BCBCF7007785F10042B3F00045AEF0007F8AF200D0D0
+      F9000000000000000000000000000000000000000000DCDCFA00BBBDF800CBCB
+      F9000000000000000000BCBCF7007785F10042B3F00045AEF0007F8AF200C5C5
+      F800C8C8F900BBBDF800DCDCFA00000000000000000000000000000000000000
+      00009FD69800CEE9CB0000000000BBE2B60041B1320074EE630041B132000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000D99D5600F9CF8300D99D560000000000D99D5600ECBE7200D99D56000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000D3D3F9008893F30053A4F0006B94F100AAAAF6000000
+      000000000000000000000000000000000000000000000000000000000000D1D1
+      FA00D7D7FA0000000000D3D3F9008893F30053A4F0006B94F100A1A1F500C8C8
+      F900D1D1FA000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000BBE4B60041B7320041B732000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000E3A75E00FEDF9300E3A75E0000000000E3A75E00FEDE9200E3A75E000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000C9C9F9008998F4006F96F2009C9FF500D8D8FA000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000C9C9F9008998F4006F96F2009C9FF500D8D8FA000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000CEECCB009FDB98000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000EFC28A00EBAF6400EFC28A0000000000EFC28A00EBAF6400EFC28A000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000B7B7F8008B97F4009DA0F600CECEF900000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000B7B7F8008B97F4009DA0F600CECEF900000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000CFCFFA00A5A5F700AAAAF700D4D4FA0000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000CFCFFA00A5A5F700AAAAF700D4D4FA0000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000CDCDFA00BABAF800CECEFA00000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000CDCDFA00BABAF800CECEFA00000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000CBCBCB00585B7B0032356A003235
+      6A0032356A0032356A0032356A0032356A0032356A0032356A0032356A003235
+      6A0032356A0032356A00585B7B00CBCBCB0000000000BCBBBB008D7C7C008D7C
+      7C008D7C7C008D7C7C008D7C7C008D7D7D0093838300918282008C7E7E008172
+      7200726262006A595900B4B2B200000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000323D74003063A7002B5E
+      A2002E61A5003C6FB3004B7EC2005487CB005386CA00497CC0003C6FB3003063
+      A7002B5EA2003063A700323D740000000000000000000000000098888800DAC9
+      C900D6C5C500806F6F00AA99990099888800D6C5C500DAC9C900B4A3A300B4A3
+      A300B8A7A700756464000000000000000000000000000000000000000000D3D3
+      D300CBCBCB00CBCBCB00A0A0A0007878780078787800A0A0A000CBCBCB00CBCB
+      CB00D1D1D1000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000324880002D60A4001245
+      780013467A00174A820015447E00113B7500123C7700174682001A4D87001548
+      7D00124578002D60A40032488000000000000000000000000000A7949400D8C7
+      C700CFBEBE0092818100887777009A898900CFBEBE00D8C7C700AD9C9C00AD9C
+      9C00B6A5A500817070000000000000000000000000000000000000000000B6B6
+      B6007C7C7C00DDDDDD007C7C7C00E7D7D700E2D3D3007C7C7C00DDDDDD007C7C
+      7C00B6B6B6000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000324D88002E61A5001447
+      7A002E61A50025589C0017468200BBBBBB00999999001746820025589C002E61
+      A50014477A002E61A500324D8800000000000000000000000000B5A7A700DAC9
+      C900D1C0C000D1C0C000D1C0C000D1C0C000D1C0C000DAC9C900AF9E9E00AF9E
+      9E00B8A7A7009584840000000000000000000000000000000000B9B9B9008583
+      8300D8CBCB008383830080808000D3C6C600D3C6C6008080800083838300D8CB
+      CB0085838300B9B9B90000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000032508C003063A7001548
+      7B00376AAE004376BA004A7DC1004679BD004578BC00487BBF004275B900386B
+      AF0015487B003063A70032508C00000000000000000000000000B19F9F00C1B0
+      B000AB9A9A00BBAAAA00A9989800B9A8A800A6959500BBAAAA00A08F8F009584
+      8400A69595008C7B7B000000000000000000000000000000000087878700D0C6
+      C600BAB1B100CCC2C200A59F9F00D4CACA00D4CACA00A59F9F00CCC2C200BAB1
+      B100D0C6C6008787870000000000000000000000000000000000DEDEDE005E9F
+      A90038A1B30038A1B30038A1B30038A1B30038A1B30038A1B30038A1B3005D9F
+      A800DBDBDB0000000000000000000000000000000000325190003265A900174A
+      7D00184B7F001C4F870019488200133E7800143F7A001B4986001F528C001A4D
+      8200174A7D003265A90032519000000000000000000000000000BAABAB00E0CF
+      CF00D7C6C600D7C6C600D7C6C600D7C6C600D7C6C600E0CFCF00B5A4A400B5A4
+      A400BEADAD009A8A8A0000000000000000000000000000000000E2E2E2008D8C
+      8C00CCC6C600C3BDBD00E4D9D900F7E8E800F7E8E800E4D9D900C3BDBD00CCC6
+      C6008D8C8C00E2E2E200000000000000000000000000000000000000000042B2
+      C300AAF3FE009EF0FE009EF0FE009EF0FE009EF0FE009EF0FE00AAF3FE0042B2
+      C3000000000000000000000000000000000000000000325492003467AA00194C
+      7F003467AA002B5EA1001A498400BBBBBB00999999001A4984002B5EA1003467
+      AA00194C7F003467AA0032549200000000000000000000000000B6A5A500C7B6
+      B600B2A1A100C1B0B000AF9E9E00BFAEAE00AC9B9B00C1B0B000A69595009B8A
+      8A00AB9A9A0093818100000000000000000000000000C2C2C200939393009393
+      93009F9F9F00D4CFCF00C7BEBE009A9999009A999900C7BEBE00D4CFCF009F9F
+      9F009393930093939300C2C2C2000000000000000000000000000000000046B8
+      C90095EDFB0080E8F90080E8F90080E8F90080E8F90080E8F90095EDFB0046B8
+      C9000000000000000000000000000000000000000000325695003568AC001C4F
+      82003B6EB2004679BD004D80C400487BBF00477ABE004B7EC2004679BD003C6F
+      B3001C4F82003568AC0032569500000000000000000000000000C1B1B100E5D4
+      D400DCCBCB00DCCBCB00DCCBCB00DCCBCB00DCCBCB00E5D4D400BAA9A900BAA9
+      A900C3B2B2009F90900000000000000000000000000098989800C4C4C400BBBB
+      BB00C4C4C400D6D3D30094939300000000000000000094939300D6D3D300C4C4
+      C400BBBBBB00C4C4C400989898000000000000000000000000000000000049BC
+      CD008BE9F70079E3F40079E3F40079E3F40079E3F40079E3F4008BE9F70049BC
+      CD00000000000000000000000000000000000000000032599800376AAE001E51
+      84001F52860023568D001D4C860016407A0017417C001F4E8A00255892002053
+      89001E518400376AAE0032599800000000000000000000000000BCACAC00CFBE
+      BE00BAA9A900C8B7B700B7A6A600C7B6B600B5A4A400C9B8B800AE9D9D00A392
+      9200B2A1A100998787000000000000000000000000009F9F9F00CBCCCC00BEBF
+      BF00C6C7C700D2D2D2008E8E8E0000000000000000008E8E8E00D2D2D200C6C7
+      C700BEBFBF00CBCCCC009F9F9F00000000000000000000000000000000004CC0
+      D20081E4F40072DDEE0072DDEE0072DDEE0072DDEE0072DDEE0081E4F4004CC0
+      D2000000000000000000000000000000000000000000325C9B00396CB0001F52
+      8500396CB0003063A7001D4B8700BBBBBB00999999001D4B87003063A700396C
+      B0001F528500396CB000325C9B00000000000000000000000000C5B6B600ECDB
+      DB00E3D2D200E3D2D200E3D2D200E3D2D200E3D2D200ECDBDB00C1B0B000C1B0
+      B000CAB9B900A4959500000000000000000000000000CDCDCD00A5A5A500A5A5
+      A500ABACAC00D3D4D400B1B2B2008282820082828200B1B2B200D3D4D400ABAC
+      AC00A5A5A500A5A5A500CDCDCD00000000000000000000000000000000004EC4
+      D50077E0F1006CD8E9006CD8E9006FC0CD0071B4BF006CD8E90077E0F1004EC4
+      D5000000000000000000000000000000000000000000325D9E003A6DB1002154
+      87004073B700497CC0004F82C6004B7EC2004A7DC1004D80C400497CC0004174
+      B800215487003A6DB100325D9E00000000000000000000000000C1B0B000D4C3
+      C300C0AFAF00CFBEBE00BEADAD00CDBCBC00BCABAB00D0BFBF00B4A3A300AA99
+      9900B8A7A7009F8D8D000000000000000000000000000000000000000000A8A8
+      A800D0D1D100CFD0D000DDDEDE00E1E2E200E1E2E200DDDEDE00CFD0D000D0D1
+      D100A8A8A80000000000000000000000000000000000000000000000000050C7
+      D80075E2F200539ADB001F1FB8005D73A40071D9E90070DDEE0075E2F20050C7
+      D80000000000000000000000000000000000000000003260A0003B6EB2002255
+      880023568A00275A91002B5E9C003063A4003265A8002E61A000295C96002457
+      8D00225588003B6EB2003260A000000000000000000000000000C9B9B900F5E4
+      E400F0DFDF00F0DFDF00F0DFDF00F0DFDF00F0DFDF00F5E4E400CEBDBD00CEBD
+      BD00D3C2C200AA9A9A0000000000000000000000000000000000AEAEAE00E0E0
+      E000CACBCB00E4E5E500BCBCBC00E4E4E400E4E4E400BCBCBC00DCDCDC00CACB
+      CB00E0E0E000AEAEAE0000000000000000000000000000000000000000007ED7
+      E30052CADB003242DA006666F7003242DA0052CADB0052CADB0052CADB007ED7
+      E30000000000000000000000000000000000000000003261A3003C6FB3003366
+      AA003568AC003F72B6004C7FC3005487CB005386CA004A7DC1003F72B6003669
+      AD003366AA003C6FB3003261A300000000000000000000000000D3C6C600C5B5
+      B500A9989800CCBBBB00CAB9B900CAB9B900CCBBBB00A8979700AA9999008676
+      7600A2929200B9ADAD0000000000000000000000000000000000D3D3D300B0B0
+      B000EAEAEA00B1B1B100B2B2B200E5E6E600E5E6E600B2B2B200B1B1B100EAEA
+      EA00B0B0B000D3D3D30000000000000000000000000000000000000000000000
+      000000000000C1C1F6005252EA00C1C1F6000000000000000000000000000000
+      000000000000000000000000000000000000000000003262A5006699DD006193
+      D7006294D800689ADE006EA1E50073A5E90072A5E9006DA0E400679ADE006295
+      D9006193D7006699DD003262A500000000000000000000000000000000000000
+      0000C7B6B600F6E5E500EDDCDC00EDDCDC00F6E5E500CBBABA00D4C3C300A494
+      940000000000000000000000000000000000000000000000000000000000D5D5
+      D500B5B5B50000000000B5B5B500FAFAFA00F5F5F500B5B5B50000000000B5B5
+      B500D5D5D5000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000A2B9D6003264A700578A
+      CE00578ACE00578ACE00578ACE00578ACE00578ACE00578ACE00578ACE00578A
+      CE00578ACE003264A700A2B9D600000000000000000000000000000000000000
+      0000C9B8B800FBEAEA00F6E5E500F6E5E500FBEAEA00D4C3C300D9C8C800A796
+      9600000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000D7D7D700B8B8B800B8B8B800D7D7D700000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000A2B9D7003265
+      A8003265A8003265A8003265A8003265A8003265A8003265A8003265A8003265
+      A8003265A800A2B9D70000000000000000000000000000000000000000000000
+      0000D7CACA00CBB9B900CBB9B900CAB9B900C7B7B700BEAFAF00B1A0A000BDB1
+      B100000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000D2D2D2009B9B90008D8D
+      7C008D8D7C008D8D7C008D8D7C008D8D7C008D8D7C008D8D7C008D8D7C008D8D
+      7C008D8D7C009B9B9000D2D2D200000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000CBCBCB00777782005A5A6B005A5A
+      6B005A5A6B005A5A6B005A5A6B005A5A6B005A5A6B005A5A6B005A5A6B005A5A
+      6B005A5A6B005A5A6B0077778200CBCBCB00000000000000000098988800FFFF
+      FF00FFFFFF00FFFFFF00FFFFFE00FEFEFD00FEFEFC00FDFDFB00FDFDFA00FCFC
+      F800FEFEF900989888000000000000000000A5A59B0092928000929280009292
+      8000929280009292800092928000929280009292800092928000929280009292
+      8000A5A59B000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000065657600F9F9E900F3F3
+      E300F3F3E300F3F3E300F3F3E300F3F3E300F3F3E300F3F3E300F3F3E300F3F3
+      E300F3F3E300F9F9E90065657600000000000000000000000000A6A69400FFFF
+      FF00FFFFFF00FEFEFE00FDFDFC00FDFDFB00FCFCF900FBFBF800FAFAF600F8F8
+      F400FBFBF600A6A694000000000000000000A7A79500CECEBD00EDEDDD00F3F3
+      E400F3F3E400F3F3E400F3F3E400F3F3E400F3F3E400F3F3E400EDEDDD00CECE
+      BD00A7A795000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000DADADA00D5D5D500D0D0D000A5B2BA004B7F
+      A100D0D0D0000000000000000000000000000000000072728300F5F5E600DDDD
+      CC00DCDCCB00DADAC900D9D9C800D7D7C600D4D4C300D2D2C100D0D0BF00CFCF
+      BE00CDCDBC00F5F5E60072728300000000000000000000000000AEAE9C00FFFF
+      FF00FEFEFE00FDFDFC00FDFDFB00FCFCF900FBFBF800FAFAF600F8F8F400F7F7
+      F200FBFBF500AEAE9C000000000000000000AFAF9F00EFEFE000D3D3C200E4E4
+      D500EAEADC00EAEADC00EAEADC00EAEADC00EAEADC00E4E4D500D3D3C200EFEF
+      E000AFAF9F000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000C5D3DC00598EB100598E
+      B100000000000000000000000000000000000000000078788900F6F6E900DDDD
+      CC00F6F6F000F6F6F000D9D9C800F6F6F000F6F6F000D2D2C100F6F6F000F6F6
+      F000CDCDBC00F6F6E90078788900000000000000000000000000B1B19F00FFFF
+      FE00FDFDFC00139B2400FCFCF900FBFBF800FAFAF600F8F8F400F7F7F200F6F6
+      F000FAFAF300B1B19F000000000000000000B4B4A300F7F7EB00E8E8DB00D9D9
+      C800E8E8DB00DDDDD000ACAC9B00DDDDD000E8E8DB00D9D9C800E8E8DB00F7F7
+      EB00A6A695000000000000000000000000000000000000000000000000000000
+      0000ACC9DC0081ADCA006B9EC100669BBF00669BBF00669BBF00B6EDFD00669B
+      BF0000000000000000000000000000000000000000007C7C8D00F8F8ED00DDDD
+      CC00DCDCCB00DADAC900DFDFD000D7D7C600D4D4C300DADACB00D0D0BF00CFCF
+      BE00CDCDBC00F8F8ED007C7C8D00000000000000000000000000B3B3A200FEFE
+      FD00159D260088CC8F00159D2600FAFAF600EEEEDD00CCCCBB00E2E2D100C7C7
+      B600FAFAF200B3B3A2000000000000000000BABAA700F9F9EF00F1F1E800ECEC
+      E100D2D2C100B1B1A000D1D1C400B1B1A000D2D2C100ECECE100F1F1E800F9F9
+      EF007D7D63009292800092928000A5A59B000000000000000000CCDEEA0079AA
+      CA007FB9D5009CD8EA00A8E5F400ABEAF900AAEAF900AAEAF800AAEAF9007BB7
+      D50079AACA00CCDEEA000000000000000000000000007F7F9000FAFAF100DDDD
+      CC00FAFAF500FAFAF500D9D9C800FAFAF500FAFAF500D2D2C100FAFAF500FAFA
+      F500CDCDBC00FAFAF1007F7F9000000000000000000000000000B6B6A500FEFE
+      FC00C2E4C500FBFBF800C1E3C20018A02900F7F7F200F6F6F000F5F5EE00F4F4
+      EC00F9F9EF00B6B6A5000000000000000000BDBDAC00FBFBF400F5F5EF00E6E6
+      DD00B7B7A600E6E6DD00F5F5EF00E6E6DD00B7B7A600E6E6DD00F5F5EF00FBFB
+      F400B8B89F00EDEDDD00CECEBD00A7A7950000000000000000007BADCD009FD8
+      E900A4E9F5009DE6F4009DE6F4009DE6F4009DE6F4009DE6F4009DE6F4009DE6
+      F4008DD2E60077ADCC0000000000000000000000000083839400FBFBF500CCCC
+      BB00CBCBBA00C9C9B800C8C8B700C6C6B500C3C3B200C1C1B000BFBFAE00BEBE
+      AD00BCBCAB00FBFBF50083839400000000000000000000000000BABAA700FDFD
+      FB00FBFBF800FAFAF600F8F8F400F7F7F200F6F6F000F5F5EE00F4F4EC00F1F1
+      E700F7F7EA00BABAA7000000000000000000C1C1B000FDFDF800EAEAE300BDBD
+      AC00EAEAE300F9F9F500F9F9F500F9F9F500EAEAE300BDBDAC00EAEAE300FDFD
+      F800B4B49A00D3D3C200EFEFE000AFAF9F00000000009AC0D900A9D0E600BCED
+      FA0094E4F0008FE3EE008FE3EE008FE3EE008FE3EE008FE3EE008FE3EE008FE3
+      EE0090E4EF007FC6DD009AC0D900000000000000000086869700FDFDF900BBBB
+      AA00DDDDCC00DCDCCB00B7B7A600D7D7C600D4D4C300B0B09F00CFCFBE00CDCD
+      BC00ABAB9A00FDFDF90086869700000000000000000000000000BCBCAC00FDFD
+      FA00FAFAF6001DA52E00F7F7F200F6F6F000F5F5EE00F4F4EC00F1F1E700ECEC
+      DF00F4F4E500BCBCAC000000000000000000C4C4B300F0F0EA00C3C3B200EEEE
+      E800FCFCFA00FCFCFA00FCFCFA00FCFCFA00FCFCFA00EEEEE800C3C3B200F0F0
+      EA00B0B09500E8E8DB00F7F7EB00B4B4A300000000007EB0D000D0EDF900CCEE
+      FF003F7294003F72940085E0EA003F7294003F72940082E0E9003F7294003F72
+      940082E0E90088DCE6007EB0D000000000000000000089899A00FEFEFD00BBBB
+      AA00BABAA900B8B8A700B7B7A600B5B5A400B2B2A100B0B09F00AEAE9D00ADAD
+      9C00ABAB9A00FEFEFD0089899A00000000000000000000000000BFBFAD00FCFC
+      F80020A831008BCF910020A83100F5F5EE00E5E5D400C0C0AF00CFCFBE00BCBC
+      AB00F3F3E200BFBFAD000000000000000000C7C7B600C8C8B700F1F1EC00FFFF
+      FE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00F1F1EC00C8C8
+      B700BEBEA700F1F1E800F9F9EF00BABAA7000000000080B2D300D5EFFA00CEEF
+      FF005285A7005285A700C2EDFC005285A7005285A70084E0E9005285A7005285
+      A70084E0E9009BE1EB0080B2D30000000000000000008C8C9D00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF008C8C9D00000000000000000000000000C1C1AF00FCFC
+      F700C2E4C200F6F6F000C0E2BF0022AA3300F1F1E700ECECDF00E8E8D900E6E6
+      D500F2F2E100C1C1AF000000000000000000D6D6CA00C9C9B800C9C9B800A3A3
+      8800C8C8B400C5C5B100BCBCA600A0A08500BCBCA600C5C5B100BCBCA600A0A0
+      8500C8C8B500F5F5EF00FBFBF400BDBDAC0000000000A2C7DF00B5D8E900D9F5
+      FF00D3F2FF00D3F2FF00D3F2FF00D3F2FF00D3F2FF00D3F2FF00D3F2FF00D3F2
+      FF00D7F4FF00AED4E900A2C7DF0000000000000000003535CE006363F8004646
+      DE005050E7005050E7004646DE005A5AF0005A5AF0005A5AF0005A5AF0005A5A
+      F0005A5AF0006363F8003535CE00000000000000000000000000C3C3B200FBFB
+      F600F6F6F000F5F5EE00F4F4EC00F1F1E700ECECDF00E8E8D900E6E6D500E5E5
+      D400F2F2E100C3C3B2000000000000000000000000000000000000000000C1C1
+      B000FDFDF800EAEAE300BDBDAC00EAEAE300F9F9F500F9F9F500F9F9F500EAEA
+      E300BDBDAC00EAEAE300FDFDF800C1C1B00000000000000000008CBDDB00CDE8
+      F300DFF7FF00D9F4FF00D8F4FF00D8F4FF00D8F4FF00D8F4FF00D9F4FF00DDF7
+      FF00C8E6F3008BBBDB000000000000000000000000003C3CD5006D6DFB00D7D7
+      FB00A1A1EC00A8A8F100C4C4E8006464F5006464F5006464F5005C5CEF004E4E
+      E4005C5CEF006D6DFB003C3CD500000000000000000000000000C5C5B400FAFA
+      F400F5F5EE00F4F4EC00F1F1E700ECECDF00E8E8D900E6E6D500A4A49300A4A4
+      9300A4A49300A4A493000000000000000000000000000000000000000000C4C4
+      B300F0F0EA00C3C3B200EEEEE800FCFCFA00FCFCFA00FCFCFA00FCFCFA00FCFC
+      FA00EEEEE800C3C3B200F0F0EA00C4C4B3000000000000000000D5E6F10090BE
+      DD00A3CCE400CFEBF500E0F6FC00E6FAFF00E5FAFF00DFF6FC00CFE9F500A1CC
+      E40090BEDD00D5E6F1000000000000000000000000004545DF007777FD002F2F
+      C100111188002F2FC1006E6EFB006E6EFB006E6EFB006E6EFB002F2FC1001111
+      88002F2FC1007777FD004545DF00000000000000000000000000C7C7B600FAFA
+      F300F4F4EC00F1F1E700ECECDF00E8E8D900E6E6D500E5E5D400B6B6A500FFFF
+      FF00C7C7B600EAEAE4000000000000000000000000000000000000000000C7C7
+      B600C8C8B700F1F1EC00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFF
+      FE00FFFFFE00F1F1EC00C8C8B700C7C7B6000000000000000000000000000000
+      0000BED8EA009CC5E10089BADC0085B8DA0085B8DA0089BADC009CC5E100BED8
+      EA0000000000000000000000000000000000000000004C4CE5008383FF003D3D
+      D500B1B1B1003D3DD5007E7EFF007E7EFF007E7EFF007E7EFF003D3DD500B1B1
+      B1003D3DD5008383FF004C4CE500000000000000000000000000C8C8B800FCFC
+      F500F9F9EF00F6F6EA00F4F4E500F3F3E200F2F2E100F2F2E100C2C2B100C8C8
+      B800EAEAE400000000000000000000000000000000000000000000000000D6D6
+      CA00C9C9B800C9C9B800C9C9B800C9C9B800C9C9B800C9C9B800C9C9B800C9C9
+      B800C9C9B800C9C9B800C9C9B800D6D6CA000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000007D7DEF005252EB003232
+      A800D6D6D6003232A8005252EB005252EB005252EB005252EB003232A800D6D6
+      D6003232A8005252EB007D7DEF00000000000000000000000000D6D6CA00CBCB
+      B900CBCBB900CBCBB900CBCBB900CBCBB900CBCBB900CBCBB900CBCBB900ECEC
+      E500000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000000000000C7C7
+      C7009F9F9F00C7C7C70000000000000000000000000000000000C7C7C7009F9F
+      9F00C7C7C700000000000000000000000000424D3E000000000000003E000000
+      2800000040000000500000000100010000000000800200000000000000000000
+      000000000000000000000000FFFFFF00FFFF000000000000E007000000000000
+      E007000000000000C003000000000000C0030000000000008001000000000000
+      8001000000000000800100000000000080010000000000008001000000000000
+      8001000000000000C003000000000000C003000000000000E007000000000000
+      F81F000000000000FFFF000000000000FFFFC07FFFFFFFFFF00FE3FF8001F00F
+      E007E03F8001E007C003C01F8001C0038001800F800180018001800F80018001
+      8001800F800180018001800F800180018001C007800180018001E00380018001
+      8001F001800180018001F00180018001C003F0018001C003E007F001FBDFE007
+      F00FF803F99FF00FFFFFFC07F81FFFFFFFFFFFFFFFFFFFFFF00FE007FFFFFFFF
+      F00F0000FFFFFFFFF00F0000FFFFFFFFF00F0000FFFFFFFFF00F0000F87FF11F
+      F00F0000F07FF11FF00F0000F03FF11FF80F8801F01FF11FFC0F8C01F21FF11F
+      FC1FE407FF1FF11FFC1FFC1FFF9FF11FFC3FFC3FFFFFFFFFF87FF87FFFFFFFFF
+      F1FFF1FFFFFFFFFFFFFFFFFFFFFFFFFF00008001FFFFFFFF8001C003E007FFFF
+      8001C003E007FFFF8001C003C003FFFF8001C003C003C0078001C003C003E00F
+      8001C0038001E00F8001C0038181E00F8001C0038181E00F8001C0038001E00F
+      8001C003E007E00F8001C003C003E00F8001C003C003F8FF8001F00FE427FFFF
+      8001F00FFC3FFFFFC003F00FFFFFFFFF8001FFFFFFFF0000C0030007FFFF8001
+      C0030007FE078001C0030007FF8F8001C0030007F00F8001C0030000C0038001
+      C0030000C0038001C003000080018001C003000080018001C003000080018001
+      C003000080018001C003E000C0038001C003E000C0038001C003E000F00F8001
+      C007E000FFFF8001C00FFFFFFFFFE3C700000000000000000000000000000000
+      000000000000}
   end
 end

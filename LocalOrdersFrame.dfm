@@ -3,6 +3,12 @@ object FrameLocalOrders: TFrameLocalOrders
   Top = 0
   Width = 767
   Height = 425
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  ParentFont = False
   TabOrder = 0
   object Splitter1: TSplitter
     Left = 273
@@ -22,28 +28,28 @@ object FrameLocalOrders: TFrameLocalOrders
     TabOrder = 0
     object tbLoadList: TToolButton
       Left = 0
-      Top = 2
+      Top = 0
       Hint = #1047#1072#1075#1088#1091#1079#1080#1090#1100
       Action = actListLoad
       Wrap = True
     end
     object tbSaveList: TToolButton
       Left = 0
-      Top = 32
+      Top = 30
       Hint = #1057#1086#1093#1088#1072#1085#1080#1090#1100
       Action = actListSave
       Wrap = True
     end
     object tbApply: TToolButton
       Left = 0
-      Top = 62
+      Top = 60
       Hint = #1055#1088#1080#1085#1103#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1103
       Action = actApply
       Wrap = True
     end
     object ToolButton1: TToolButton
       Left = 0
-      Top = 92
+      Top = 90
       Width = 8
       Caption = 'ToolButton1'
       ImageIndex = 7
@@ -52,7 +58,7 @@ object FrameLocalOrders: TFrameLocalOrders
     end
     object ToolButton2: TToolButton
       Left = 0
-      Top = 127
+      Top = 128
       Caption = 'ToolButton2'
       Enabled = False
       ImageIndex = 7
@@ -96,15 +102,15 @@ object FrameLocalOrders: TFrameLocalOrders
       object lbFrom: TLabel
         Left = 80
         Top = 16
-        Width = 32
-        Height = 13
+        Width = 40
+        Height = 16
         Caption = 'lbFrom'
       end
       object lbTo: TLabel
         Left = 80
         Top = 40
-        Width = 20
-        Height = 13
+        Width = 25
+        Height = 16
         Caption = 'lbTo'
       end
     end
@@ -170,9 +176,9 @@ object FrameLocalOrders: TFrameLocalOrders
     TabOrder = 2
     object lvOrdersList: TListView
       Left = 2
-      Top = 15
+      Top = 18
       Width = 236
-      Height = 408
+      Height = 405
       Align = alClient
       Columns = <
         item
@@ -191,6 +197,8 @@ object FrameLocalOrders: TFrameLocalOrders
       TabOrder = 0
       ViewStyle = vsReport
       OnChange = lvOrdersListChange
+      ExplicitTop = 15
+      ExplicitHeight = 408
     end
   end
   object ActionList1: TActionList

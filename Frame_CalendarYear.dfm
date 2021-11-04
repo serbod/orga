@@ -3,6 +3,12 @@ object FrameCalendarYear: TFrameCalendarYear
   Top = 0
   Width = 763
   Height = 431
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  ParentFont = False
   TabOrder = 0
   OnResize = FrameResize
   object Panel1: TPanel
@@ -23,20 +29,30 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 0
       object Calendar1: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 190
-        Height = 123
+        Height = 120
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         ReadOnly = True
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 123
+        ColWidths = (
+          25
+          25
+          25
+          25
+          25
+          25
+          25)
       end
     end
     object GroupBox2: TGroupBox
@@ -49,19 +65,21 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 1
       object Calendar2: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 190
-        Height = 123
+        Height = 120
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 123
       end
     end
     object GroupBox3: TGroupBox
@@ -74,19 +92,21 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 2
       object Calendar3: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 190
-        Height = 132
+        Height = 129
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 132
       end
     end
   end
@@ -108,19 +128,21 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 0
       object Calendar4: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 186
-        Height = 123
+        Height = 120
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 123
       end
     end
     object GroupBox5: TGroupBox
@@ -133,19 +155,21 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 1
       object Calendar5: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 186
-        Height = 123
+        Height = 120
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 123
       end
     end
     object GroupBox6: TGroupBox
@@ -158,19 +182,21 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 2
       object Calendar6: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 186
-        Height = 132
+        Height = 129
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 132
       end
     end
   end
@@ -192,19 +218,21 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 0
       object Calendar7: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 166
-        Height = 123
+        Height = 120
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 123
       end
     end
     object GroupBox8: TGroupBox
@@ -217,19 +245,21 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 1
       object Calendar8: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 166
-        Height = 123
+        Height = 120
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 123
       end
     end
     object GroupBox9: TGroupBox
@@ -242,19 +272,21 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 2
       object Calendar9: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 166
-        Height = 132
+        Height = 129
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 132
       end
     end
   end
@@ -270,28 +302,28 @@ object FrameCalendarYear: TFrameCalendarYear
     TabOrder = 3
     object ToolButton1: TToolButton
       Left = 0
-      Top = 2
+      Top = 0
       Caption = 'ToolButton1'
       ImageIndex = 0
       Wrap = True
     end
     object ToolButton2: TToolButton
       Left = 0
-      Top = 32
+      Top = 30
       Caption = 'ToolButton2'
       ImageIndex = 1
       Wrap = True
     end
     object ToolButton3: TToolButton
       Left = 0
-      Top = 62
+      Top = 60
       Caption = 'ToolButton3'
       ImageIndex = 2
       Wrap = True
     end
     object ToolButton4: TToolButton
       Left = 0
-      Top = 92
+      Top = 90
       Caption = 'ToolButton4'
       ImageIndex = 3
       Wrap = True
@@ -315,19 +347,21 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 0
       object Calendar10: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 164
-        Height = 123
+        Height = 120
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 123
       end
     end
     object GroupBox11: TGroupBox
@@ -340,19 +374,21 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 1
       object Calendar11: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 164
-        Height = 123
+        Height = 120
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 123
       end
     end
     object GroupBox12: TGroupBox
@@ -365,19 +401,21 @@ object FrameCalendarYear: TFrameCalendarYear
       TabOrder = 2
       object Calendar12: TCalendar
         Left = 2
-        Top = 15
+        Top = 18
         Width = 164
-        Height = 132
+        Height = 129
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
         StartOfWeek = 1
         TabOrder = 0
         UseCurrentDate = False
+        ExplicitTop = 15
+        ExplicitHeight = 132
       end
     end
   end

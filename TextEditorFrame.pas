@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, StdCtrls, ComCtrls, ToolWin, ExtActns, StdActns, ActnList;
+  Dialogs, StdCtrls, ComCtrls, ToolWin, ExtActns, StdActns, ActnList,
+  System.Actions;
 
 type
   TFrameTextEditor = class(TFrame)

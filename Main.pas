@@ -11,7 +11,8 @@ uses
   ActnList, StdActns, ExtActns, Frame_EnterpriseStructure, PersonnelFrame,
   Frame_DayShedule, MsgBoardFrame, ContactsFrame,
   TasksAllFrame, MailboxFrame, LocalOrdersFrame, UserOptionsFrame,
-  VideoPhoneFrame, DbBrowserFrame, DrawBoardFrame;
+  {VideoPhoneFrame,} DbBrowserFrame, DrawBoardFrame, System.Actions,
+  System.ImageList, TasksUnit;
 
 type
   TfrmMain = class(TForm)
@@ -116,10 +117,10 @@ type
     Splitter1: TSplitter;
     memoDebugMsg: TMemo;
     memoDebugSQL: TMemo;
-    FrameVideoPhone: TFrameVideoPhone;
     tsDbBrowser: TTabSheet;
     FrameDbBrowser: TFrameDbBrowser;
     FrameDrawBoard: TFrameDrawBoard;
+    ilIcons16: TImageList;
     procedure FormCreate(Sender: TObject);
     procedure FrameArchivePrivateToolButton1Click(Sender: TObject);
     procedure FrameArchivePublicToolButton1Click(Sender: TObject);
@@ -130,6 +131,8 @@ type
     { Public declarations }
   end;
 
+function TaskStateToIconIndex(ATask: TTaskItem): Integer;
+
 var
   frmMain: TfrmMain;
 
@@ -139,13 +142,24 @@ uses MainFunc;
 
 {$R *.dfm}
 
+function TaskStateToIconIndex(ATask: TTaskItem): Integer;
+begin
+  // 0-none, 1-normal, 2-urgent, 3-critical, 4-completed, 5-paused
+  case ATask.Status of
+    1: Result := 7;
+    2: Result := 8;
+    3: Result := 9;
+    4: Result := 10;
+    5: Result := 11;
+  else
+    Result := -1;
+  end;
+end;
+
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
 
   // Set images lists to templates
-  // Tasks
-  FrameTasksAll.toolbarMain.Images:=self.ImageList24;
-  FrameTasksAll.toolbarTaskEdit.Images:=self.ImageList24;
   // Local orders
   //FrameLocalOrders.ActionList1.Images:=self.ImageList24;
   FrameLocalOrders.toolbarLocOrders.Images:=self.ImageList24;
@@ -164,8 +178,7 @@ begin
   FrameArchivePrivate.ToolBar1.Images:=self.ImageList24;
   FrameArchivePublic.ToolBar1.Images:=self.ImageList24;
   // Enterprise
-  FrameEnterpiseStructure.ToolBar1.Images:=self.ImageList24;
-  FramePersonnel.toolbarPersonnel.Images:=self.ImageList24;
+  //FrameEnterpiseStructure.ToolBar1.Images:=self.ImageList24;
   // Calendar
   FrameCalendarYear.ToolBar1.Images:=self.ImageList24;
   FrameCalendarYear.CalendarInit();
@@ -173,7 +186,7 @@ begin
   // DrawBoard
   FrameDrawBoard.toolbarDBoardTools.Images:=self.ImageList24;
   // VideoPhone
-  FrameVideoPhone.toolbarVideoPhone.Images:=self.ImageList24;
+  //FrameVideoPhone.toolbarVideoPhone.Images:=self.ImageList24;
 
   // User options
   FrameUserOptions.toolbarUserOptions.Images:=self.ImageList24;

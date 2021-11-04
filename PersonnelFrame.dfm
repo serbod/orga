@@ -3,26 +3,33 @@ object FramePersonnel: TFramePersonnel
   Top = 0
   Width = 744
   Height = 486
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  ParentFont = False
   TabOrder = 0
   object panCentral: TPanel
-    Left = 33
+    Left = 0
     Top = 0
-    Width = 711
+    Width = 744
     Height = 486
     Align = alClient
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
       Top = 226
-      Width = 709
+      Width = 742
       Height = 3
       Cursor = crVSplit
       Align = alTop
+      ExplicitWidth = 709
     end
     object panTop: TPanel
       Left = 1
       Top = 1
-      Width = 709
+      Width = 742
       Height = 225
       Align = alTop
       BevelOuter = bvNone
@@ -43,22 +50,20 @@ object FramePersonnel: TFramePersonnel
         TabOrder = 0
         OnChange = tvPersonnelChange
         OnEdited = tvPersonnelEdited
-        Items.Data = {
-          02000000290000000000000000000000FFFFFFFFFFFFFFFF0000000000000000
-          10D6E5EDF2F0E0EBFCEDFBE920EEF4E8F1270000000000000000000000FFFFFF
-          FFFFFFFFFF00000000000000000ED4E8EBE8E0EB20C2EEF0EEEDE5E6}
+        Items.NodeData = {
+          03020000003E0000000000000000000000FFFFFFFFFFFFFFFF00000000000000
+          00000000000110260435043D044204400430043B044C043D044B04390420003E
+          044404380441043A0000000000000000000000FFFFFFFFFFFFFFFF0000000000
+          00000000000000010E240438043B04380430043B04200012043E0440043E043D
+          0435043604}
       end
       object lvPersonnel: TListView
         Left = 191
         Top = 0
-        Width = 518
+        Width = 551
         Height = 225
         Align = alClient
         Columns = <
-          item
-            Caption = #1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
-            Width = 25
-          end
           item
             Caption = #1048#1084#1103
             Width = 250
@@ -72,9 +77,10 @@ object FramePersonnel: TFramePersonnel
             Width = 150
           end>
         GridLines = True
-        Items.Data = {
-          370000000100000000000000FFFFFFFFFFFFFFFF0200000000000000000CD1E5
-          ECE5EDEEE220C22EC22E08C4E8F0E5EAF2EEF0FFFFFFFF}
+        Items.ItemData = {
+          05500000000100000000000000FFFFFFFFFFFFFFFF02000000FFFFFFFF000000
+          00000C210435043C0435043D043E043204200012042E0012042E000000000008
+          14043804400435043A0442043E04400400000000FFFFFFFF}
         ReadOnly = True
         RowSelect = True
         PopupMenu = pmPersList
@@ -86,7 +92,7 @@ object FramePersonnel: TFramePersonnel
     object panBottom: TPanel
       Left = 1
       Top = 229
-      Width = 709
+      Width = 742
       Height = 256
       Align = alClient
       BevelOuter = bvNone
@@ -94,31 +100,35 @@ object FramePersonnel: TFramePersonnel
       object pcPersInfo: TPageControl
         Left = 0
         Top = 0
-        Width = 709
+        Width = 742
         Height = 256
-        ActivePage = tsPersOrders
+        ActivePage = tsPersTasks
         Align = alClient
+        Images = frmMain.ilIcons16
         TabOrder = 0
         object tsEmpInfo: TTabSheet
           Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1103
+          ImageIndex = 12
           object Splitter3: TSplitter
-            Left = 233
+            Left = 193
             Top = 0
-            Height = 228
+            Height = 225
+            ExplicitLeft = 233
+            ExplicitHeight = 228
           end
           object gbEmployeeInfo: TGroupBox
-            Left = 236
+            Left = 196
             Top = 0
-            Width = 465
-            Height = 228
+            Width = 538
+            Height = 225
             Align = alClient
             Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1089#1086#1090#1088#1091#1076#1085#1080#1082#1077
             TabOrder = 0
             object vledPersInfo: TValueListEditor
               Left = 2
-              Top = 15
-              Width = 461
-              Height = 211
+              Top = 18
+              Width = 534
+              Height = 205
               Align = alClient
               Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goEditing, goThumbTracking]
               PopupMenu = pmPersInfo
@@ -128,41 +138,45 @@ object FramePersonnel: TFramePersonnel
                 #1047#1085#1072#1095#1077#1085#1080#1077)
               ColWidths = (
                 150
-                305)
+                378)
             end
           end
           object gbEmployeePhoto: TGroupBox
             Left = 0
             Top = 0
-            Width = 233
-            Height = 228
+            Width = 193
+            Height = 225
             Align = alLeft
             Caption = #1060#1086#1090#1086#1075#1088#1072#1092#1080#1103' '#1089#1086#1090#1088#1091#1076#1085#1080#1082#1072
             TabOrder = 1
             object imgPersPhoto: TImage
               Left = 2
-              Top = 15
-              Width = 229
-              Height = 211
+              Top = 18
+              Width = 189
+              Height = 205
               Align = alClient
               PopupMenu = pmPersInfo
               Stretch = True
+              ExplicitTop = 15
+              ExplicitWidth = 229
+              ExplicitHeight = 211
             end
           end
         end
         object tsPersTasks: TTabSheet
           Caption = #1047#1072#1076#1072#1095#1080' '#1089#1086#1090#1088#1091#1076#1085#1080#1082#1072
-          ImageIndex = 1
           object Splitter4: TSplitter
-            Left = 385
+            Left = 382
             Top = 0
-            Height = 228
+            Height = 225
+            ExplicitLeft = 391
+            ExplicitTop = -3
           end
           object gbPersTaskInfo: TGroupBox
-            Left = 388
+            Left = 385
             Top = 0
-            Width = 313
-            Height = 228
+            Width = 349
+            Height = 225
             Align = alClient
             Caption = #1055#1086#1076#1088#1086#1073#1085#1086#1089#1090#1080' '#1079#1072#1076#1072#1095#1080
             TabOrder = 0
@@ -178,30 +192,19 @@ object FramePersonnel: TFramePersonnel
           object lvPersTasks: TListView
             Left = 0
             Top = 0
-            Width = 385
-            Height = 228
+            Width = 382
+            Height = 225
             Align = alLeft
             Columns = <
               item
-                Caption = #1055#1088#1080#1086#1088#1080#1090#1077#1090
-                MaxWidth = 100
-                MinWidth = 22
-                Width = 22
-              end
-              item
-                Caption = #1057#1090#1072#1090#1091#1089
-                MaxWidth = 100
-                MinWidth = 22
-                Width = 22
-              end
-              item
+                AutoSize = True
                 Caption = #1054#1087#1080#1089#1072#1085#1080#1077
                 MinWidth = 100
-                Width = 320
               end>
             GridLines = True
             ReadOnly = True
             RowSelect = True
+            StateImages = frmMain.ilIcons16
             TabOrder = 1
             ViewStyle = vsReport
             OnChange = lvPersTasksChange
@@ -209,17 +212,18 @@ object FramePersonnel: TFramePersonnel
         end
         object tsPersOrders: TTabSheet
           Caption = #1057#1083#1091#1078#1077#1073#1085#1099#1077' '#1079#1072#1087#1080#1089#1082#1080
-          ImageIndex = 2
+          ImageIndex = 14
           object Splitter5: TSplitter
             Left = 337
             Top = 0
-            Height = 228
+            Height = 225
+            ExplicitHeight = 228
           end
           object lvPersLocalOrders: TListView
             Left = 0
             Top = 0
             Width = 337
-            Height = 228
+            Height = 225
             Align = alLeft
             Columns = <
               item
@@ -243,6 +247,7 @@ object FramePersonnel: TFramePersonnel
             GridLines = True
             ReadOnly = True
             RowSelect = True
+            StateImages = frmMain.ilIcons16
             TabOrder = 0
             ViewStyle = vsReport
             OnSelectItem = lvPersLocalOrdersSelectItem
@@ -250,8 +255,8 @@ object FramePersonnel: TFramePersonnel
           object gbPersLocalOrdersInfo: TGroupBox
             Left = 340
             Top = 0
-            Width = 361
-            Height = 228
+            Width = 394
+            Height = 225
             Align = alClient
             Caption = #1057#1086#1076#1077#1088#1078#1072#1085#1080#1077' '#1089#1083#1091#1078#1077#1073#1085#1086#1081' '#1079#1072#1087#1080#1089#1082#1080
             TabOrder = 1
@@ -264,78 +269,28 @@ object FramePersonnel: TFramePersonnel
             end
           end
         end
+        object tsPersChat: TTabSheet
+          Caption = #1063#1072#1090
+          ImageIndex = 13
+        end
       end
-    end
-  end
-  object toolbarPersonnel: TToolBar
-    Left = 0
-    Top = 0
-    Width = 33
-    Height = 486
-    Align = alLeft
-    ButtonHeight = 30
-    ButtonWidth = 31
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 1
-    object tbRefreshList: TToolButton
-      Left = 0
-      Top = 0
-      Hint = 'Refresh'
-      Caption = 'tbRefreshList'
-      ImageIndex = 29
-      Wrap = True
-      OnClick = toolbarPersonnelClick
-    end
-    object tbLoadList: TToolButton
-      Left = 0
-      Top = 30
-      Hint = 'Load'
-      Caption = 'tbLoadList'
-      ImageIndex = 28
-      Wrap = True
-      OnClick = toolbarPersonnelClick
-    end
-    object tbSaveList: TToolButton
-      Left = 0
-      Top = 60
-      Hint = 'Save'
-      Caption = 'tbSaveList'
-      ImageIndex = 27
-      Wrap = True
-      OnClick = toolbarPersonnelClick
-    end
-    object ToolButton1: TToolButton
-      Left = 0
-      Top = 90
-      Width = 8
-      Caption = 'ToolButton1'
-      ImageIndex = 3
-      Wrap = True
-      Style = tbsSeparator
-    end
-    object tbTableEdit: TToolButton
-      Left = 0
-      Top = 128
-      Hint = #1056#1077#1076#1072#1082#1090#1086#1088' '#1090#1072#1073#1083#1080#1094#1099
-      Caption = 'tbTableEdit'
-      ImageIndex = 3
-      PopupMenu = pmTableSelector
-      Wrap = True
-      OnClick = toolbarPersonnelClick
-    end
-    object ToolButton3: TToolButton
-      Left = 0
-      Top = 158
-      Caption = 'ToolButton3'
-      ImageIndex = 4
-      Wrap = True
-      OnClick = toolbarPersonnelClick
     end
   end
   object pmPersTree: TPopupMenu
     Left = 88
     Top = 56
+    object N3: TMenuItem
+      Action = actRefresh
+    end
+    object N5: TMenuItem
+      Action = actLoad
+    end
+    object N7: TMenuItem
+      Action = actSave
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
     object mAddGroup: TMenuItem
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1075#1088#1091#1087#1087#1091
       OnClick = PersTreePopupClick
@@ -428,6 +383,31 @@ object FramePersonnel: TFramePersonnel
     object mTablePersLocalOrders: TMenuItem
       Caption = #1057#1083#1091#1078#1077#1073#1085#1099#1077' '#1079#1072#1087#1080#1089#1082#1080' '#1089#1086#1090#1088#1091#1076#1085#1080#1082#1072
       OnClick = mTableSelectorClick
+    end
+  end
+  object alPersonnel: TActionList
+    Left = 162
+    Top = 57
+    object actRefresh: TAction
+      Category = 'PersTree'
+      Caption = #1054#1073#1085#1086#1074#1080#1090#1100
+      Hint = #1054#1073#1085#1086#1074#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1089#1086#1090#1088#1091#1076#1085#1080#1082#1086#1074
+      OnExecute = actRefreshExecute
+    end
+    object actLoad: TAction
+      Category = 'PersTree'
+      Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100
+      OnExecute = actLoadExecute
+    end
+    object actSave: TAction
+      Category = 'PersTree'
+      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+      OnExecute = actSaveExecute
+    end
+    object actTableEdit: TAction
+      Category = 'PersTree'
+      Caption = #1056#1077#1076#1072#1082#1090#1086#1088' '#1090#1072#1073#1083#1080#1094#1099
+      OnExecute = actTableEditExecute
     end
   end
 end

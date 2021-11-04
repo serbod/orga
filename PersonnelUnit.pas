@@ -1,6 +1,10 @@
+(*
+Non-visual items for enterprise personnel
+*)
 unit PersonnelUnit;
 
 interface
+
 uses Classes, Contnrs, SysUtils, DbUnit;
 
 type
@@ -17,15 +21,15 @@ type
   TPersDataTypesList = class(TDBItemList)
   public
     constructor Create(); reintroduce;
-    function NewItem(): TDbItem; override;
+    function NewItem(): TDBItem; override;
     procedure UpdateItem(AName, AFullName: string);
     function GetItemByIndex(Index: Integer): TPersDataType;
   end;
 
   // Свойство персоны
-  TPersDataItem = class(TDbItem)
+  TPersDataItem = class(TDBItem)
   public
-    OwnerID: integer;
+    OwnerID: Integer;
     DataTypeID: Integer;
     Name: string;
     Text: string;
@@ -35,29 +39,31 @@ type
   end;
 
   // Список свойств персоны
-  TPersDataList = class(TDbItemList)
+  TPersDataList = class(TDBItemList)
   public
-    OwnerID: integer;
+    OwnerID: Integer;
     FileName: string;
     constructor Create(); reintroduce;
     procedure LoadList();
     procedure SaveList();
-    //procedure Sort();
-    //function AddItem(AItem: TContactItem): integer;
+    // procedure Sort();
+    // function AddItem(AItem: TContactItem): integer;
     procedure UpdateItem(Name, Value: string);
     function GetItemByName(AName: string): TPersDataItem;
-    function NewItem(): TDbItem; override;
+    function NewItem(): TDBItem; override;
   end;
 
+  TPersItemType = (Person, Group);
+
   // Персона
-  TPersItem = class(TDbItem)
+  TPersItem = class(TDBItem)
   public
-    ParentID: integer;
-    TreeLevel: integer; // for sorting
-    ItemType: integer; // 0-normal item, 1-group
+    ParentID: Integer;
+    TreeLevel: Integer; // for sorting
+    ItemType: TPersItemType; // 0-normal item, 1-group
     Desc: string;
     Text: string;
-    HavePhoto: boolean;
+    HavePhoto: Boolean;
     Photo: TObject;
     Author: string;
     Timestamp: TDateTime;
@@ -70,185 +76,188 @@ type
   end;
 
   // Список персон
-  TPersList = class(TDbItemList)
+  TPersList = class(TDBItemList)
   public
     FileName: string;
     constructor Create(); reintroduce;
-    function NewItem(): TDbItem; override;
+    function NewItem(): TDBItem; override;
     procedure LoadList();
     procedure SaveList();
     procedure Sort();
-    //function AddItem(AItem: TPersItem): integer;
-    //function GetItemByID(ItemID: integer): TPersItem;
+    // function AddItem(AItem: TPersItem): integer;
+    // function GetItemByID(ItemID: integer): TPersItem;
   end;
 
 implementation
+
 uses MainFunc;
 
-//===========================================
+// ===========================================
 // TPersDataType
-//===========================================
+// ===========================================
 function TPersDataType.GetValue(const FName: string): string;
 begin
-  if FName='id' then
-    result:=IntToStr(self.ID)
-  else if FName='name' then
-    result:=self.Name
-  else if FName='full_name' then
-    result:=self.FullName
+  if FName = 'id' then
+    Result := IntToStr(self.ID)
+  else if FName = 'name' then
+    Result := self.Name
+  else if FName = 'full_name' then
+    Result := self.FullName
   else
-    result:='';
+    Result := '';
 end;
 
 procedure TPersDataType.SetValue(const FName, FValue: string);
 begin
-  if FName='id' then
-    self.ID:=StrToIntDef(FValue, 0)
-  else if FName='name' then
-    self.Name:=FValue
-  else if FName='full_name' then
-    self.FullName:=FValue;
+  if FName = 'id' then
+    self.ID := StrToIntDef(FValue, 0)
+  else if FName = 'name' then
+    self.Name := FValue
+  else if FName = 'full_name' then
+    self.FullName := FValue;
 end;
 
-
-//===========================================
+// ===========================================
 // TPersDataTypesList
-//===========================================
+// ===========================================
 constructor TPersDataTypesList.Create();
 var
   ti: TDbTableInfo;
 begin
-  ti:=DbDriver.GetDbTableInfo('pers_data_types');
+  ti := DbDriver.GetDbTableInfo('pers_data_types');
   if not Assigned(ti) then
   begin
-    ti:=TDbTableInfo.Create();
+    ti := TDbTableInfo.Create();
     with ti do
     begin
-      TableName:='pers_data_types';
-      AddField('id','I');
-      AddField('name','S');
-      AddField('full_name','S');
+      TableName := 'pers_data_types';
+      AddField('id', 'I');
+      AddField('name', 'S');
+      AddField('full_name', 'S');
     end;
   end;
 
   inherited Create(ti);
 end;
 
-function TPersDataTypesList.NewItem(): TDbItem;
+function TPersDataTypesList.NewItem(): TDBItem;
 var
   NewItem: TPersDataType;
 begin
-  NewItem:=TPersDataType.Create();
+  NewItem := TPersDataType.Create();
   self.AddItem(NewItem, true);
-  result:=NewItem;
+  Result := NewItem;
 end;
 
 procedure TPersDataTypesList.UpdateItem(AName, AFullName: string);
 var
-  i: integer;
+  i: Integer;
   Item: TPersDataType;
 begin
-  if Length(AFullName)=0 then AFullName:=AName;
-  for i:=0 to self.Count-1 do
+  if Length(AFullName) = 0 then
+    AFullName := AName;
+  for i := 0 to self.Count - 1 do
   begin
-    Item:=(Items[i] as TPersDataType);
-    if (Item.Name=AName) then
+    Item := (Items[i] as TPersDataType);
+    if (Item.Name = AName) then
     begin
-      Item.FullName:=AFullName;
+      Item.FullName := AFullName;
       Exit;
     end;
   end;
-  Item:=(self.NewItem() as TPersDataType);
-  Item.Name:=AName;
-  Item.FullName:=AFullName;
+  Item := (self.NewItem() as TPersDataType);
+  Item.Name := AName;
+  Item.FullName := AFullName;
 end;
 
 function TPersDataTypesList.GetItemByIndex(Index: Integer): TPersDataType;
 begin
   if Index < self.Count then
-    result:=(self.Items[Index] as TPersDataType)
+    Result := (self.Items[Index] as TPersDataType)
   else
-    result:=nil;
+    Result := nil;
 end;
 
-//===========================================
+// ===========================================
 // TPersDataItem
-//===========================================
+// ===========================================
 function TPersDataItem.GetValue(const FName: string): string;
 begin
-  if FName='id' then
-    result:=IntToStr(self.ID)
-  else if FName='owner_id' then
-    result:=IntToStr(self.OwnerID)
-  else if FName='name' then
-    result:=self.Name
-  else if FName='data_type_id' then
-    result:=IntToStr(self.DataTypeID)
-  else if FName='text' then
-    result:=self.Text
+  if FName = 'id' then
+    Result := IntToStr(self.ID)
+  else if FName = 'owner_id' then
+    Result := IntToStr(self.OwnerID)
+  else if FName = 'name' then
+    Result := self.Name
+  else if FName = 'data_type_id' then
+    Result := IntToStr(self.DataTypeID)
+  else if FName = 'text' then
+    Result := self.Text
   else
-    result:='';
+    Result := '';
 end;
 
 procedure TPersDataItem.SetValue(const FName, FValue: string);
 begin
-  if FName='id' then
-    self.ID:=StrToIntDef(FValue, 0)
-  else if FName='owner_id' then
-    self.OwnerID:=StrToIntDef(FValue, 0)
-  else if FName='name' then
-    self.Name:=FValue
-  else if FName='data_type_id' then
-    self.DataTypeID:=StrToIntDef(FValue, 0)
-  else if FName='text' then
-    self.Text:=FValue;
+  if FName = 'id' then
+    self.ID := StrToIntDef(FValue, 0)
+  else if FName = 'owner_id' then
+    self.OwnerID := StrToIntDef(FValue, 0)
+  else if FName = 'name' then
+    self.Name := FValue
+  else if FName = 'data_type_id' then
+    self.DataTypeID := StrToIntDef(FValue, 0)
+  else if FName = 'text' then
+    self.Text := FValue;
 end;
 
 function TPersDataItem.GetName(): string;
 var
-  Item: TDbItem;
+  Item: TDBItem;
 begin
-  result:=Self.Name;
-  if Result <> '' then Exit;
-  Item:=DbDriver.GetDBItem('pers_data_types~'+self.GetValue('data_type_id'));
-  if not Assigned(Item) then Exit;
-  Self.Name:=Item.Name;
-  Result:=Item.Name;
+  Result := self.Name;
+  if Result <> '' then
+    Exit;
+  Item := DbDriver.GetDBItem('pers_data_types~' + self.GetValue('data_type_id'));
+  if not Assigned(Item) then
+    Exit;
+  self.Name := Item.Name;
+  Result := Item.Name;
   FreeAndNil(Item);
 end;
 
-//===========================================
+// ===========================================
 // TPersDataList
-//===========================================
+// ===========================================
 constructor TPersDataList.Create();
 var
   ti: TDbTableInfo;
 begin
-  ti:=DbDriver.GetDbTableInfo('personnel_data');
+  ti := DbDriver.GetDbTableInfo('personnel_data');
   if not Assigned(ti) then
   begin
-    ti:=TDbTableInfo.Create();
+    ti := TDbTableInfo.Create();
     with ti do
     begin
-      TableName:='personnel_data';
-      AddField('id','I');
-      AddField('owner_id','L:personnel');
-      AddField('data_type_id','L:pers_data_types');
-      AddField('name','S');
-      AddField('text','S');
+      TableName := 'personnel_data';
+      AddField('id', 'I');
+      AddField('owner_id', 'L:personnel');
+      AddField('data_type_id', 'L:pers_data_types');
+      AddField('name', 'S');
+      AddField('text', 'S');
     end;
   end;
 
   inherited Create(ti);
 end;
 
-function TPersDataList.NewItem(): TDbItem;
+function TPersDataList.NewItem(): TDBItem;
 var
   NewItem: TPersDataItem;
 begin
-  NewItem:=TPersDataItem.Create();
+  NewItem := TPersDataItem.Create();
   self.AddItem(NewItem, true);
-  result:=NewItem;
+  Result := NewItem;
 end;
 
 procedure TPersDataList.LoadList();
@@ -263,14 +272,14 @@ end;
 
 function TPersDataList.GetItemByName(AName: string): TPersDataItem;
 var
-  i: integer;
+  i: Integer;
 begin
-  result:=nil;
-  for i:=0 to self.Count-1 do
+  Result := nil;
+  for i := 0 to self.Count - 1 do
   begin
     if (self.Items[i] as TPersDataItem).Name = AName then
     begin
-      result:=(self.Items[i] as TPersDataItem);
+      Result := (self.Items[i] as TPersDataItem);
       Exit;
     end;
   end;
@@ -280,32 +289,34 @@ procedure TPersDataList.UpdateItem(Name, Value: string);
 var
   DataItem: TPersDataItem;
 begin
-  if Name='' then Exit;
-  DataItem:=GetItemByName(Name);
+  if Name = '' then
+    Exit;
+  DataItem := GetItemByName(Name);
 
-  if Value='' then
+  if Value = '' then
   begin
-    if Assigned(DataItem) then self.Remove(DataItem);
+    if Assigned(DataItem) then
+      self.Remove(DataItem);
     Exit;
   end;
 
   if not Assigned(DataItem) then
   begin
-    DataItem:=TPersDataItem.Create();
-    DataItem.OwnerID:=self.OwnerID;
-    DataItem.Name:=Name;
-    DataItem.DataTypeID:=glPersonnelDataTypes.GetItemIDByName(Name);
+    DataItem := TPersDataItem.Create();
+    DataItem.OwnerID := self.OwnerID;
+    DataItem.Name := Name;
+    DataItem.DataTypeID := glPersonnelDataTypes.GetItemIDByName(Name);
     self.Add(DataItem);
   end;
-  DataItem.Text:=Value;
+  DataItem.Text := Value;
 end;
 
-//===========================================
+// ===========================================
 // TPersItem
-//===========================================
+// ===========================================
 constructor TPersItem.Create();
 begin
-  self.DataList:=TPersDataList.Create();
+  self.DataList := TPersDataList.Create();
 end;
 
 destructor TPersItem.Destroy();
@@ -315,78 +326,80 @@ end;
 
 function TPersItem.GetValue(const FName: string): string;
 begin
-  if FName='id' then
-    result:=IntToStr(self.ID)
-  else if FName='parent_id' then
-    result:=IntToStr(self.ParentID)
-  else if FName='tree_level' then
-    result:=IntToStr(self.TreeLevel)
-  else if FName='item_type' then
-    result:=IntToStr(self.ItemType)
-  else if FName='name' then
-    result:=self.Name
-  else if FName='text' then
-    result:=self.Text
-  else if FName='author' then
-    result:=self.Author
-  else if FName='timestamp' then
-    result:=DateTimeToStr(self.Timestamp)
+  if FName = 'id' then
+    Result := IntToStr(self.ID)
+  else if FName = 'parent_id' then
+    Result := IntToStr(self.ParentID)
+  else if FName = 'tree_level' then
+    Result := IntToStr(self.TreeLevel)
+  else if FName = 'item_type' then
+    Result := IntToStr(Ord(self.ItemType))
+  else if FName = 'name' then
+    Result := self.Name
+  else if FName = 'text' then
+    Result := self.Text
+  else if FName = 'author' then
+    Result := self.Author
+  else if FName = 'timestamp' then
+    Result := DateTimeToStr(self.Timestamp)
   else
-    result:='';
+    Result := '';
 end;
 
 procedure TPersItem.SetValue(const FName, FValue: string);
 begin
-  if FName='id' then
-    self.ID:=StrToIntDef(FValue, 0)
-  else if FName='parent_id' then
-    self.ParentID:=StrToIntDef(FValue, 0)
-  else if FName='tree_level' then
-    self.TreeLevel:=StrToIntDef(FValue, 0)
-  else if FName='item_type' then
-    self.ItemType:=StrToIntDef(FValue, 0)
-  else if FName='name' then
-    self.Name:=FValue
-  else if FName='text' then
-    self.Text:=FValue
-  else if FName='author' then
-    self.Author:=FValue
-  else if FName='timestamp' then
-    self.Timestamp:=StrToDateTimeDef(FValue, self.Timestamp);
+  if FName = 'id' then
+    self.ID := StrToIntDef(FValue, 0)
+  else if FName = 'parent_id' then
+    self.ParentID := StrToIntDef(FValue, 0)
+  else if FName = 'tree_level' then
+    self.TreeLevel := StrToIntDef(FValue, 0)
+  else if FName = 'item_type' then
+    self.ItemType := TPersItemType(StrToIntDef(FValue, 0))
+  else if FName = 'name' then
+    self.Name := FValue
+  else if FName = 'text' then
+    self.Text := FValue
+  else if FName = 'author' then
+    self.Author := FValue
+  else if FName = 'timestamp' then
+    self.Timestamp := StrToDateTimeDef(FValue, self.Timestamp);
 end;
 
 function TPersItem.GetDataByName(AName: string): string;
 var
   DataItem: TPersDataItem;
 begin
-  result:='';
-  if not Assigned(self.DataList) then Exit;
-  DataItem:=self.DataList.GetItemByName(AName);
-  if Assigned(DataItem) then result:=DataItem.Text;
+  Result := '';
+  if not Assigned(self.DataList) then
+    Exit;
+  DataItem := self.DataList.GetItemByName(AName);
+  if Assigned(DataItem) then
+    Result := DataItem.Text;
 end;
 
-//===========================================
+// ===========================================
 // TPersList
-//===========================================
+// ===========================================
 constructor TPersList.Create();
 var
   ti: TDbTableInfo;
 begin
-  ti:=DbDriver.GetDbTableInfo('personnel');
+  ti := DbDriver.GetDbTableInfo('personnel');
   if not Assigned(ti) then
   begin
-    ti:=TDbTableInfo.Create();
+    ti := TDbTableInfo.Create();
     with ti do
     begin
-      TableName:='personnel';
-      AddField('id','I');
-      AddField('parent_id','L:personnel');
-      AddField('tree_level','I');
-      AddField('item_type','I');
-      AddField('name','S');
-      AddField('text','S');
-      AddField('author','S');
-      AddField('timestamp','D');
+      TableName := 'personnel';
+      AddField('id', 'I');
+      AddField('parent_id', 'L:personnel');
+      AddField('tree_level', 'I');
+      AddField('item_type', 'I');
+      AddField('name', 'S');
+      AddField('text', 'S');
+      AddField('author', 'S');
+      AddField('timestamp', 'D');
     end;
   end;
 
@@ -395,49 +408,49 @@ end;
 
 procedure TPersList.LoadList();
 var
-  sl: TStringList;
-  i, n: integer;
-  PrevID: integer;
+  i, n: Integer;
+  PrevID: Integer;
   Item: TPersItem;
   TmpDI: TPersDataItem;
   AllPersData: TPersDataList;
 begin
   DbDriver.GetTable(self);
 
-  for i:=0 to self.Count-1 do
+  for i := 0 to self.Count - 1 do
   begin
-    Item:=(self.Items[i] as TPersItem);
-    Item.DataList.OwnerID:=Item.ID;
-    //if LastID <= NewItem.ID then LastID:=NewItem.ID+1;
+    Item := (self.Items[i] as TPersItem);
+    Item.DataList.OwnerID := Item.ID;
+    // if LastID <= NewItem.ID then LastID:=NewItem.ID+1;
   end;
 
   // Add Pers data items
-  AllPersData:=TPersDataList.Create();
-  AllPersData.OwnsObjects:=true;
+  AllPersData := TPersDataList.Create();
+  AllPersData.OwnsObjects := true;
   AllPersData.LoadList();
 
-  Item:=nil;
-  PrevID:=-1;
-  for n:=AllPersData.Count-1 downto 0 do
+  Item := nil;
+  PrevID := -1;
+  for n := AllPersData.Count - 1 downto 0 do
   begin
-    TmpDI:=TPersDataItem(AllPersData[n]);
-    if PrevID<>TmpDI.OwnerID then
+    TmpDI := TPersDataItem(AllPersData[n]);
+    if PrevID <> TmpDI.OwnerID then
     begin
-      PrevID:=TmpDI.OwnerID;
-      Item:=(self.GetItemByID(PrevID) as TPersItem);
+      PrevID := TmpDI.OwnerID;
+      Item := (self.GetItemByID(PrevID) as TPersItem);
     end;
-    if Assigned(Item) then Item.DataList.Add(TmpDI)
-    else AllPersData.Delete(n);
+    if Assigned(Item) then
+      Item.DataList.Add(TmpDI)
+    else
+      AllPersData.Delete(n);
   end;
 
-  AllPersData.OwnsObjects:=false;
+  AllPersData.OwnsObjects := false;
   AllPersData.Free();
 end;
 
 procedure TPersList.SaveList();
 var
-  sl: TStringList;
-  i,n: integer;
+  i, n: Integer;
   TmpItem: TPersItem;
   AllPersData: TPersDataList;
 begin
@@ -445,13 +458,13 @@ begin
   DbDriver.SetTable(self);
 
   // Fill related info list
-  AllPersData:=TPersDataList.Create();
-  AllPersData.OwnsObjects:=false;
+  AllPersData := TPersDataList.Create();
+  AllPersData.OwnsObjects := false;
 
-  for i:=0 to self.Count-1 do
+  for i := 0 to self.Count - 1 do
   begin
-    TmpItem:=TPersItem(self.Items[i]);
-    for n:=0 to TmpItem.DataList.Count-1 do
+    TmpItem := TPersItem(self.Items[i]);
+    for n := 0 to TmpItem.DataList.Count - 1 do
     begin
       AllPersData.Add(TmpItem.DataList[n]);
     end;
@@ -462,53 +475,53 @@ begin
   AllPersData.Free();
 end;
 
-function TPersList.NewItem(): TDbItem;
+function TPersList.NewItem(): TDBItem;
 var
   NewItem: TPersItem;
 begin
-  NewItem:=TPersItem.Create();
+  NewItem := TPersItem.Create();
   self.AddItem(NewItem, true);
-  result:=NewItem;
+  Result := NewItem;
 end;
 
-{function TPersList.AddItem(AItem: TPersItem): Integer;
-begin
+{ function TPersList.AddItem(AItem: TPersItem): Integer;
+  begin
   AItem.ID:=LastID;
   Inc(LastID);
   Add(AItem);
-end;}
+  end; }
 
-{function TPersList.GetItemByID(ItemID: integer): TPersItem;
-var
+{ function TPersList.GetItemByID(ItemID: integer): TPersItem;
+  var
   i: integer;
   Item: TPersItem;
-begin
+  begin
   result:=nil;
   for i:=0 to self.Count-1 do
   begin
-    Item:=(self.Items[i] as TPersItem);
-    if Item.ID=ItemID then
-    begin
-      Result:=Item;
-      Exit;
-    end;
+  Item:=(self.Items[i] as TPersItem);
+  if Item.ID=ItemID then
+  begin
+  Result:=Item;
+  Exit;
   end;
-end; }
+  end;
+  end; }
 
 function CompareFunc(Item1, Item2: Pointer): Integer;
 begin
-  {> 0 (positive)	Item1 is less than Item2
-   0	Item1 is equal to Item2
-   < 0 (negative)	Item1 is greater than Item2}
+  { > 0 (positive)	Item1 is less than Item2
+    0	Item1 is equal to Item2
+    < 0 (negative)	Item1 is greater than Item2 }
 
-  result := TPersItem(Item1).TreeLevel - TPersItem(Item2).TreeLevel;
-  if result=0 then result := AnsiCompareStr(TPersItem(Item1).Desc, TPersItem(Item2).Desc);
+  Result := TPersItem(Item1).TreeLevel - TPersItem(Item2).TreeLevel;
+  if Result = 0 then
+    Result := AnsiCompareStr(TPersItem(Item1).Desc, TPersItem(Item2).Desc);
 end;
 
 procedure TPersList.Sort();
 begin
   inherited Sort(@CompareFunc);
 end;
-
 
 end.

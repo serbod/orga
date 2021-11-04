@@ -3,6 +3,12 @@ object FrameUserOptions: TFrameUserOptions
   Top = 0
   Width = 576
   Height = 375
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  ParentFont = False
   TabOrder = 0
   object toolbarUserOptions: TToolBar
     Left = 0
@@ -50,30 +56,29 @@ object FrameUserOptions: TFrameUserOptions
       object Label1: TLabel
         Left = 8
         Top = 16
-        Width = 91
-        Height = 13
+        Width = 103
+        Height = 16
         Caption = #1048#1084#1103' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093
       end
       object Label2: TLabel
         Left = 8
         Top = 56
-        Width = 88
-        Height = 13
+        Width = 102
+        Height = 16
         Caption = #1058#1080#1087' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093
       end
       object edDbName: TEdit
         Left = 8
         Top = 32
         Width = 145
-        Height = 21
+        Height = 24
         TabOrder = 0
       end
       object comboxDbType: TComboBox
         Left = 8
         Top = 72
         Width = 145
-        Height = 21
-        ItemHeight = 13
+        Height = 24
         TabOrder = 1
       end
     end
@@ -87,22 +92,22 @@ object FrameUserOptions: TFrameUserOptions
       object Label3: TLabel
         Left = 8
         Top = 24
-        Width = 88
-        Height = 13
+        Width = 99
+        Height = 16
         Caption = #1048#1084#1103' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
       end
       object Label4: TLabel
         Left = 8
         Top = 48
-        Width = 96
-        Height = 13
+        Width = 109
+        Height = 16
         Caption = #1048#1084#1103' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
       end
       object Label5: TLabel
         Left = 8
         Top = 72
-        Width = 49
-        Height = 13
+        Width = 56
+        Height = 16
         Caption = 'IP '#1072#1076#1088#1077#1089#1072
       end
       object lbHostName: TLabel

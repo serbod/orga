@@ -338,8 +338,15 @@ object FrameTextEditor: TFrameTextEditor
     Width = 397
     Height = 280
     Align = alClient
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 1
+    Zoom = 100
   end
   object ActionList: TActionList
     Left = 32

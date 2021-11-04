@@ -1,10 +1,14 @@
+(*
+tvPersonnel - доступен Drag&Drop, если нажат Shift, то добавляется в дочерние элементы
+*)
 unit PersonnelFrame;
 
 interface
 
 uses
   SysUtils, Forms, StdCtrls, ComCtrls, Grids, ValEdit, Classes, ToolWin, Controls,
-  ExtCtrls, PersonnelUnit, TasksUnit, LocalOrdersUnit, Menus, jpeg;
+  ExtCtrls, PersonnelUnit, TasksUnit, LocalOrdersUnit, Menus, jpeg,
+  System.Actions, Vcl.ActnList;
 
 type
   TFramePersonnel = class(TFrame)
@@ -17,14 +21,7 @@ type
     Splitter2: TSplitter;
     Splitter3: TSplitter;
     gbEmployeeInfo: TGroupBox;
-    toolbarPersonnel: TToolBar;
-    tbRefreshList: TToolButton;
-    tbLoadList: TToolButton;
-    tbSaveList: TToolButton;
     vledPersInfo: TValueListEditor;
-    ToolButton1: TToolButton;
-    tbTableEdit: TToolButton;
-    ToolButton3: TToolButton;
     pmPersTree: TPopupMenu;
     pmPersList: TPopupMenu;
     mAddGroup: TMenuItem;
@@ -64,7 +61,16 @@ type
     Splitter5: TSplitter;
     gbPersLocalOrdersInfo: TGroupBox;
     memoPersLocalOrderText: TMemo;
-    procedure toolbarPersonnelClick(Sender: TObject);
+    tsPersChat: TTabSheet;
+    alPersonnel: TActionList;
+    actRefresh: TAction;
+    actLoad: TAction;
+    actSave: TAction;
+    actTableEdit: TAction;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N5: TMenuItem;
+    N7: TMenuItem;
     procedure PersTreePopupClick(Sender: TObject);
     procedure PersListPopupClick(Sender: TObject);
     procedure PersInfoPopupClick(Sender: TObject);
@@ -81,6 +87,10 @@ type
     procedure mTableSelectorClick(Sender: TObject);
     procedure lvPersLocalOrdersSelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
+    procedure actRefreshExecute(Sender: TObject);
+    procedure actLoadExecute(Sender: TObject);
+    procedure actSaveExecute(Sender: TObject);
+    procedure actTableEditExecute(Sender: TObject);
   private
     { Private declarations }
     ItemsList: TPersList;
@@ -88,16 +98,17 @@ type
     SelItemTasks: TTaskList;
     SelItemLocalOrders: TLocOrderList;
     SelectedGroup: TPersItem;
+    SelectedTask: TTaskItem;
     procedure ReadSelectedItem();
     procedure ReadSelectedGroup();
     procedure WriteSelectedItem();
-    procedure RefreshItemsList(SelectedOnly: boolean = false);
-    procedure RefreshGroupsList(SelectedOnly: boolean = false);
-    procedure NewItem(ASubItem: boolean = true);
-    procedure NewItemGroup(ASubItem: boolean = false);
+    procedure RefreshItemsList(SelectedOnly: Boolean = false);
+    procedure RefreshGroupsList(SelectedOnly: Boolean = false);
+    procedure NewItem(ASubItem: Boolean = true);
+    procedure NewItemGroup(ASubItem: Boolean = false);
     procedure LoadList();
     procedure SaveList();
-    procedure ChangeItemType(NewType: integer = -1);
+    procedure ChangeItemType(NewType: Integer = -1);
   public
     { Public declarations }
     constructor Create(AOwner: TComponent); override;
@@ -105,142 +116,49 @@ type
   end;
 
 implementation
-uses Main, MainFunc, MiscFunc;
+
+uses Main, MainFunc, MiscFunc, EnterpiseControls;
+
 {$R *.dfm}
 
-//===========================================
+// ===========================================
 constructor TFramePersonnel.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  self.Align:=alClient;
-  if not Assigned(ItemsList) then ItemsList:=TPersList.Create();
-  ItemsList.FileName:=conf['BasePath']+'\Personnel.lst';
+  self.Align := alClient;
+  if not Assigned(ItemsList) then
+    ItemsList := TPersList.Create();
+  ItemsList.FileName := conf['BasePath'] + '\Personnel.lst';
   self.LoadList();
 end;
 
 destructor TFramePersonnel.Destroy();
 begin
+  FreeAndNil(SelItemTasks);
+  FreeAndNil(SelItemLocalOrders);
   ItemsList.Free();
   inherited Destroy();
 end;
 
-//===========================================
+// ===========================================
 // List operations
-//===========================================
-procedure TFramePersonnel.RefreshGroupsList(SelectedOnly: boolean = false);
-var
-  Item: TPersItem;
-  tn, ptn: TTreeNode;
-  i: integer;
-
-function GetTreeNodeByID(ItemID: integer): TTreeNode;
-var
-  n: integer;
+// ===========================================
+procedure TFramePersonnel.RefreshGroupsList(SelectedOnly: Boolean = false);
 begin
-  result:=nil;
-  if ItemID < 0 then Exit;
-  for n:=0 to tvPersonnel.Items.Count-1 do
-  begin
-    if TPersItem(tvPersonnel.Items[n].Data).ID = ItemID then
-    begin
-      result:=tvPersonnel.Items[n];
-      Exit;
-    end;
-  end;
+  RefreshPersGroupsTree(tvPersonnel, ItemsList, SelectedGroup, SelectedOnly);
 end;
 
+procedure TFramePersonnel.RefreshItemsList(SelectedOnly: Boolean = false);
 begin
-  if SelectedOnly then
-  begin
-    if not Assigned(SelectedGroup) then Exit;
-    for i:=0 to tvPersonnel.Items.Count-1 do
-    begin
-      Item:=TPersItem(tvPersonnel.Items[i].Data);
-      if Item=SelectedGroup then
-      begin
-        tn:=tvPersonnel.Items[i];
-        tn.Text:=Item.Name;
-        Exit;
-      end;
-    end;
-    Exit;
-  end;
-
-  tvPersonnel.Items.BeginUpdate();
-  tvPersonnel.Items.Clear();
-  ItemsList.Sort();
-  for i:=0 to ItemsList.Count-1 do
-  begin
-    Item:=TPersItem(ItemsList[i]);
-    if Item.ItemType<>1 then Continue;
-    tn:=tvPersonnel.Items.AddChild(GetTreeNodeByID(Item.ParentID), Item.Name);
-    tn.Data:=Item;
-    if Item=SelectedGroup then
-    begin
-      tn.Selected:=true;
-      tn.Focused:=true;
-    end;
-  end;
-  tvPersonnel.Items.EndUpdate();
-end;
-
-procedure TFramePersonnel.RefreshItemsList(SelectedOnly: boolean = false);
-var
-  Item: TPersItem;
-  li: TListItem;
-  i: integer;
-begin
-  if SelectedOnly then
-  begin
-    if not Assigned(SelectedItem) then Exit;
-    for i:=0 to lvPersonnel.Items.Count-1 do
-    begin
-      Item:=TPersItem(lvPersonnel.Items[i].Data);
-      if Item=SelectedItem then
-      begin
-        li:=lvPersonnel.Items[i];
-        li.SubItems.Clear();
-        li.Caption:=''; // Activity
-        li.SubItems.Add(Item.Name);
-        li.SubItems.Add(Item.GetDataByName('Должность'));
-        li.SubItems.Add(Item.Text);
-        Exit;
-      end;
-    end;
-    Exit;
-  end;
-
-  lvPersonnel.Items.BeginUpdate();
-  lvPersonnel.Items.Clear();
-  //ItemsList.Sort();
-  for i:=0 to ItemsList.Count-1 do
-  begin
-    Item:=TPersItem(ItemsList[i]);
-    if Item.ItemType<>0 then Continue;
-    if Item.ParentID <> SelectedGroup.ID then Continue;
-    if not Assigned(SelectedItem) then SelectedItem:=Item;
-    li:=TListItem.Create(lvPersonnel.Items);
-    li.Caption:=''; // Activity
-    li.SubItems.Add(Item.Name);
-    li.SubItems.Add(Item.GetDataByName('Должность'));
-    li.SubItems.Add(Item.Text);
-    li.Data:=Item;
-    lvPersonnel.Items.AddItem(li);
-    if Item=SelectedItem then
-    begin
-      li.Selected:=true;
-      li.Focused:=true;
-    end;
-  end;
-  lvPersonnel.Items.EndUpdate();
+  RefreshPersonItemsList(lvPersonnel, ItemsList, SelectedGroup.ID, SelectedItem, SelectedOnly);
 end;
 
 procedure TFramePersonnel.LoadList();
 begin
   tvPersonnel.Items.Clear();
   lvPersonnel.Items.Clear();
-  SelectedItem:=nil;
-  SelectedGroup:=nil;
+  SelectedItem := nil;
+  SelectedGroup := nil;
   ItemsList.Clear();
   ItemsList.LoadList();
   RefreshGroupsList();
@@ -251,239 +169,272 @@ begin
   ItemsList.SaveList();
 end;
 
-procedure TFramePersonnel.NewItemGroup(ASubItem: boolean = false);
+procedure TFramePersonnel.NewItemGroup(ASubItem: Boolean = false);
 var
   Item: TPersItem;
   tn: TTreeNode;
-  i: integer;
 begin
-  Item:=TPersItem.Create();
-  Item.ParentID:=-1;
-  Item.Name:='Новая группа';
-  Item.ItemType:=1;  // 0-Item, 1-Group
-  Item.Author:=conf['UserName'];
-  Item.Timestamp:=Now();
-  Item.DataList:=TPersDataList.Create();
+  Item := TPersItem.Create();
+  Item.ParentID := -1;
+  Item.Name := 'Новая группа';
+  Item.ItemType := TPersItemType.Group; // 0-Item, 1-Group
+  Item.Author := conf['UserName'];
+  Item.Timestamp := Now();
+  Item.DataList := TPersDataList.Create();
   self.ItemsList.AddItem(Item);
-  Item.DataList.OwnerID:=Item.ID;
+  Item.DataList.OwnerID := Item.ID;
 
   if ASubItem then
   begin
-    tn:=tvPersonnel.Items.AddChild(tvPersonnel.Selected, Item.Name);
+    tn := tvPersonnel.Items.AddChild(tvPersonnel.Selected, Item.Name);
     if Assigned(tvPersonnel.Selected) and Assigned(tvPersonnel.Selected.Data) then
     begin
-      Item.ParentID:=TPersItem(tvPersonnel.Selected.Data).ID;
+      Item.ParentID := TPersItem(tvPersonnel.Selected.Data).ID;
     end;
   end
   else
   begin
-    tn:=tvPersonnel.Items.Add(tvPersonnel.Selected, Item.Name);
+    tn := tvPersonnel.Items.Add(tvPersonnel.Selected, Item.Name);
   end;
-  tn.Data:=Item;
-  Item.TreeLevel:=tn.Level;
+  tn.Data := Item;
+  Item.TreeLevel := tn.Level;
 
-  self.SelectedGroup:=Item;
+  self.SelectedGroup := Item;
   ReadSelectedGroup();
 end;
 
-procedure TFramePersonnel.NewItem(ASubItem: boolean = true);
+procedure TFramePersonnel.NewItem(ASubItem: Boolean = true);
 var
   Item: TPersItem;
-  tn: TTreeNode;
-  i: integer;
 begin
-  if not Assigned(SelectedGroup) then Exit;
-  Item:=TPersItem.Create();
-  Item.ParentID:=-1;
-  Item.Name:='Новый сотрудник';
-  Item.ItemType:=0;  // 0-Item, 1-Group
-  Item.Author:=conf['UserName'];
-  Item.Timestamp:=Now();
-  Item.DataList:=TPersDataList.Create();
+  if not Assigned(SelectedGroup) then
+    Exit;
+  Item := TPersItem.Create();
+  Item.ParentID := -1;
+  Item.Name := 'Новый сотрудник';
+  Item.ItemType := TPersItemType.Person; // 0-Item, 1-Group
+  Item.Author := conf['UserName'];
+  Item.Timestamp := Now();
+  Item.DataList := TPersDataList.Create();
   self.ItemsList.AddItem(Item);
-  Item.DataList.OwnerID:=Item.ID;
+  Item.DataList.OwnerID := Item.ID;
 
   if ASubItem then
   begin
     if Assigned(tvPersonnel.Selected) and Assigned(tvPersonnel.Selected.Data) then
     begin
-      Item.ParentID:=TPersItem(tvPersonnel.Selected.Data).ID;
-      Item.TreeLevel:=tvPersonnel.Selected.Level+1;
+      Item.ParentID := TPersItem(tvPersonnel.Selected.Data).ID;
+      Item.TreeLevel := tvPersonnel.Selected.Level + 1;
     end;
   end
   else
   begin
   end;
 
-  self.SelectedItem:=Item;
+  self.SelectedItem := Item;
   ReadSelectedGroup();
   ReadSelectedItem();
 end;
 
-//----
+// ----
 procedure TFramePersonnel.ReadSelectedGroup();
 var
-  Item, Item2: TPersItem;
-  lvItem: TListItem;
-  i: integer;
+  Item: TPersItem;
 begin
-  if not Assigned(self.SelectedGroup) then Exit;
-  Item:=self.SelectedGroup;
-  if Item.ItemType<>1 then Exit;
+  if not Assigned(self.SelectedGroup) then
+    Exit;
+  Item := self.SelectedGroup;
+  if Item.ItemType <> TPersItemType.Group then
+    Exit;
 
   vledPersInfo.Strings.Clear();
-  SelectedItem:=nil;
+  SelectedItem := nil;
   RefreshItemsList();
   ReadSelectedItem();
 end;
 
-//----
+// ----
 procedure TFramePersonnel.ReadSelectedItem();
 var
-  Item, Item2: TPersItem;
+  Item: TPersItem;
   lvItem: TListItem;
-  i: integer;
+  i: Integer;
   DataItem: TPersDataItem;
   PersDataType: TPersDataType;
   TaskItem: TTaskItem;
   LocOrder: TLocOrderItem;
   ImgFileName: string;
 begin
-  if not Assigned(self.SelectedItem) then Exit;
-  Item:=self.SelectedItem;
-  if Item.ItemType<>0 then Exit;
-  if not Assigned(Item.DataList) then Exit;
+  if not Assigned(self.SelectedItem) then
+    Exit;
+  Item := self.SelectedItem;
+  if Item.ItemType <> TPersItemType.Person then
+    Exit;
+  if not Assigned(Item.DataList) then
+    Exit;
 
   // Fill data types names
   vledPersInfo.Strings.Clear();
-  if vledPersInfo.Strings.Count=0 then
+  if vledPersInfo.Strings.Count = 0 then
   begin
-    for i:=0 to glPersonnelDataTypes.Count-1 do
+    for i := 0 to glPersonnelDataTypes.Count - 1 do
     begin
-      PersDataType:=(glPersonnelDataTypes[i] as TPersDataType);
+      PersDataType := (glPersonnelDataTypes[i] as TPersDataType);
       vledPersInfo.InsertRow(PersDataType.Name, '', true);
-      vledPersInfo.ItemProps[PersDataType.Name].KeyDesc:=PersDataType.FullName;
+      vledPersInfo.ItemProps[PersDataType.Name].KeyDesc := PersDataType.FullName;
     end;
   end;
 
   // Fill pes data values
-  //for i:=vledExtraData.RowCount-1 downto 1 do vledExtraData.DeleteRow(i);
-  for i:=0 to Item.DataList.Count-1 do
+  // for i:=vledExtraData.RowCount-1 downto 1 do vledExtraData.DeleteRow(i);
+  for i := 0 to Item.DataList.Count - 1 do
   begin
-    DataItem:=(Item.DataList[i] as TPersDataItem);
+    DataItem := (Item.DataList[i] as TPersDataItem);
     begin
-      vledPersInfo.Values[DataItem.GetName()]:=DataItem.Text;
+      vledPersInfo.Values[DataItem.GetName()] := DataItem.Text;
     end;
   end;
 
   // Load image
-  ImgFileName:=conf['BasePath']+'Personnel.lst.data\'+IntToStr(Item.ID)+'.jpg';
+  ImgFileName := conf['BasePath'] + 'Personnel.lst.data\' + IntToStr(Item.ID) + '.jpg';
   if FileExists(ImgFileName) then
   begin
     imgPersPhoto.Picture.LoadFromFile(ImgFileName);
-    imgPersPhoto.Visible:=true;
+    imgPersPhoto.Visible := true;
   end
   else
   begin
-    imgPersPhoto.Visible:=false;
+    imgPersPhoto.Visible := false;
   end;
 
   // Fill tasks list
   lvPersTasks.Clear();
-  memoPersTaskText.Text:='';
+  memoPersTaskText.Text := '';
   if not Assigned(SelItemTasks) then
   begin
     // !!! переделать
-    SelItemTasks:=TTaskList.Create();
+    SelItemTasks := TTaskList.Create();
   end;
   SelItemTasks.Clear();
-  SelItemTasks.SetFilter(1, Item.ID);
+  SelItemTasks.SetFilter(TTaskFilterType.Person, Item.ID);
   SelItemTasks.Sort();
 
-  for i:=0 to SelItemTasks.Count-1 do
-  begin
-    TaskItem:=(SelItemTasks[i] as TTaskItem);
-    lvItem:=TListItem.Create(lvPersTasks.Items);
-    lvItem.Data:=TaskItem;
-    lvItem.Caption:=IntToStr(TaskItem.Priority);
-    lvItem.SubItems.Add(IntToStr(TaskItem.Status));
-    lvItem.SubItems.Add(TaskItem.Name);
-    lvPersTasks.Items.AddItem(lvItem);
-  end;
-  if lvPersTasks.Items.Count>0 then lvPersTasks.ItemIndex:=0;
+  if SelItemTasks.Count > 0 then
+    SelectedTask := SelItemTasks[0] as TTaskItem;
+
+  RefreshTasksList(lvPersTasks, SelItemTasks, -1, SelectedTask, False);
+  lvPersTasksChange(lvPersTasks, lvPersTasks.Selected, TItemChange.ctState);
 
   // Fill local orders list
   lvPersLocalOrders.Clear();
-  memoPersLocalOrderText.Text:='';
+  memoPersLocalOrderText.Text := '';
   if not Assigned(SelItemLocalOrders) then
   begin
     // !!! переделать
-    SelItemLocalOrders:=TLocOrderList.Create();
+    SelItemLocalOrders := TLocOrderList.Create();
   end;
   SelItemLocalOrders.Clear();
-  SelItemLocalOrders.SetFilter('from='+IntToStr(Item.ID));
+  SelItemLocalOrders.SetFilter('from=' + IntToStr(Item.ID));
   SelItemLocalOrders.Sort();
 
-  for i:=0 to SelItemLocalOrders.Count-1 do
+  for i := 0 to SelItemLocalOrders.Count - 1 do
   begin
-    //LocOrder: TLocOrderItem
-    LocOrder:=(SelItemLocalOrders[i] as TLocOrderItem);
-    lvItem:=TListItem.Create(lvPersLocalOrders.Items);
-    lvItem.Data:=LocOrder;
-    lvItem.Caption:='';
-    if LocOrder.Signed then lvItem.Caption:='S';
+    // LocOrder: TLocOrderItem
+    LocOrder := (SelItemLocalOrders[i] as TLocOrderItem);
+    lvItem := lvPersLocalOrders.Items.Add;
+    lvItem.Data := LocOrder;
+    if LocOrder.Signed then
+    begin
+      lvItem.StateIndex := 16; // tick-circle
+      lvItem.Caption := 'S';
+    end
+    else
+    begin
+      lvItem.StateIndex := 15; // question-white
+      lvItem.Caption := '';
+    end;
     lvItem.SubItems.Add(LocOrder.GetValue('Timestamp'));
     lvItem.SubItems.Add(LocOrder.Dest);
     lvItem.SubItems.Add(LocOrder.Text);
-    lvPersLocalOrders.Items.AddItem(lvItem);
   end;
-  if lvPersLocalOrders.Items.Count>0 then lvPersLocalOrders.ItemIndex:=0;
+  if lvPersLocalOrders.Items.Count > 0 then
+    lvPersLocalOrders.ItemIndex := 0;
 end;
 
-//----
+// ----
 procedure TFramePersonnel.WriteSelectedItem();
 var
   Item: TPersItem;
-  i: integer;
-  s, sn, s1, s2, s3: string;
+  i: Integer;
+  S, sn, s1, s2, s3: string;
 
 begin
-  if not Assigned(self.SelectedItem) then Exit;
-  Item:=self.SelectedItem;
-  //Item.ItemType:=0;
-  //Item.Name:=edName.Text;
+  if not Assigned(self.SelectedItem) then
+    Exit;
+  Item := self.SelectedItem;
+  // Item.ItemType:=0;
+  // Item.Name:=edName.Text;
 
-  if not Assigned(Item.DataList) then Exit;
+  if not Assigned(Item.DataList) then
+    Exit;
 
-  for i:=0 to vledPersInfo.Strings.Count-1 do
+  for i := 0 to vledPersInfo.Strings.Count - 1 do
   begin
-    sn:=vledPersInfo.Strings.Names[i];
-    s:=vledPersInfo.Strings.ValueFromIndex[i];
-    Item.DataList.UpdateItem(sn, s);
-    if sn='Фамилия' then s1:=s
-    else if sn='Имя' then s2:=s
-    else if sn='Отчество' then s3:=s
-    else if sn='Примечание' then Item.Text:=s;
+    sn := vledPersInfo.Strings.Names[i];
+    S := vledPersInfo.Strings.ValueFromIndex[i];
+    Item.DataList.UpdateItem(sn, S);
+    if sn = 'Фамилия' then
+      s1 := S
+    else if sn = 'Имя' then
+      s2 := S
+    else if sn = 'Отчество' then
+      s3 := S
+    else if sn = 'Примечание' then
+      Item.Text := S;
   end;
-  Item.Name:=s1+' '+s2+' '+s3;
-  //Item.Name=s1+' '+Copy(s2, 1, 1)+'.'+Copy(s3,1,1)+'.';
+  Item.Name := s1 + ' ' + s2 + ' ' + s3;
+  // Item.Name=s1+' '+Copy(s2, 1, 1)+'.'+Copy(s3,1,1)+'.';
   RefreshItemsList(true);
 end;
 
-procedure TFramePersonnel.ChangeItemType(NewType: integer = -1);
+// ===========================================
+// Action handlers
+// ===========================================
+procedure TFramePersonnel.actLoadExecute(Sender: TObject);
+begin
+  LoadList();
+end;
+
+procedure TFramePersonnel.actRefreshExecute(Sender: TObject);
+begin
+  RefreshItemsList();
+end;
+
+procedure TFramePersonnel.actSaveExecute(Sender: TObject);
+begin
+  SaveList();
+end;
+
+procedure TFramePersonnel.actTableEditExecute(Sender: TObject);
+begin
+  OpenTableEdit(self.ItemsList);
+end;
+
+procedure TFramePersonnel.ChangeItemType(NewType: Integer = -1);
 var
-  i, n: integer;
+  i, n: Integer;
   Item: TPersDataType;
 begin
-  if NewType = -1 then Exit;
+  if NewType = -1 then
+    Exit;
 
-  //if vledExtraData.RowCount>1 then
-  //  for i:=vledExtraData.RowCount-1 downto 1 do vledExtraData.DeleteRow(i);
+  // if vledExtraData.RowCount>1 then
+  // for i:=vledExtraData.RowCount-1 downto 1 do vledExtraData.DeleteRow(i);
   vledPersInfo.Strings.Clear();
-  n:=0;
-  for i:=0 to glPersonnelDataTypes.Count-1 do
+  n := 0;
+  for i := 0 to glPersonnelDataTypes.Count - 1 do
   begin
-    Item:=glPersonnelDataTypes.GetItemByIndex(i);
+    Item := glPersonnelDataTypes.GetItemByIndex(i);
     begin
       vledPersInfo.InsertRow(Item.Name, '', true);
     end;
@@ -491,62 +442,31 @@ begin
   end;
 end;
 
-//===========================================
-// Action handlers
-//===========================================
-procedure TFramePersonnel.toolbarPersonnelClick(Sender: TObject);
-begin
-  if Sender=tbLoadList then
-  begin
-    self.LoadList();
-  end
-  else if Sender=tbSaveList then
-  begin
-    self.SaveList();
-  end
-  else if Sender=tbRefreshList then
-  begin
-    self.RefreshItemsList();
-  end
-  else if Sender=tbTableEdit then // Add
-  begin
-    OpenTableEdit(self.ItemsList);
-  end
-  {else if Sender=tbDelItem then // Del
-  begin
-    //self.RefreshItemsList();
-  end
-  else if Sender=tbSaveItem then // Write selected item
-  begin
-    self.WriteSelectedItem();
-  end};
-
-end;
-
 procedure TFramePersonnel.PersTreePopupClick(Sender: TObject);
 begin
   tvPersonnel.Items.BeginUpdate();
-  if Sender=mAddGroup then
+  if Sender = mAddGroup then
   begin
     self.NewItemGroup();
   end
-  else if Sender=mAddSubGroup then
+  else if Sender = mAddSubGroup then
   begin
     self.NewItemGroup(true);
   end
-  else if Sender=mDelGroup then
+  else if Sender = mDelGroup then
   begin
   end
-  else if Sender=mExpandSel then
+  else if Sender = mExpandSel then
   begin
-    if not Assigned(tvPersonnel.Selected) then Exit;
+    if not Assigned(tvPersonnel.Selected) then
+      Exit;
     tvPersonnel.Selected.Expand(true);
   end
-  else if Sender=mExpandAll then
+  else if Sender = mExpandAll then
   begin
     tvPersonnel.FullExpand();
   end
-  else if Sender=mCollapseAll then
+  else if Sender = mCollapseAll then
   begin
     tvPersonnel.FullCollapse();
   end;
@@ -556,14 +476,14 @@ end;
 procedure TFramePersonnel.PersListPopupClick(Sender: TObject);
 begin
   tvPersonnel.Items.BeginUpdate();
-  if Sender=mAddItem then
+  if Sender = mAddItem then
   begin
     self.NewItem();
   end
-  else if Sender=mDelItem then
+  else if Sender = mDelItem then
   begin
   end
-  else if Sender=mSaveItem then // Write selected item
+  else if Sender = mSaveItem then // Write selected item
   begin
     self.WriteSelectedItem();
   end;
@@ -574,41 +494,43 @@ procedure TFramePersonnel.PersInfoPopupClick(Sender: TObject);
 var
   sFileName: string;
 begin
-  if Sender=mPersInfoWrite then
+  if Sender = mPersInfoWrite then
   begin
     self.WriteSelectedItem();
   end
-  else if Sender=mPersInfoPropsList then
+  else if Sender = mPersInfoPropsList then
   begin
     OpenTableEdit(glPersonnelDataTypes);
   end
-  else if Sender=mPersInfoSetPhoto then //
+  else if Sender = mPersInfoSetPhoto then //
   begin
-    sFileName:=conf['BasePath']+'Personnel.lst.data\'+IntToStr(SelectedItem.ID)+'.jpg';
-    sFileName:=SelectFilename(sFileName);
-    if sFileName<>'' then
+    sFileName := conf['BasePath'] + 'Personnel.lst.data\' + IntToStr(SelectedItem.ID) + '.jpg';
+    sFileName := SelectFilename(sFileName);
+    if sFileName <> '' then
     begin
-      CopySingleFile(sFileName, conf['BasePath']+'Personnel.lst.data\'+IntToStr(SelectedItem.ID)+'.jpg');
+      CopySingleFile(sFileName, conf['BasePath'] + 'Personnel.lst.data\' + IntToStr(SelectedItem.ID)
+        + '.jpg');
     end;
   end
-  else if Sender=mPersInfoDelPhoto then //
+  else if Sender = mPersInfoDelPhoto then //
   begin
-    sFileName:=conf['BasePath']+'Personnel.lst.data\'+IntToStr(SelectedItem.ID)+'.jpg';
-    if FileExists(sFileName) then DeleteFile(sFileName);
+    sFileName := conf['BasePath'] + 'Personnel.lst.data\' + IntToStr(SelectedItem.ID) + '.jpg';
+    if FileExists(sFileName) then
+      DeleteFile(sFileName);
   end;
 end;
 
-function CanDrop(dst, src: TObject; X, Y: integer): boolean;
+function CanDrop(dst, src: TObject; X, Y: Integer): Boolean;
 var
   dst_node: TTreeNode;
 begin
-  result:=false;
+  Result := False;
   if (src is TTreeView) and (dst is TTreeView) then
   begin
-    dst_node:=((dst as TTreeView).GetNodeAt(X, Y) as TTreeNode);
-    //if dst_node = nil then Exit;
-    //if not dst_node.IsGroup then Exit;
-    result:=true;
+    dst_node := ((dst as TTreeView).GetNodeAt(X, Y) as TTreeNode);
+    // if dst_node = nil then Exit;
+    // if not dst_node.IsGroup then Exit;
+    Result := True;
   end;
 end;
 
@@ -626,9 +548,10 @@ var
 begin
   if CanDrop(Sender, Source, X, Y) then
   begin
-    DragNode:=(Source as TTreeView).Selected;
-    if not Assigned(DragNode) then Exit;
-    dst_node:=(Sender as TTreeView).GetNodeAt(X,Y);
+    DragNode := (Source as TTreeView).Selected;
+    if not Assigned(DragNode) then
+      Exit;
+    dst_node := (Sender as TTreeView).GetNodeAt(X, Y);
     if dst_node = nil then
       DragNode.MoveTo(nil, naAdd)
     else if ShiftPressed() then
@@ -636,27 +559,31 @@ begin
     else
       DragNode.MoveTo(dst_node, naAdd);
     if Assigned(DragNode.Data) then
-      TPersItem(DragNode.Data).TreeLevel:=DragNode.Level;
+      TPersItem(DragNode.Data).TreeLevel := DragNode.Level;
   end;
 end;
 
 procedure TFramePersonnel.tvPersonnelChange(Sender: TObject;
   Node: TTreeNode);
 begin
-  if (not Assigned(Node)) or (not Assigned(Node.Data)) then Exit;
-  if SelectedGroup = TPersItem(Node.Data) then Exit;
+  if (not Assigned(Node)) or (not Assigned(Node.Data)) then
+    Exit;
+  if SelectedGroup = TPersItem(Node.Data) then
+    Exit;
   WriteSelectedItem();
-  SelectedGroup:=TPersItem(Node.Data);
+  SelectedGroup := TPersItem(Node.Data);
   ReadSelectedGroup();
 end;
 
 procedure TFramePersonnel.lvPersonnelChange(Sender: TObject;
   Item: TListItem; Change: TItemChange);
 begin
-  if (not Assigned(Item)) or (not Assigned(Item.Data)) then Exit;
-  if SelectedItem = TPersItem(Item.Data) then Exit;
+  if (not Assigned(Item)) or (not Assigned(Item.Data)) then
+    Exit;
+  if SelectedItem = TPersItem(Item.Data) then
+    Exit;
   WriteSelectedItem();
-  SelectedItem:=TPersItem(Item.Data);
+  SelectedItem := TPersItem(Item.Data);
   ReadSelectedItem();
 end;
 
@@ -665,7 +592,7 @@ procedure TFramePersonnel.tvPersonnelEdited(Sender: TObject;
 begin
   if Assigned(Node.Data) then
   begin
-    TPersItem(Node.Data).Name:=S;
+    TPersItem(Node.Data).Name := S;
   end;
 end;
 
@@ -674,18 +601,24 @@ procedure TFramePersonnel.lvPersTasksChange(Sender: TObject;
 var
   TaskItem: TTaskItem;
 begin
-  if (not Assigned(Item)) or (not Assigned(Item.Data)) then Exit;
-  TaskItem:=TTaskItem(Item.Data);
-  memoPersTaskText.Text:=TaskItem.Text;
+  if (not Assigned(Item)) or (not Assigned(Item.Data)) then
+    Exit;
+  TaskItem := TTaskItem(Item.Data);
+  memoPersTaskText.Text := TaskItem.Text;
 end;
 
 procedure TFramePersonnel.mTableSelectorClick(Sender: TObject);
 begin
-  if Sender = mTablePers then OpenTableEdit(self.ItemsList)
-  else if Sender = mTablePersDataTypes then OpenTableEdit(glPersonnelDataTypes)
-  else if Sender = mTablePersData then OpenTableEdit(self.SelectedItem.DataList)
-  else if Sender = mTablePersTasks then OpenTableEdit(self.SelItemTasks)
-  else if Sender = mTablePersLocalOrders then OpenTableEdit(self.SelItemLocalOrders);
+  if Sender = mTablePers then
+    OpenTableEdit(self.ItemsList)
+  else if Sender = mTablePersDataTypes then
+    OpenTableEdit(glPersonnelDataTypes)
+  else if Sender = mTablePersData then
+    OpenTableEdit(self.SelectedItem.DataList)
+  else if Sender = mTablePersTasks then
+    OpenTableEdit(self.SelItemTasks)
+  else if Sender = mTablePersLocalOrders then
+    OpenTableEdit(self.SelItemLocalOrders);
 end;
 
 procedure TFramePersonnel.lvPersLocalOrdersSelectItem(Sender: TObject;
@@ -693,9 +626,10 @@ procedure TFramePersonnel.lvPersLocalOrdersSelectItem(Sender: TObject;
 var
   LocOrderItem: TLocOrderItem;
 begin
-  if (not Assigned(Item)) or (not Assigned(Item.Data)) then Exit;
-  LocOrderItem:=TLocOrderItem(Item.Data);
-  memoPersLocalOrderText.Text:=LocOrderItem.Text;
+  if (not Assigned(Item)) or (not Assigned(Item.Data)) then
+    Exit;
+  LocOrderItem := TLocOrderItem(Item.Data);
+  memoPersLocalOrderText.Text := LocOrderItem.Text;
 end;
 
 end.

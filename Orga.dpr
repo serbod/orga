@@ -28,9 +28,9 @@ uses
   TableEditForm in 'TableEditForm.pas' {frmTableEdit},
   SocketLinkUnit in 'SocketLinkUnit.pas',
   UserOptionsFrame in 'UserOptionsFrame.pas' {FrameUserOptions: TFrame},
-  VideoPhoneFrame in 'VideoPhoneFrame.pas' {FrameVideoPhone: TFrame},
   DbBrowserFrame in 'DbBrowserFrame.pas' {FrameDbBrowser: TFrame},
-  DrawBoardFrame in 'DrawBoardFrame.pas' {FrameDrawBoard: TFrame};
+  DrawBoardFrame in 'DrawBoardFrame.pas' {FrameDrawBoard: TFrame},
+  EnterpiseControls in 'EnterpiseControls.pas';
 
 {$R *.res}
 

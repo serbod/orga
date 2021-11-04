@@ -3,6 +3,12 @@ object FrameMailbox: TFrameMailbox
   Top = 0
   Width = 763
   Height = 431
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  ParentFont = False
   TabOrder = 0
   object Splitter1: TSplitter
     Left = 346
@@ -73,14 +79,16 @@ object FrameMailbox: TFrameMailbox
       Indent = 19
       TabOrder = 0
       OnChange = tvMsgGroupsChange
-      Items.Data = {
-        05000000210000000000000000000000FFFFFFFFFFFFFFFF0000000000000000
-        08C2F5EEE4FFF9E8E5220000000000000000000000FFFFFFFFFFFFFFFF000000
-        000000000009C8F1F5EEE4FFF9E8E5250000000000000000000000FFFFFFFFFF
-        FFFFFF00000000000000000CCEF2EFF0E0E2EBE5EDEDFBE52200000000000000
-        00000000FFFFFFFFFFFFFFFF000000000000000009D7E5F0EDEEE2E8EAE82200
-        00000000000000000000FFFFFFFFFFFFFFFF000000000000000009D3E4E0EBE5
-        EDEDFBE5}
+      Items.NodeData = {
+        03050000002E0000000000000000000000FFFFFFFFFFFFFFFF00000000000000
+        00000000000108120445043E0434044F04490438043504300000000000000000
+        000000FFFFFFFFFFFFFFFF00000000000000000000000001091804410445043E
+        0434044F04490438043504360000000000000000000000FFFFFFFFFFFFFFFF00
+        0000000000000000000000010C1E0442043F044004300432043B0435043D043D
+        044B043504300000000000000000000000FFFFFFFFFFFFFFFF00000000000000
+        000000000001092704350440043D043E04320438043A04380430000000000000
+        0000000000FFFFFFFFFFFFFFFF00000000000000000000000001092304340430
+        043B0435043D043D044B043504}
     end
     object lvMessages: TListView
       Left = 1
@@ -164,7 +172,14 @@ object FrameMailbox: TFrameMailbox
       Width = 412
       Height = 338
       Align = alClient
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 1
+      Zoom = 100
     end
     object panMailHeader: TPanel
       Left = 1
@@ -179,34 +194,36 @@ object FrameMailbox: TFrameMailbox
       object lbFromLabel: TLabel
         Left = 4
         Top = 8
-        Width = 51
-        Height = 13
+        Width = 55
+        Height = 16
         Caption = #1054#1090' '#1082#1086#1075#1086':'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
       end
       object lbTopicLabel: TLabel
         Left = 4
         Top = 32
-        Width = 36
-        Height = 13
+        Width = 38
+        Height = 16
         Caption = #1058#1077#1084#1072':'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
       end
       object lbFromText: TLabel
         Left = 64
         Top = 8
-        Width = 3
-        Height = 13
+        Width = 337
+        Height = 16
+        Anchors = [akLeft, akTop, akRight]
+        AutoSize = False
       end
       object lbTopicText: TLabel
         Left = 64

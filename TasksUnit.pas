@@ -1,6 +1,7 @@
 unit TasksUnit;
 
 interface
+
 uses Classes, Contnrs, SysUtils, DbUnit;
 
 type
@@ -8,21 +9,26 @@ type
   public
     Desc: string;
     Text: string;
-    Priority: integer;
-    Status: integer;
-    PersonID: integer;
-    DepartID: integer;
+    Priority: Integer;
+    // 0-none, 1-normal, 2-urgent, 3-critical, 4-completed, 5-paused
+    Status: Integer;
+    PersonID: Integer;
+    DepartID: Integer;
     Author: string;
     BeginDate: TDateTime;
     EndDate: TDateTime;
-    function GetValue(const FName: string): string; override;
-    procedure SetValue(const FName, FValue: string); override;
+    function GetValue(const AName: string): string; override;
+    procedure SetValue(const AName, AValue: string); override;
+    procedure FromString(Str: string);
+    function ToString(): string;
   end;
+
+  TTaskFilterType = (None, Person, Department);
 
   TTaskList = class(TDbItemList)
   private
-    AFilterID: integer;
-    AFilterType: integer;
+    FilterID: Integer;
+    FilterType: TTaskFilterType;
   public
     BeginDate: TDateTime;
     EndDate: TDateTime;
@@ -32,64 +38,140 @@ type
     procedure SaveList();
     procedure Sort();
     // Filter type: 0-none, 1-person, 2-depart
-    procedure SetFilter(FilterType, FilterID: integer);
+    procedure SetFilter(AFilterType: TTaskFilterType; AFilterID: Integer);
   end;
 
 type
   TStringArray = array of string;
 
+function TaskStatusToPriority(AValue: Integer): Integer;
+
 implementation
+
 uses MainFunc;
 
-// === TTaskItem ===
-function TTaskItem.GetValue(const FName: string): string;
+function TaskStatusToPriority(AValue: Integer): Integer;
 begin
-  if FName='id' then
-    result:=IntToStr(self.ID)
-  else if FName='name' then
-    result:=self.Name
-  else if FName='text' then
-    result:=self.Text
-  else if FName='priority' then
-    result:=IntToStr(self.Priority)
-  else if FName='status' then
-    result:=IntToStr(self.Status)
-  else if FName='person_id' then
-    result:=IntToStr(self.PersonID)
-  else if FName='depart_id' then
-    result:=IntToStr(self.DepartID)
-  else if FName='author' then
-    result:=self.Author
-  else if FName='begin_date' then
-    result:=DateTimeToStr(self.BeginDate)
-  else if FName='end_date' then
-    result:=DateTimeToStr(self.EndDate)
+  // 0-none, 1-normal, 2-urgent, 3-critical, 4-completed, 5-paused
+  case AValue of
+    1: Result := 10;
+    2: Result := 11;
+    3: Result := 12;
+    4: Result := 5;
+    5: Result := 1;
   else
-    result:='';
+    Result := 0;
+  end;
 end;
 
-procedure TTaskItem.SetValue(const FName, FValue: string);
+// === TTaskItem ===
+function TTaskItem.GetValue(const AName: string): string;
 begin
-  if FName='id' then
-    self.ID:=StrToIntDef(FValue, 0)
-  else if FName='name' then
-    self.Name:=FValue
-  else if FName='text' then
-    self.Text:=FValue
-  else if FName='priority' then
-    self.Priority:=StrToIntDef(FValue, 0)
-  else if FName='status' then
-    self.Status:=StrToIntDef(FValue, 0)
-  else if FName='person_id' then
-    self.PersonID:=StrToIntDef(FValue, 0)
-  else if FName='depart_id' then
-    self.DepartID:=StrToIntDef(FValue, 0)
-  else if FName='author' then
-    self.Author:=FValue
-  else if FName='begin_date' then
-    self.BeginDate:=StrToDateTime(FValue)
-  else if FName='end_date' then
-    self.EndDate:=StrToDateTime(FValue);
+  if AName = 'id' then
+    Result := IntToStr(self.ID)
+  else if AName = 'name' then
+    Result := self.Name
+  else if AName = 'text' then
+    Result := self.Text
+  else if AName = 'priority' then
+    Result := IntToStr(self.Priority)
+  else if AName = 'status' then
+    Result := IntToStr(self.Status)
+  else if AName = 'person_id' then
+    Result := IntToStr(self.PersonID)
+  else if AName = 'depart_id' then
+    Result := IntToStr(self.DepartID)
+  else if AName = 'author' then
+    Result := self.Author
+  else if AName = 'begin_date' then
+    Result := DateTimeToStr(self.BeginDate)
+  else if AName = 'end_date' then
+    Result := DateTimeToStr(self.EndDate)
+  else
+    Result := '';
+end;
+
+procedure TTaskItem.SetValue(const AName, AValue: string);
+begin
+  if AName = 'id' then
+    self.ID := StrToIntDef(AValue, 0)
+  else if AName = 'name' then
+    self.Name := AValue
+  else if AName = 'text' then
+    self.Text := AValue
+  else if AName = 'priority' then
+    self.Priority := StrToIntDef(AValue, 0)
+  else if AName = 'status' then
+    self.Status := StrToIntDef(AValue, 0)
+  else if AName = 'person_id' then
+    self.PersonID := StrToIntDef(AValue, 0)
+  else if AName = 'depart_id' then
+    self.DepartID := StrToIntDef(AValue, 0)
+  else if AName = 'author' then
+    self.Author := AValue
+  else if AName = 'begin_date' then
+    self.BeginDate := StrToDateTime(AValue)
+  else if AName = 'end_date' then
+    self.EndDate := StrToDateTime(AValue);
+end;
+
+procedure TTaskItem.FromString(Str: string);
+var
+  sl: TStringList;
+  i: Integer;
+begin
+  sl := TStringList.Create();
+  try
+    sl.CommaText := StringReplace(Str, '~>', #13 + #10, [rfReplaceAll]);
+
+    i := 0;
+    Self.ID := StrToIntDef(sl[i], 0);
+    Inc(i);
+    Self.Desc := sl[i];
+    Inc(i);
+    Self.Text := sl[i];
+    Inc(i);
+    Self.Priority := StrToIntDef(sl[i], 0);
+    Inc(i);
+    Self.Status := StrToIntDef(sl[i], 0);
+    Inc(i);
+    Self.PersonID := StrToIntDef(sl[i], 0);
+    Inc(i);
+    Self.DepartID := StrToIntDef(sl[i], 0);
+    Inc(i);
+    Self.Author := sl[i];
+    Inc(i);
+    if sl[i] <> '' then
+      Self.BeginDate := StrToDateTime(sl[i]);
+    Inc(i);
+    if sl[i] <> '' then
+      Self.EndDate := StrToDateTime(sl[i]);
+
+  finally
+    sl.Free();
+  end;
+end;
+
+function TTaskItem.ToString(): string;
+var
+  sl: TStringList;
+begin
+  sl := TStringList.Create();
+  try
+    sl.Add(IntToStr(Self.ID));
+    sl.Add(Self.Desc);
+    sl.Add(Self.Text);
+    sl.Add(IntToStr(Self.Priority));
+    sl.Add(IntToStr(Self.Status));
+    sl.Add(IntToStr(Self.PersonID));
+    sl.Add(IntToStr(Self.DepartID));
+    sl.Add(Self.Author);
+    sl.Add(DateTimeToStr(Self.BeginDate));
+    sl.Add(DateTimeToStr(Self.EndDate));
+    Result := StringReplace(sl.CommaText, #13 + #10, '~>', [rfReplaceAll]);
+  finally
+    sl.Free();
+  end;
 end;
 
 // === TTaskList ===
@@ -97,85 +179,38 @@ constructor TTaskList.Create();
 var
   ti: TDbTableInfo;
 begin
-  ti:=DbDriver.GetDbTableInfo('tasks');
+  ti := DbDriver.GetDbTableInfo('tasks');
   if not Assigned(ti) then
   begin
-    ti:=TDbTableInfo.Create();
+    ti := TDbTableInfo.Create();
     with ti do
     begin
-      TableName:='tasks';
-      AddField('id','I');
-      AddField('name','S');
-      AddField('text','S');
-      AddField('priority','I');
-      AddField('status','I');
-      AddField('person_id','L:personnel');
-      AddField('depart_id','I');
-      AddField('author','S');
-      AddField('begin_date','D');
-      AddField('end_date','D');
+      TableName := 'tasks';
+      AddField('id', 'I');
+      AddField('name', 'S');
+      AddField('text', 'S');
+      AddField('priority', 'I');
+      AddField('status', 'I');
+      AddField('person_id', 'L:personnel');
+      AddField('depart_id', 'I');
+      AddField('author', 'S');
+      AddField('begin_date', 'D');
+      AddField('end_date', 'D');
     end;
   end;
 
   inherited Create(ti);
 end;
 
-procedure StringToItem(Str: string; Task: TTaskItem);
-var
-  sl: TStringList;
-  i: integer;
-begin
-  sl:=TStringList.Create();
-  sl.CommaText:=StringReplace(Str, '~>', #13+#10, [rfReplaceAll]);
-
-  i:=0;
-  Task.ID:=StrToIntDef(sl[i], 0);
-  Inc(i);
-  Task.Desc:=sl[i];
-  Inc(i);
-  Task.Text:=sl[i];
-  Inc(i);
-  Task.Priority:=StrToIntDef(sl[i], 0);
-  Inc(i);
-  Task.Status:=StrToIntDef(sl[i], 0);
-  Inc(i);
-  Task.PersonID:=StrToIntDef(sl[i], 0);
-  Inc(i);
-  Task.DepartID:=StrToIntDef(sl[i], 0);
-  Inc(i);
-  Task.Author:=sl[i];
-  Inc(i);
-  if sl[i]<>'' then Task.BeginDate:=StrToDateTime(sl[i]);
-  Inc(i);
-  if sl[i]<>'' then Task.EndDate:=StrToDateTime(sl[i]);
-
-  sl.Free();
-end;
-
-function ItemToString(Task: TTaskItem): string;
-var
-  sl: TStringList;
-begin
-  sl:=TStringList.Create();
-  sl.Add(IntToStr(Task.ID));
-  sl.Add(Task.Desc);
-  sl.Add(Task.Text);
-  sl.Add(IntToStr(Task.Priority));
-  sl.Add(IntToStr(Task.Status));
-  sl.Add(IntToStr(Task.PersonID));
-  sl.Add(IntToStr(Task.DepartID));
-  sl.Add(Task.Author);
-  sl.Add(DateTimeToStr(Task.BeginDate));
-  sl.Add(DateTimeToStr(Task.EndDate));
-  result:=StringReplace(sl.CommaText, #13+#10, '~>', [rfReplaceAll]);
-  sl.Free();
-end;
-
 procedure TTaskList.LoadList();
 var
   sFilter: string;
 begin
-  if self.AFilterType=1 then sFilter:='person_id='+IntToStr(self.AFilterID);
+  if self.FilterType = TTaskFilterType.Person then
+    sFilter := 'person_id=' + IntToStr(self.FilterID)
+  else
+  if self.FilterType = TTaskFilterType.Department then
+    sFilter := 'depart_id=' + IntToStr(self.FilterID);
   DbDriver.GetTable(self, sFilter);
 end;
 
@@ -186,7 +221,13 @@ end;
 
 function CompareFunc(Item1, Item2: Pointer): Integer;
 begin
-  result := TTaskItem(Item2).Priority - TTaskItem(Item1).Priority;
+  Result := TaskStatusToPriority(TTaskItem(Item2).Status) - TaskStatusToPriority(TTaskItem(Item1).Status);
+  if Result <> 0 then Exit;
+
+  if TTaskItem(Item2).BeginDate > TTaskItem(Item1).BeginDate then
+    Result := -1
+  else if TTaskItem(Item2).BeginDate < TTaskItem(Item1).BeginDate then
+    Result := 1;
 end;
 
 procedure TTaskList.Sort();
@@ -198,15 +239,15 @@ function TTaskList.NewItem(): TDbItem;
 var
   NewItem: TTaskItem;
 begin
-  NewItem:=TTaskItem.Create();
-  self.AddItem(NewItem, true);
-  result:=NewItem;
+  NewItem := TTaskItem.Create();
+  self.AddItem(NewItem, True);
+  Result := NewItem;
 end;
 
-procedure TTaskList.SetFilter(FilterType, FilterID: integer);
+procedure TTaskList.SetFilter(AFilterType: TTaskFilterType; AFilterID: Integer);
 begin
-  self.AFilterType:=FilterType;
-  self.AFilterID:=FilterID;
+  self.FilterType := AFilterType;
+  self.FilterID := AFilterID;
   self.LoadList();
 end;
 

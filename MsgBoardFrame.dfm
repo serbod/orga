@@ -3,6 +3,12 @@ object FrameMsgBoard: TFrameMsgBoard
   Top = 0
   Width = 760
   Height = 450
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  ParentFont = False
   TabOrder = 0
   object Splitter4: TSplitter
     Left = 218
@@ -21,7 +27,7 @@ object FrameMsgBoard: TFrameMsgBoard
     TabOrder = 0
     object tbRefresh: TToolButton
       Left = 0
-      Top = 2
+      Top = 0
       Hint = 'Refresh'
       Caption = 'tbRefresh'
       ImageIndex = 29
@@ -30,7 +36,7 @@ object FrameMsgBoard: TFrameMsgBoard
     end
     object tbLoad: TToolButton
       Left = 0
-      Top = 32
+      Top = 30
       Hint = 'Load'
       Caption = 'tbLoad'
       ImageIndex = 28
@@ -39,7 +45,7 @@ object FrameMsgBoard: TFrameMsgBoard
     end
     object tbSave: TToolButton
       Left = 0
-      Top = 62
+      Top = 60
       Hint = 'Save'
       Caption = 'tbSave'
       ImageIndex = 27
@@ -47,7 +53,7 @@ object FrameMsgBoard: TFrameMsgBoard
     end
     object ToolButton1: TToolButton
       Left = 0
-      Top = 62
+      Top = 60
       Width = 8
       Caption = 'ToolButton1'
       ImageIndex = 28
@@ -56,7 +62,7 @@ object FrameMsgBoard: TFrameMsgBoard
     end
     object tbAdd: TToolButton
       Left = 0
-      Top = 97
+      Top = 98
       Caption = 'tbAdd'
       ImageIndex = 0
       Wrap = True
@@ -64,7 +70,7 @@ object FrameMsgBoard: TFrameMsgBoard
     end
     object tbDel: TToolButton
       Left = 0
-      Top = 127
+      Top = 128
       Caption = 'tbDel'
       ImageIndex = 26
       Wrap = True
@@ -96,15 +102,15 @@ object FrameMsgBoard: TFrameMsgBoard
         object lbAuthorName: TLabel
           Left = 8
           Top = 8
-          Width = 35
-          Height = 13
+          Width = 40
+          Height = 16
           Caption = #1040#1074#1090#1086#1088':'
         end
         object lbAuthorText: TLabel
           Left = 56
           Top = 8
-          Width = 63
-          Height = 13
+          Width = 73
+          Height = 16
           Caption = 'lbAuthorText'
         end
       end
@@ -115,37 +121,81 @@ object FrameMsgBoard: TFrameMsgBoard
         Height = 407
         Align = alClient
         TabOrder = 1
+        ExplicitLeft = 1
+        ExplicitTop = 42
+        ExplicitWidth = 537
+        ExplicitHeight = 407
         inherited pcEditorControls: TPageControl
           Width = 537
+          ExplicitWidth = 537
           inherited tsFile: TTabSheet
+            ExplicitTop = 27
+            ExplicitWidth = 529
+            ExplicitHeight = 31
             inherited toolbarFile: TToolBar
               Width = 529
+              Height = 31
+              ExplicitWidth = 529
+              inherited tbOpenFile: TToolButton
+                Top = 0
+                ExplicitTop = 0
+              end
+              inherited tbSaveAs: TToolButton
+                Top = 0
+                ExplicitTop = 0
+              end
+              inherited tbSepFile1: TToolButton
+                Top = 0
+                ExplicitTop = 0
+              end
+              inherited tbPrint: TToolButton
+                Top = 0
+                ExplicitTop = 0
+              end
+              inherited tbPrintPreview: TToolButton
+                Top = 0
+                ExplicitTop = 0
+              end
+              inherited tbSepFile2: TToolButton
+                Top = 0
+                ExplicitTop = 0
+              end
+              inherited tbSendTo: TToolButton
+                Top = 0
+                ExplicitTop = 0
+              end
             end
           end
           inherited tsEdit: TTabSheet
             inherited toolbarEdit: TToolBar
               Width = 434
+              ExplicitWidth = 434
             end
           end
           inherited tsInsert: TTabSheet
             inherited toolbarInsert: TToolBar
               Width = 434
+              ExplicitWidth = 434
             end
           end
           inherited tsFormat: TTabSheet
             inherited toolbarFormat: TToolBar
               Width = 434
+              ExplicitWidth = 434
             end
           end
           inherited tsRecent: TTabSheet
             inherited toolbarRecent: TToolBar
               Width = 434
+              ExplicitWidth = 434
             end
           end
         end
         inherited reText: TRichEdit
           Width = 537
           Height = 345
+          ExplicitWidth = 537
+          ExplicitHeight = 345
         end
       end
     end
@@ -166,13 +216,16 @@ object FrameMsgBoard: TFrameMsgBoard
       Indent = 19
       TabOrder = 0
       OnChange = tvMsgBoardListChange
-      Items.Data = {
-        03000000310000000000000000000000FFFFFFFFFFFFFFFF0000000000000000
-        183720ECE0F0F2E020EFEEEAF3EFE0E5EC20EFEEE4E0F0EAE82C000000000000
-        0000000000FFFFFFFFFFFFFFFF000000000000000013313120E0EFF0E5EBFF20
-        F1F3E1E1EEF2EDE8EA450000000000000000000000FFFFFFFFFFFFFFFF000000
-        00000000002CCAF2EE20EEF1F2E0E2E8EB20E220F5EEEBEEE4E8EBFCEDE8EAE5
-        20E1E0EDEAF320F120EEE3F3F0F6E0ECE83F}
+      Items.NodeData = {
+        03030000004E0000000000000000000000FFFFFFFFFFFFFFFF00000000000000
+        00000000000118370020003C04300440044204300420003F043E043A0443043F
+        04300435043C0420003F043E043404300440043A043804440000000000000000
+        000000FFFFFFFFFFFFFFFF000000000000000000000000011331003100200030
+        043F04400435043B044F04200041044304310431043E0442043D0438043A0476
+        0000000000000000000000FFFFFFFFFFFFFFFF00000000000000000000000001
+        2C1A0442043E0420003E04410442043004320438043B0420003204200045043E
+        043B043E04340438043B044C043D0438043A0435042000310430043D043A0443
+        042000410420003E04330443044004460430043C0438043F00}
     end
   end
 end

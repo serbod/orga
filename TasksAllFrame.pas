@@ -3,52 +3,63 @@ unit TasksAllFrame;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, StdCtrls, ComCtrls, ExtCtrls, ToolWin, TasksUnit;
+  SysUtils, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, ExtCtrls, ToolWin, TasksUnit, System.Actions,
+  Vcl.ActnList, Vcl.Menus;
 
 type
   TFrameTasksAll = class(TFrame)
-    toolbarMain: TToolBar;
-    tbRefresh: TToolButton;
-    tbLoadTasks: TToolButton;
-    tbSaveTasks: TToolButton;
-    ToolButton4: TToolButton;
     panelLeft: TPanel;
     panelRight: TPanel;
     Splitter1: TSplitter;
     lvAllTasks: TListView;
     gbTaskDetails: TGroupBox;
-    toolbarTaskEdit: TToolBar;
-    tbAddTask: TToolButton;
-    tbDeleteTask: TToolButton;
-    ToolButton7: TToolButton;
-    ToolButton8: TToolButton;
-    Label1: TLabel;
     Label2: TLabel;
-    trackbarPriority: TTrackBar;
-    lbPriorityValue: TLabel;
     Label3: TLabel;
     Label4: TLabel;
-    trackbarStatus: TTrackBar;
     reTaskText: TRichEdit;
     lbAuthor: TLabel;
     dtpBegin: TDateTimePicker;
     dtpEnd: TDateTimePicker;
-    procedure trackbarPriorityChange(Sender: TObject);
-    procedure tbClick(Sender: TObject);
+    alTasks: TActionList;
+    actTasksLoad: TAction;
+    actTasksSave: TAction;
+    actTasksRefresh: TAction;
+    pmTasksList: TPopupMenu;
+    N1: TMenuItem;
+    Loadtasklist1: TMenuItem;
+    Savetasklist1: TMenuItem;
+    actTaskAdd: TAction;
+    actTaskDel: TAction;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    cbbTaskStatus: TComboBoxEx;
+    lbFiles: TLabel;
     procedure lvAllTasksChange(Sender: TObject; Item: TListItem;
       Change: TItemChange);
+    procedure OnChangeHandler(Sender: TObject);
+    procedure actTasksLoadExecute(Sender: TObject);
+    procedure actTasksSaveExecute(Sender: TObject);
+    procedure actTasksRefreshExecute(Sender: TObject);
+    procedure actTaskAddExecute(Sender: TObject);
+    procedure actTaskDelExecute(Sender: TObject);
   private
     { Private declarations }
     TaskList: TTaskList;
+    // task data before edit
+    SavedTaskData: string;
     SelectedTask: TTaskItem;
+    IsChangeDisabled: Boolean;
     procedure LoadList();
     procedure SaveList();
-    procedure NewItem(ASubItem: boolean = false);
+    procedure NewItem(ASubItem: Boolean = False);
     procedure DeleteItem();
     procedure ReadSelectedTask();
     procedure WriteSelectedTask();
-    procedure RefreshTasksList(SelectedOnly: boolean = false);
+    procedure TaskToListItem(ATask: TTaskItem; li: TListItem);
+    procedure RefreshTasksList(SelectedOnly: Boolean = False);
   public
     { Public declarations }
     constructor Create(AOwner: TComponent); override;
@@ -56,14 +67,40 @@ type
   end;
 
 implementation
+
 uses Main, MainFunc;
 
 {$R *.dfm}
 
+procedure TFrameTasksAll.actTaskAddExecute(Sender: TObject);
+begin
+  NewItem();
+end;
+
+procedure TFrameTasksAll.actTaskDelExecute(Sender: TObject);
+begin
+  DeleteItem();
+end;
+
+procedure TFrameTasksAll.actTasksLoadExecute(Sender: TObject);
+begin
+  LoadList();
+end;
+
+procedure TFrameTasksAll.actTasksRefreshExecute(Sender: TObject);
+begin
+  RefreshTasksList();
+end;
+
+procedure TFrameTasksAll.actTasksSaveExecute(Sender: TObject);
+begin
+  SaveList();
+end;
+
 constructor TFrameTasksAll.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  if not Assigned(TaskList) then TaskList:=TTaskList.Create();
+  if not Assigned(TaskList) then TaskList := TTaskList.Create();
   self.LoadList();
 end;
 
@@ -73,29 +110,28 @@ begin
   inherited Destroy();
 end;
 
-procedure TFrameTasksAll.trackbarPriorityChange(Sender: TObject);
+procedure TFrameTasksAll.OnChangeHandler(Sender: TObject);
 begin
-  lbPriorityValue.Caption := IntToStr((Sender as TTrackBar).Position);
+  WriteSelectedTask();
+  RefreshTasksList(True);
 end;
 
-procedure TFrameTasksAll.RefreshTasksList(SelectedOnly: boolean = false);
+procedure TFrameTasksAll.RefreshTasksList(SelectedOnly: Boolean);
 var
   Task: TTaskItem;
   li: TListItem;
-  i: integer;
+  i: Integer;
 begin
   if SelectedOnly then
   begin
     for i:=0 to TaskList.Count-1 do
     begin
-      Task:=TTaskItem(TaskList[i]);
-      if Task=SelectedTask then
+      Task := TTaskItem(TaskList[i]);
+      if Task = SelectedTask then
       begin
-        li:=lvAllTasks.Items[i];
-        li.Caption:=IntToStr(Task.Priority);
-        li.SubItems[0]:=Task.Author;
-        li.SubItems[1]:=Task.Name;
-        li.SubItems[2]:=DateTimeToStr(Task.BeginDate);
+        li := lvAllTasks.Items[i];
+        li.SubItems.Clear();
+        TaskToListItem(Task, li);
         Exit;
       end;
     end;
@@ -104,51 +140,24 @@ begin
 
   lvAllTasks.Clear();
   TaskList.Sort();
-  for i:=0 to TaskList.Count-1 do
+  for i := 0 to TaskList.Count-1 do
   begin
-    Task:=TTaskItem(TaskList[i]);
-    li:=lvAllTasks.Items.Add();
-    li.Data:=Task;
-    li.Caption:=IntToStr(Task.Priority);
-    li.SubItems.Add(Task.Author);
-    li.SubItems.Add(Task.Name);
-    li.SubItems.Add(DateTimeToStr(Task.BeginDate));
-    if Task=SelectedTask then
+    Task := TTaskItem(TaskList[i]);
+    li := lvAllTasks.Items.Add();
+    TaskToListItem(Task, li);
+    if Task = SelectedTask then
     begin
-      li.Selected:=true;
-      li.Focused:=true;
+      li.Selected := True;
+      li.Focused := True;
     end;
-  end;
-end;
-
-procedure TFrameTasksAll.tbClick(Sender: TObject);
-begin
-  if Sender=tbLoadTasks then
-  begin
-    LoadList();
-  end
-  else if Sender=tbSaveTasks then
-  begin
-    SaveList();
-  end
-  else if Sender=tbRefresh then
-  begin
-    RefreshTasksList();
-  end
-  else if Sender=tbAddTask then
-  begin
-    NewItem();
-  end
-  else if Sender=tbDeleteTask then
-  begin
-    DeleteItem();
   end;
 end;
 
 procedure TFrameTasksAll.LoadList();
 begin
   //
-  SelectedTask:=nil;
+  SelectedTask := nil;
+  SavedTaskData := '';
   TaskList.Clear();
   TaskList.LoadList();
   RefreshTasksList();
@@ -159,29 +168,35 @@ begin
   self.TaskList.SaveList();
 end;
 
+procedure TFrameTasksAll.TaskToListItem(ATask: TTaskItem; li: TListItem);
+begin
+  li.Data := ATask;
+  li.StateIndex := TaskStateToIconIndex(ATask);
+  li.Caption := ATask.Name;
+  li.SubItems.Add(FormatDateTime('DD.MM.YY', ATask.BeginDate));
+  li.SubItems.Add(ATask.Author);
+end;
+
 procedure TFrameTasksAll.NewItem(ASubItem: boolean = false);
 var
   Task: TTaskItem;
   li: TListItem;
   i: integer;
 begin
-  Task:=TTaskItem.Create();
-  Task.Name:='Новая задача';
-  Task.Priority:=1;
-  Task.Status:=0;
-  Task.Author:='Admin';
-  Task.BeginDate:=Now();
-  Task.EndDate:=Now();
+  Task := TTaskItem.Create();
+  Task.Name := 'Новая задача';
+  Task.Priority := 1;
+  Task.Status := 0;
+  Task.Author := 'Admin';
+  Task.BeginDate := Now();
+  Task.EndDate := Now();
   self.TaskList.Add(Task);
 
-  li:=lvAllTasks.Items.Add();
-  li.Data:=Task;
-  li.Caption:=IntToStr(Task.Priority);
-  li.SubItems.Add(Task.Author);
-  li.SubItems.Add(Task.Name);
-  li.SubItems.Add(DateTimeToStr(Task.BeginDate));
+  li := lvAllTasks.Items.Add();
+  TaskToListItem(Task, li);
 
-  self.SelectedTask:=Task;
+  self.SelectedTask := Task;
+  SavedTaskData := self.SelectedTask.ToString;
   ReadSelectedTask();
 end;
 
@@ -189,43 +204,51 @@ procedure TFrameTasksAll.ReadSelectedTask();
 var
   Task: TTaskItem;
 begin
-  if not Assigned(self.SelectedTask) then Exit;
-  Task:=self.SelectedTask;
-  trackbarPriority.Position:=Task.Priority;
-  trackbarStatus.Position:=Task.Status;
-  dtpBegin.DateTime:=Task.BeginDate;
-  dtpEnd.DateTime:=Task.EndDate;
-  lbAuthor.Caption:=Task.Author;
-  //lbPeriod.Caption:=''+DateTimeToStr(Task.BeginDate)+' - '+DateTimeToStr(Task.EndDate);
-  reTaskText.Text:=Task.Text;
+  if not Assigned(SelectedTask) then Exit;
+  IsChangeDisabled := True;
+  try
+    Task := SelectedTask;
+    cbbTaskStatus.ItemIndex := Task.Status;
+    dtpBegin.DateTime := Task.BeginDate;
+    dtpEnd.DateTime := Task.EndDate;
+    lbAuthor.Caption := Task.Author;
+    //lbPeriod.Caption := ''+DateTimeToStr(Task.BeginDate)+' - '+DateTimeToStr(Task.EndDate);
+    reTaskText.Text := Task.Text;
+  finally
+    IsChangeDisabled := False;
+  end;
 end;
 
 procedure TFrameTasksAll.WriteSelectedTask();
 begin
-  if not Assigned(self.SelectedTask) then Exit;
-  self.SelectedTask.Priority:=trackbarPriority.Position;
-  self.SelectedTask.Status:=trackbarStatus.Position;
-  self.SelectedTask.BeginDate:=dtpBegin.DateTime;
-  self.SelectedTask.EndDate:=dtpEnd.DateTime;
-  //self.SelectedTask.Author:=lbAuthor.Caption;
-  self.SelectedTask.Text:=reTaskText.Text;
-  self.SelectedTask.Name:='';
-  if reTaskText.Lines.Count>0 then self.SelectedTask.Name:=reTaskText.Lines[0];
+  if not Assigned(SelectedTask) then Exit;
+  if IsChangeDisabled then Exit;
+
+  SelectedTask.Status := cbbTaskStatus.ItemIndex;
+  SelectedTask.Priority := TaskStatusToPriority(SelectedTask.Status);
+  SelectedTask.BeginDate := dtpBegin.DateTime;
+  SelectedTask.EndDate := dtpEnd.DateTime;
+  //SelectedTask.Author := lbAuthor.Caption;
+  SelectedTask.Text := reTaskText.Text;
+  SelectedTask.Name := '';
+  if reTaskText.Lines.Count > 0 then
+    SelectedTask.Name := reTaskText.Lines[0];
 end;
 
 
 procedure TFrameTasksAll.DeleteItem();
 var
-  i: integer;
+  i: Integer;
 begin
-  if not Assigned(self.SelectedTask) then Exit;
-  i:=lvAllTasks.ItemIndex;
+  if not Assigned(SelectedTask) then Exit;
+  i := lvAllTasks.ItemIndex;
   TaskList.Remove(SelectedTask);
-  SelectedTask:=nil;
+  SelectedTask := nil;
+  SavedTaskData := '';
   RefreshTasksList();
   while i >= lvAllTasks.Items.Count do Dec(i);
   if i < 0 then Exit;
-  lvAllTasks.ItemIndex:=i;
+  lvAllTasks.ItemIndex := i;
 end;
 
 procedure TFrameTasksAll.lvAllTasksChange(Sender: TObject; Item: TListItem;
@@ -234,14 +257,16 @@ var
   li: TListItem;
   Task: TTaskItem;
 begin
-  self.WriteSelectedTask();
-  self.RefreshTasksList(true);
-  li:=TListView(Sender).Selected;
+  //if not AskApplyChanges then
+  //  RestoreSelectedTask();
+  RefreshTasksList(True);
+  li := TListView(Sender).Selected;
   if not Assigned(li) then Exit;
-  Task:=li.Data;
+  Task := li.Data;
   if not Assigned(Task) then Exit;
-  self.SelectedTask:=Task;
-  self.ReadSelectedTask();
+  SelectedTask := Task;
+  SavedTaskData := SelectedTask.ToString;
+  ReadSelectedTask();
 end;
 
 end.

@@ -151,7 +151,7 @@ var
   DayNum: Integer;
 begin
   if ARow = 0 then  { day names at tops of columns }
-    Result := ShortDayNames[(StartOfWeek + ACol) mod 7 + 1]
+    Result := FormatSettings.ShortDayNames[(StartOfWeek + ACol) mod 7 + 1]
   else
   begin
     DayNum := FMonthOffset + ACol + (ARow - 1) * 7;

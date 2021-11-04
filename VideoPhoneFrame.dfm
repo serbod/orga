@@ -84,17 +84,6 @@ object FrameVideoPhone: TFrameVideoPhone
       Align = alTop
       Caption = #1054#1082#1085#1086' '#1074#1080#1076#1077#1086
       TabOrder = 0
-      object VideoWindow: TVideoWindow
-        Left = 8
-        Top = 15
-        Width = 465
-        Height = 290
-        FilterGraph = FilterGraph
-        VMROptions.Mode = vmrWindowed
-        VMROptions.Streams = 1
-        VMROptions.Preferences = []
-        Color = clBlack
-      end
     end
     object gbInfo: TGroupBox
       Left = 0
@@ -105,28 +94,6 @@ object FrameVideoPhone: TFrameVideoPhone
       Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1103
       TabOrder = 1
     end
-  end
-  object FilterGraph: TFilterGraph
-    Mode = gmCapture
-    GraphEdit = True
-    LinearVolume = True
-    Left = 272
-    Top = 8
-  end
-  object Filter: TFilter
-    BaseFilter.data = {00000000}
-    FilterGraph = FilterGraph
-    Left = 272
-    Top = 40
-  end
-  object SampleGrabber: TSampleGrabber
-    FilterGraph = FilterGraph
-    MediaType.data = {
-      7669647300001000800000AA00389B717DEB36E44F52CE119F530020AF0BA770
-      FFFFFFFF0000000001000000809F580556C3CE11BF0100AA0055595A00000000
-      0000000000000000}
-    Left = 272
-    Top = 72
   end
   object pmCameraSelect: TPopupMenu
     Left = 56

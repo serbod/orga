@@ -3,6 +3,12 @@ object FrameDayShedule: TFrameDayShedule
   Top = 0
   Width = 704
   Height = 560
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  ParentFont = False
   TabOrder = 0
   object sgDayShedule: TStringGrid
     Left = 0
