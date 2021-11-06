@@ -234,8 +234,6 @@ object FrameContacts: TFrameContacts
         TitleCaptions.Strings = (
           #1057#1074#1086#1081#1089#1090#1074#1086
           #1047#1085#1072#1095#1077#1085#1080#1077)
-        ExplicitTop = 15
-        ExplicitHeight = 215
         ColWidths = (
           150
           337)

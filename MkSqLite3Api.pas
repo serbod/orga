@@ -6,7 +6,7 @@ uses Windows, Classes, SysUtils;
 
 const
 
-  SQLITEDLL: PChar  = 'sqlite3.dll';
+  SQLITEDLL: PAnsiChar  = 'sqlite3.dll';
 
   SQLITE_OK         =  0;   // Successful result
   SQLITE_ERROR      =  1;   // SQL error or missing database
@@ -59,7 +59,7 @@ SQLITE_TRANSIENT=-1;
 
 type
 
-ppchar=^pchar;
+ppchar=^PAnsiChar;
 ppvalue=^pvalue;
 pvalue=pointer;
 
@@ -74,46 +74,46 @@ TFuncHandler=procedure(context:pointer; nArgs:integer; args:ppvalue); cdecl;
 TFuncFinalizer=procedure(context:pointer); cdecl;
 TUserCollation=function(user:pointer;
                         lenA:integer;
-                        a:pchar;
+                        a:PAnsiChar;
                         lenB:integer;
-                        b:pchar):integer; cdecl;
-                        
+                        b:PAnsiChar):integer; cdecl;
+
 TUserCollationNeeded=procedure(user:pointer;
                                db:pointer;
                                eTextRep:integer;
-                               zName:pchar); cdecl;
+                               zName:PAnsiChar); cdecl;
 
 var
 
-sqlite3_libVersion: function(): PChar; cdecl;
+sqlite3_libVersion: function(): PAnsiChar; cdecl;
 
 sqlite3_close: function(db: Pointer):integer; cdecl;
 sqlite3_exec: function(db: Pointer;
-                       SQLStatement: PChar;
+                       SQLStatement: PAnsiChar;
                        CallbackPtr: TExecCallBack;
                        CbParam: pointer;
                        ErrMsg: PPChar): integer; cdecl;
-                       
+
 sqlite3_last_insert_rowid: function(db: Pointer): int64; cdecl;
 sqlite3_changes: function(db: Pointer): integer; cdecl;
 sqlite3_total_changes: function(db: Pointer): integer; cdecl;
 sqlite3_interrupt: procedure(db: Pointer); cdecl;
-sqlite3_complete: function(P: PChar): integer; cdecl;
+sqlite3_complete: function(P: PAnsiChar): integer; cdecl;
 sqlite3_busy_handler: function(db: Pointer;
                                CallbackPtr:TBusyHandler;
                                user:pointer):integer; cdecl;
-                               
+
 sqlite3_busy_timeout: function(db: Pointer; TimeOut: integer):integer; cdecl;
-sqlite3_free: procedure(P: PChar); cdecl;
-sqlite3_open: function(dbname: PChar; var db:pointer):integer; cdecl;
+sqlite3_free: procedure(P: PAnsiChar); cdecl;
+sqlite3_open: function(dbname: PAnsiChar; var db:pointer):integer; cdecl;
 sqlite3_errcode:function(db:pointer):integer; cdecl;
-sqlite3_errmsg:function(db:pointer):pchar; cdecl;
+sqlite3_errmsg:function(db:pointer):PAnsiChar; cdecl;
 
 sqlite3_prepare:function(db:pointer;
-                         Sql:pchar;
+                         Sql:PAnsiChar;
                          nBytes:integer;
                          var stmt:pointer;
-                         var pzTail:pchar):integer; cdecl;
+                         var pzTail:PAnsiChar):integer; cdecl;
 
 sqlite3_bind_double:function(stmt:pointer; idx:integer; value:double):integer; cdecl;
 sqlite3_bind_int:function(stmt:pointer; idx:integer; value:integer):integer; cdecl;
@@ -122,7 +122,7 @@ sqlite3_bind_null:function(stmt:pointer; idx:integer):integer; cdecl;
 //sqlite3_bind_value:function(stmt:pointer; idx:integer; value:pointer):integer; cdecl;
 sqlite3_bind_text:function(stmt:pointer;
                            idx:integer;
-                           value:pchar;
+                           value:PAnsiChar;
                            size:integer;
                            xDel:Integer):integer; cdecl;
 sqlite3_bind_blob:function(stmt:pointer;
@@ -132,13 +132,15 @@ sqlite3_bind_blob:function(stmt:pointer;
                            xDel:integer):integer; cdecl;
 
 sqlite3_bind_parameter_count:function(stmt:pointer):integer; cdecl;
-sqlite3_bind_parameter_name:function(stmt:pointer; idx:integer):pchar; cdecl;
+sqlite3_bind_parameter_name:function(stmt:pointer; idx:integer):PAnsiChar; cdecl;
 
-sqlite3_bind_parameter_index:function(stmt:pointer; zName:pchar):integer; cdecl;
 
-sqlite3_column_count:function(pStmt:pointer):integer; cdecl;
-sqlite3_column_name:function(pStmt:pointer; idx:integer):pchar; cdecl;
-sqlite3_column_decltype:function(pStmt:pointer; idx:integer):pchar; cdecl;
+sqlite3_bind_parameter_index:function(stmt:pointer; zName:PAnsiChar):integer; cdecl;
+
+
+sqlite3_column_count:function(pStmt:pointer):integer; cdecl;
+sqlite3_column_name:function(pStmt:pointer; idx:integer):PAnsiChar; cdecl;
+sqlite3_column_decltype:function(pStmt:pointer; idx:integer):PAnsiChar; cdecl;
 sqlite3_step:function(pStmt:pointer):integer; cdecl;
 
 sqlite3_data_count:function(pStmt:pointer):integer; cdecl;
@@ -148,7 +150,7 @@ sqlite3_column_bytes:function(pStmt:pointer; col:integer):integer; cdecl;
 sqlite3_column_double:function(pStmt:pointer; col:integer):double; cdecl;
 sqlite3_column_int:function(pStmt:pointer; col:integer):integer; cdecl;
 sqlite3_column_int64:function(pStmt:pointer; col:integer):int64; cdecl;
-sqlite3_column_text:function(pStmt:pointer; col:integer):pchar; cdecl;
+sqlite3_column_text:function(pStmt:pointer; col:integer):PAnsiChar; cdecl;
 sqlite3_column_type:function(pStmt:pointer; col:integer):integer; cdecl;
 
 sqlite3_finalize:function(pStmt:pointer):integer; cdecl;
@@ -156,7 +158,7 @@ sqlite3_reset:function(pStmt:pointer):integer; cdecl;
 
 sqlite3_create_function:function(
   db:pointer;
-  zFunctionName:pchar;
+  zFunctionName:PAnsiChar;
   nArg:integer;
   eTextRep:integer;
   userData:pointer;
@@ -171,7 +173,7 @@ sqlite3_value_bytes:function(v:pvalue):integer; cdecl;
 sqlite3_value_double:function(v:pvalue):double; cdecl;
 sqlite3_value_int:function(v:pvalue):integer; cdecl;
 sqlite3_value_int64:function(v:pvalue):int64; cdecl;
-sqlite3_value_text:function(v:pvalue):pchar; cdecl;
+sqlite3_value_text:function(v:pvalue):PAnsiChar; cdecl;
 sqlite3_value_type:function(v:pvalue):integer; cdecl;
 
 sqlite3_aggregate_context:function(context:pointer; nBytes:integer):pointer; cdecl;
@@ -186,16 +188,16 @@ sqlite3_set_auxdata:procedure(context:pointer; idx:integer;
 sqlite3_result_blob:procedure(context:pointer; value:pointer; size:integer;
                               xDel:integer); cdecl;
 sqlite3_result_double:procedure(context:pointer; value:double); cdecl;
-sqlite3_result_error:procedure(context:pointer; msg:pchar; len:integer); cdecl;
+sqlite3_result_error:procedure(context:pointer; msg:PAnsiChar; len:integer); cdecl;
 sqlite3_result_int:procedure(context:pointer; value:integer); cdecl;
 sqlite3_result_int64:procedure(context:pointer; value:int64); cdecl;
 sqlite3_result_null:procedure(context:pointer); cdecl;
-sqlite3_result_text:procedure(context:pointer; value:pchar; len:integer;
+sqlite3_result_text:procedure(context:pointer; value:PAnsiChar; len:integer;
                               xDel:integer); cdecl;
 sqlite3_result_value:procedure(context:pointer; value:pvalue); cdecl;
 
 sqlite3_create_collation:function(db:pointer;
-  zName:pchar;
+  zName:PAnsiChar;
   eTextRep:integer;
   userData:pointer;
   func:TUserCollation):integer; cdecl;
@@ -216,7 +218,7 @@ procedure loadlibs;
 
  function loadfunc(name:string):Pointer;
   begin
-   Result:=GetProcAddress(dllhandle,pchar(name));
+   Result:=GetProcAddress(dllhandle,PAnsiChar(name));
    if not Assigned(result) then
     raise exception.createFmt('sqlite missing function %s',[name]);
 //   showmessagefmt('missinbg %s',[name]);

@@ -421,7 +421,7 @@ procedure TMkSqlStmt.getColumnData(idx:integer;
 var f:TmkSqlFieldDef;
     size:integer;
     a:string;
-    p:pchar;
+    p:PAnsiChar;
 begin
  cls:=sqlite3_column_type(fst,idx);
  if cls=SQLITE_NULL then
@@ -504,7 +504,7 @@ procedure TMkSqlStmt.bindParam(const param: tparam; idx: integer);
 var i:integer;
     a:string;
     v:variant;
-    p:pchar;
+    p:PAnsiChar;
 begin
  if not assigned(fst) then exit;
  inc(idx); // 1-based
@@ -518,7 +518,7 @@ begin
    ftFixedChar,
    ftMemo:begin
            a:=asString;
-           sqlite3_bind_text(fst,idx,pchar(a),length(a),SQLITE_TRANSIENT);
+           sqlite3_bind_text(fst,idx,PAnsiChar(a),length(a),SQLITE_TRANSIENT);
           end;
 
    ftLargeInt:sqlite3_bind_int64(fst,idx,value);
@@ -544,7 +544,7 @@ begin
    ftTime,
    ftDateTime:begin
                a:=mkdateToStr(asDateTime);
-               sqlite3_bind_text(fst,idx,pchar(a),length(a),SQLITE_TRANSIENT);
+               sqlite3_bind_text(fst,idx,PAnsiChar(a),length(a),SQLITE_TRANSIENT);
               end;
 
    ftBlob,
@@ -570,7 +570,7 @@ end;
 procedure TMkSqlStmt.bindParamByName(const param: tparam);
 var idx:integer;
 begin
- idx:=sqlite3_bind_parameter_index(fst,pchar(param.Name));
+ idx:=sqlite3_bind_parameter_index(fst,PAnsiChar(param.Name));
  if idx=0 then raise exception.createFmt('parameter not found : %s',[param.Name]);
  BindParam(param,idx-1);
 end;
@@ -586,14 +586,14 @@ begin
 (* bind by name is problematic because the params.parseSql does
 not support re-using the same name, but sqlite does. so use
 positional parameters always
-*)    
+*)
 (*    if p.name>'' then
      begin
       idx:=sqlite3_bind_parameter_index(fst,pchar(':'+p.name));
       if idx=0 then idx:=i else idx:=idx-1;
      end
     else *)
-     idx:=i; 
+     idx:=i;
     bindParam(p,idx);
    end;
 end;
@@ -631,7 +631,7 @@ begin
   begin
    feof:=true;
    exit;
-  end; 
+  end;
  Frecno:=pred(value);
  feof:=(Frecno<0) or (Frecno>=Frows.Count);
 end;
@@ -698,11 +698,11 @@ begin
 end;
 
 procedure TMkSqlStmt.open(sql:string; params:tparams);
-var p,tail:pchar;
+var p,tail:PAnsiChar;
 begin
  checkactive(false);
  close; //just in case
- p:=pchar(sql);
+ p:=PAnsiChar(sql);
  repeat
   fst:=nil;
   fdb.check(sqlite3_prepare(fdb.fdb,p,-1,fst,tail));
@@ -813,7 +813,7 @@ var i:integer;
 begin
  for i:=fcursors.Count-1 downto 0 do
   TMkSqlStmt(Fcursors[i]).close;
- Fcursors.clear; 
+ Fcursors.clear;
 end;
 
 procedure TMkSqlite.checkactive;
@@ -834,7 +834,7 @@ begin
    begin
     closeCursors;
     check(sqlite3_Close(fdb));
-   end; 
+   end;
  finally
   fdb:=nil;
   factive:=false;
@@ -855,7 +855,7 @@ begin
  close;
  a:=fdbname;
  if a='' then a:=':memory:';
- check(sqlite3_Open(pchar(a),fdb));
+ check(sqlite3_Open(PAnsiChar(a),fdb));
 {$IFDEF FULL}
  if FExtendedLike then
   fudf.add(TLike.create(self,'like',2));
@@ -877,9 +877,9 @@ begin
  else t:=0;
  repeat
   if assigned(cb) then
-   result:=sqlite3_Exec(Getdb,pchar(sql),@_execCallBack,@@cb,nil)
+   result:=sqlite3_Exec(Getdb,PAnsiChar(sql),@_execCallBack,@@cb,nil)
   else
-   result:=sqlite3_Exec(getdb,pchar(sql),nil,nil,nil);
+   result:=sqlite3_Exec(getdb,PAnsiChar(sql),nil,nil,nil);
  until (result=SQLITE_OK) or
         not (result in [SQLITE_BUSY,SQLITE_LOCKED]) or
         (FStatementTimeout=0) or

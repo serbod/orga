@@ -90,6 +90,9 @@ object frmMain: TfrmMain
               inherited lvAllTasks: TListView
                 Height = 462
                 StateImages = ilIcons16
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 447
                 ExplicitHeight = 462
               end
             end
@@ -176,6 +179,9 @@ object frmMain: TfrmMain
             inherited toolbarContacts: TToolBar
               Height = 462
               ExplicitHeight = 462
+              inherited ToolButton1: TToolButton
+                ExplicitHeight = 38
+              end
             end
             inherited panRight: TPanel
               Height = 462
@@ -205,6 +211,7 @@ object frmMain: TfrmMain
                 ExplicitHeight = 270
                 inherited vledExtraData: TValueListEditor
                   Height = 250
+                  ExplicitTop = 18
                   ExplicitHeight = 250
                 end
               end
@@ -404,6 +411,9 @@ object frmMain: TfrmMain
             inherited toolbarLocOrders: TToolBar
               Height = 462
               ExplicitHeight = 462
+              inherited ToolButton1: TToolButton
+                ExplicitHeight = 38
+              end
             end
             inherited panRight: TPanel
               Width = 490
@@ -610,6 +620,9 @@ object frmMain: TfrmMain
             inherited toolbarMsgBoard: TToolBar
               Height = 462
               ExplicitHeight = 462
+              inherited ToolButton1: TToolButton
+                ExplicitHeight = 38
+              end
             end
             inherited panRight: TPanel
               Width = 545
@@ -1458,19 +1471,19 @@ object frmMain: TfrmMain
             inherited panRight: TPanel
               Width = 467
               Height = 462
-              ExplicitWidth = 434
+              ExplicitWidth = 467
               ExplicitHeight = 462
               inherited gbPersonnel: TGroupBox
                 Width = 465
                 Height = 160
-                ExplicitWidth = 432
+                ExplicitWidth = 465
                 ExplicitHeight = 160
                 inherited lvDeptPersonnel: TListView
                   Width = 451
                   Height = 130
                   HelpContext = 162
-                  ExplicitWidth = 452
-                  ExplicitHeight = 135
+                  ExplicitWidth = 451
+                  ExplicitHeight = 130
                 end
               end
               inherited gbTasks: TGroupBox
@@ -1478,13 +1491,14 @@ object frmMain: TfrmMain
                 Width = 465
                 Height = 160
                 ExplicitTop = 161
-                ExplicitWidth = 432
+                ExplicitWidth = 465
                 ExplicitHeight = 160
                 inherited lvDeptTasks: TListView
                   Width = 451
                   Height = 130
-                  ExplicitWidth = 450
-                  ExplicitHeight = 134
+                  StateImages = nil
+                  ExplicitWidth = 451
+                  ExplicitHeight = 130
                 end
               end
               inherited gbDeptExtraInfo: TGroupBox
@@ -1492,14 +1506,13 @@ object frmMain: TfrmMain
                 Width = 465
                 Height = 140
                 ExplicitTop = 321
-                ExplicitWidth = 432
+                ExplicitWidth = 465
                 ExplicitHeight = 140
                 inherited MemoDeptExtraInfo: TMemo
                   Width = 451
                   Height = 110
-                  ExplicitTop = 16
-                  ExplicitWidth = 449
-                  ExplicitHeight = 115
+                  ExplicitWidth = 451
+                  ExplicitHeight = 110
                 end
               end
             end
@@ -1526,7 +1539,7 @@ object frmMain: TfrmMain
             inherited panCentral: TPanel
               Width = 766
               Height = 462
-              ExplicitWidth = 733
+              ExplicitWidth = 766
               ExplicitHeight = 462
               inherited Splitter1: TSplitter
                 Width = 764
@@ -1534,22 +1547,22 @@ object frmMain: TfrmMain
               end
               inherited panTop: TPanel
                 Width = 764
-                ExplicitWidth = 731
+                ExplicitWidth = 764
                 inherited lvPersonnel: TListView
                   Width = 573
-                  ExplicitWidth = 540
+                  ExplicitWidth = 573
                 end
               end
               inherited panBottom: TPanel
                 Width = 764
                 Height = 232
-                ExplicitWidth = 731
+                ExplicitWidth = 764
                 ExplicitHeight = 232
                 inherited pcPersInfo: TPageControl
                   Width = 764
                   Height = 232
                   Images = nil
-                  ExplicitWidth = 731
+                  ExplicitWidth = 764
                   ExplicitHeight = 232
                   inherited tsEmpInfo: TTabSheet
                     ExplicitWidth = 756
@@ -1564,8 +1577,6 @@ object frmMain: TfrmMain
                       inherited vledPersInfo: TValueListEditor
                         Width = 556
                         Height = 181
-                        ExplicitWidth = 483
-                        ExplicitHeight = 181
                         ColWidths = (
                           150
                           400)
@@ -1573,7 +1584,6 @@ object frmMain: TfrmMain
                     end
                     inherited gbEmployeePhoto: TGroupBox
                       Height = 201
-                      ExplicitHeight = 201
                       inherited imgPersPhoto: TImage
                         Height = 181
                         Proportional = True
@@ -1592,34 +1602,22 @@ object frmMain: TfrmMain
                     inherited gbPersTaskInfo: TGroupBox
                       Width = 371
                       Height = 201
+                      ExplicitWidth = 371
+                      ExplicitHeight = 201
                     end
                     inherited lvPersTasks: TListView
                       Height = 201
                       StateImages = nil
+                      ExplicitHeight = 201
                     end
                   end
                   inherited tsPersOrders: TTabSheet
-                    ExplicitWidth = 756
-                    ExplicitHeight = 201
                     inherited Splitter5: TSplitter
-                      Height = 201
                       ExplicitHeight = 206
                     end
                     inherited lvPersLocalOrders: TListView
-                      Height = 201
                       StateImages = nil
-                      ExplicitHeight = 201
                     end
-                    inherited gbPersLocalOrdersInfo: TGroupBox
-                      Width = 416
-                      Height = 201
-                      ExplicitWidth = 383
-                      ExplicitHeight = 201
-                    end
-                  end
-                  inherited tsPersChat: TTabSheet
-                    ExplicitWidth = 756
-                    ExplicitHeight = 201
                   end
                 end
               end
@@ -1682,6 +1680,10 @@ object frmMain: TfrmMain
                   Height = 13
                   ExplicitWidth = 88
                   ExplicitHeight = 13
+                end
+                inherited edDbName: TEdit
+                  Height = 21
+                  ExplicitHeight = 21
                 end
                 inherited comboxDbType: TComboBox
                   Height = 21

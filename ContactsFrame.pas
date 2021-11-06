@@ -178,7 +178,7 @@ begin
   Item.Author:=conf['UserName'];
   Item.Timestamp:=Now();
   Item.DataList:=TContDataList.Create();
-  self.ItemsList.AddItem(Item);
+  self.ItemsList.AddItem(Item, True);
   Item.DataList.OwnerID:=Item.ID;
 
   if ASubItem then

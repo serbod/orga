@@ -323,16 +323,13 @@ object FramePersonnel: TFramePersonnel
     Left = 272
     Top = 64
     object mAddItem: TMenuItem
-      Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-      OnClick = PersListPopupClick
+      Action = actPersAdd
     end
     object mDelItem: TMenuItem
-      Caption = #1059#1076#1072#1083#1080#1090#1100
-      OnClick = PersListPopupClick
+      Action = actPersDel
     end
     object mSaveItem: TMenuItem
-      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
-      OnClick = PersListPopupClick
+      Action = actPersSave
     end
   end
   object pmPersInfo: TPopupMenu
@@ -408,6 +405,20 @@ object FramePersonnel: TFramePersonnel
       Category = 'PersTree'
       Caption = #1056#1077#1076#1072#1082#1090#1086#1088' '#1090#1072#1073#1083#1080#1094#1099
       OnExecute = actTableEditExecute
+    end
+    object actPersAdd: TAction
+      Category = 'PersList'
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1087#1077#1088#1089#1086#1085#1091
+      OnExecute = actPersAddExecute
+    end
+    object actPersDel: TAction
+      Category = 'PersList'
+      Caption = #1059#1076#1072#1083#1080#1090#1100' '#1087#1077#1088#1089#1086#1085#1091
+    end
+    object actPersSave: TAction
+      Category = 'PersList'
+      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1087#1077#1088#1089#1086#1085#1091
+      OnExecute = actPersSaveExecute
     end
   end
 end

@@ -54,7 +54,6 @@ begin
   self.Align := alClient;
   if not Assigned(ItemsList) then
     ItemsList := TPersList.Create();
-  ItemsList.FileName := conf['BasePath'] + '\Personnel.lst';
   LoadList();
 end;
 

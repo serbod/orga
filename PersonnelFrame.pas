@@ -71,8 +71,10 @@ type
     N3: TMenuItem;
     N5: TMenuItem;
     N7: TMenuItem;
+    actPersAdd: TAction;
+    actPersDel: TAction;
+    actPersSave: TAction;
     procedure PersTreePopupClick(Sender: TObject);
-    procedure PersListPopupClick(Sender: TObject);
     procedure PersInfoPopupClick(Sender: TObject);
     procedure tvPersonnelDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -91,6 +93,8 @@ type
     procedure actLoadExecute(Sender: TObject);
     procedure actSaveExecute(Sender: TObject);
     procedure actTableEditExecute(Sender: TObject);
+    procedure actPersAddExecute(Sender: TObject);
+    procedure actPersSaveExecute(Sender: TObject);
   private
     { Private declarations }
     ItemsList: TPersList;
@@ -102,10 +106,10 @@ type
     procedure ReadSelectedItem();
     procedure ReadSelectedGroup();
     procedure WriteSelectedItem();
-    procedure RefreshItemsList(SelectedOnly: Boolean = false);
-    procedure RefreshGroupsList(SelectedOnly: Boolean = false);
+    procedure RefreshItemsList(SelectedOnly: Boolean = False);
+    procedure RefreshGroupsList(SelectedOnly: Boolean = False);
     procedure NewItem(ASubItem: Boolean = true);
-    procedure NewItemGroup(ASubItem: Boolean = false);
+    procedure NewItemGroup(ASubItem: Boolean = False);
     procedure LoadList();
     procedure SaveList();
     procedure ChangeItemType(NewType: Integer = -1);
@@ -128,7 +132,6 @@ begin
   self.Align := alClient;
   if not Assigned(ItemsList) then
     ItemsList := TPersList.Create();
-  ItemsList.FileName := conf['BasePath'] + '\Personnel.lst';
   self.LoadList();
 end;
 
@@ -180,9 +183,7 @@ begin
   Item.ItemType := TPersItemType.Group; // 0-Item, 1-Group
   Item.Author := conf['UserName'];
   Item.Timestamp := Now();
-  Item.DataList := TPersDataList.Create();
-  self.ItemsList.AddItem(Item);
-  Item.DataList.OwnerID := Item.ID;
+  self.ItemsList.AddItem(Item, True);
 
   if ASubItem then
   begin
@@ -210,28 +211,15 @@ begin
   if not Assigned(SelectedGroup) then
     Exit;
   Item := TPersItem.Create();
-  Item.ParentID := -1;
+  Item.ParentID := SelectedGroup.ID;
+  Item.TreeLevel := SelectedGroup.TreeLevel + 1;
   Item.Name := 'Новый сотрудник';
   Item.ItemType := TPersItemType.Person; // 0-Item, 1-Group
   Item.Author := conf['UserName'];
   Item.Timestamp := Now();
-  Item.DataList := TPersDataList.Create();
-  self.ItemsList.AddItem(Item);
-  Item.DataList.OwnerID := Item.ID;
+  self.ItemsList.AddItem(Item, True);
 
-  if ASubItem then
-  begin
-    if Assigned(tvPersonnel.Selected) and Assigned(tvPersonnel.Selected.Data) then
-    begin
-      Item.ParentID := TPersItem(tvPersonnel.Selected.Data).ID;
-      Item.TreeLevel := tvPersonnel.Selected.Level + 1;
-    end;
-  end
-  else
-  begin
-  end;
-
-  self.SelectedItem := Item;
+  SelectedItem := Item;
   ReadSelectedGroup();
   ReadSelectedItem();
 end;
@@ -304,7 +292,7 @@ begin
   end
   else
   begin
-    imgPersPhoto.Visible := false;
+    imgPersPhoto.Visible := False;
   end;
 
   // Fill tasks list
@@ -400,9 +388,19 @@ end;
 // ===========================================
 // Action handlers
 // ===========================================
+procedure TFramePersonnel.actPersSaveExecute(Sender: TObject);
+begin
+  WriteSelectedItem();
+end;
+
 procedure TFramePersonnel.actLoadExecute(Sender: TObject);
 begin
   LoadList();
+end;
+
+procedure TFramePersonnel.actPersAddExecute(Sender: TObject);
+begin
+  NewItem();
 end;
 
 procedure TFramePersonnel.actRefreshExecute(Sender: TObject);
@@ -469,23 +467,6 @@ begin
   else if Sender = mCollapseAll then
   begin
     tvPersonnel.FullCollapse();
-  end;
-  tvPersonnel.Items.EndUpdate();
-end;
-
-procedure TFramePersonnel.PersListPopupClick(Sender: TObject);
-begin
-  tvPersonnel.Items.BeginUpdate();
-  if Sender = mAddItem then
-  begin
-    self.NewItem();
-  end
-  else if Sender = mDelItem then
-  begin
-  end
-  else if Sender = mSaveItem then // Write selected item
-  begin
-    self.WriteSelectedItem();
   end;
   tvPersonnel.Items.EndUpdate();
 end;

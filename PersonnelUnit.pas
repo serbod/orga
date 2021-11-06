@@ -8,6 +8,8 @@ interface
 uses Classes, Contnrs, SysUtils, DbUnit;
 
 type
+  TPersItem = class;
+
   // Вид свойства персонала
   TPersDataType = class(TDBItem)
   public
@@ -41,9 +43,8 @@ type
   // Список свойств персоны
   TPersDataList = class(TDBItemList)
   public
-    OwnerID: Integer;
-    FileName: string;
-    constructor Create(); reintroduce;
+    Owner: TPersItem;
+    constructor Create(AOwner: TPersItem); reintroduce;
     procedure LoadList();
     procedure SaveList();
     // procedure Sort();
@@ -57,6 +58,8 @@ type
 
   // Персона
   TPersItem = class(TDBItem)
+  private
+    FDataList: TPersDataList;
   public
     ParentID: Integer;
     TreeLevel: Integer; // for sorting
@@ -67,18 +70,18 @@ type
     Photo: TObject;
     Author: string;
     Timestamp: TDateTime;
-    DataList: TPersDataList;
     constructor Create();
     function GetValue(const FName: string): string; override;
     procedure SetValue(const FName, FValue: string); override;
     destructor Destroy(); override;
     function GetDataByName(AName: string): string;
+
+    property DataList: TPersDataList read FDataList;
   end;
 
   // Список персон
   TPersList = class(TDBItemList)
   public
-    FileName: string;
     constructor Create(); reintroduce;
     function NewItem(): TDBItem; override;
     procedure LoadList();
@@ -145,7 +148,7 @@ var
   NewItem: TPersDataType;
 begin
   NewItem := TPersDataType.Create();
-  self.AddItem(NewItem, true);
+  self.AddItem(NewItem, True);
   Result := NewItem;
 end;
 
@@ -229,7 +232,7 @@ end;
 // ===========================================
 // TPersDataList
 // ===========================================
-constructor TPersDataList.Create();
+constructor TPersDataList.Create(AOwner: TPersItem);
 var
   ti: TDbTableInfo;
 begin
@@ -249,6 +252,7 @@ begin
   end;
 
   inherited Create(ti);
+  Owner := AOwner;
 end;
 
 function TPersDataList.NewItem(): TDBItem;
@@ -256,7 +260,7 @@ var
   NewItem: TPersDataItem;
 begin
   NewItem := TPersDataItem.Create();
-  self.AddItem(NewItem, true);
+  self.AddItem(NewItem, True);
   Result := NewItem;
 end;
 
@@ -289,6 +293,9 @@ procedure TPersDataList.UpdateItem(Name, Value: string);
 var
   DataItem: TPersDataItem;
 begin
+  if Owner = nil then
+    Exit;
+  Assert(Owner.ID > 0);
   if Name = '' then
     Exit;
   DataItem := GetItemByName(Name);
@@ -303,10 +310,10 @@ begin
   if not Assigned(DataItem) then
   begin
     DataItem := TPersDataItem.Create();
-    DataItem.OwnerID := self.OwnerID;
+    DataItem.OwnerID := Owner.ID;
     DataItem.Name := Name;
     DataItem.DataTypeID := glPersonnelDataTypes.GetItemIDByName(Name);
-    self.Add(DataItem);
+    AddItem(DataItem, True);
   end;
   DataItem.Text := Value;
 end;
@@ -316,12 +323,12 @@ end;
 // ===========================================
 constructor TPersItem.Create();
 begin
-  self.DataList := TPersDataList.Create();
+  FDataList := TPersDataList.Create(Self);
 end;
 
 destructor TPersItem.Destroy();
 begin
-  FreeAndNil(self.DataList);
+  FreeAndNil(FDataList);
 end;
 
 function TPersItem.GetValue(const FName: string): string;
@@ -416,36 +423,38 @@ var
 begin
   DbDriver.GetTable(self);
 
-  for i := 0 to self.Count - 1 do
+  {for i := 0 to self.Count - 1 do
   begin
     Item := (self.Items[i] as TPersItem);
-    Item.DataList.OwnerID := Item.ID;
     // if LastID <= NewItem.ID then LastID:=NewItem.ID+1;
-  end;
+  end; }
 
   // Add Pers data items
-  AllPersData := TPersDataList.Create();
-  AllPersData.OwnsObjects := true;
-  AllPersData.LoadList();
+  AllPersData := TPersDataList.Create(nil);
+  try
+    AllPersData.OwnsObjects := True;
+    AllPersData.LoadList();
 
-  Item := nil;
-  PrevID := -1;
-  for n := AllPersData.Count - 1 downto 0 do
-  begin
-    TmpDI := TPersDataItem(AllPersData[n]);
-    if PrevID <> TmpDI.OwnerID then
+    Item := nil;
+    PrevID := -1;
+    for n := AllPersData.Count - 1 downto 0 do
     begin
-      PrevID := TmpDI.OwnerID;
-      Item := (self.GetItemByID(PrevID) as TPersItem);
+      TmpDI := TPersDataItem(AllPersData[n]);
+      if PrevID <> TmpDI.OwnerID then
+      begin
+        PrevID := TmpDI.OwnerID;
+        Item := (self.GetItemByID(PrevID) as TPersItem);
+      end;
+      if Assigned(Item) then
+        Item.DataList.Add(TmpDI)
+      else
+        AllPersData.Delete(n);
     end;
-    if Assigned(Item) then
-      Item.DataList.Add(TmpDI)
-    else
-      AllPersData.Delete(n);
-  end;
 
-  AllPersData.OwnsObjects := false;
-  AllPersData.Free();
+    AllPersData.OwnsObjects := False;
+  finally
+    AllPersData.Free();
+  end;
 end;
 
 procedure TPersList.SaveList();
@@ -458,21 +467,24 @@ begin
   DbDriver.SetTable(self);
 
   // Fill related info list
-  AllPersData := TPersDataList.Create();
-  AllPersData.OwnsObjects := false;
+  AllPersData := TPersDataList.Create(nil);
+  try
+    AllPersData.OwnsObjects := False;
 
-  for i := 0 to self.Count - 1 do
-  begin
-    TmpItem := TPersItem(self.Items[i]);
-    for n := 0 to TmpItem.DataList.Count - 1 do
+    for i := 0 to self.Count - 1 do
     begin
-      AllPersData.Add(TmpItem.DataList[n]);
+      TmpItem := TPersItem(self.Items[i]);
+      for n := 0 to TmpItem.DataList.Count - 1 do
+      begin
+        AllPersData.Add(TmpItem.DataList[n]);
+      end;
     end;
-  end;
 
-  // Save related info
-  AllPersData.SaveList();
-  AllPersData.Free();
+    // Save related info
+    AllPersData.SaveList();
+  finally
+    AllPersData.Free();
+  end;
 end;
 
 function TPersList.NewItem(): TDBItem;
@@ -480,7 +492,7 @@ var
   NewItem: TPersItem;
 begin
   NewItem := TPersItem.Create();
-  self.AddItem(NewItem, true);
+  self.AddItem(NewItem, True);
   Result := NewItem;
 end;
 

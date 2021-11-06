@@ -12,7 +12,7 @@ uses
   Frame_DayShedule, MsgBoardFrame, ContactsFrame,
   TasksAllFrame, MailboxFrame, LocalOrdersFrame, UserOptionsFrame,
   {VideoPhoneFrame,} DbBrowserFrame, DrawBoardFrame, System.Actions,
-  System.ImageList, TasksUnit;
+  System.ImageList, TasksUnit, Vcl.Menus;
 
 type
   TfrmMain = class(TForm)
