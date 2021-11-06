@@ -131,8 +131,6 @@ type
     { Public declarations }
   end;
 
-function TaskStateToIconIndex(ATask: TTaskItem): Integer;
-
 var
   frmMain: TfrmMain;
 
@@ -142,28 +140,14 @@ uses MainFunc;
 
 {$R *.dfm}
 
-function TaskStateToIconIndex(ATask: TTaskItem): Integer;
-begin
-  // 0-none, 1-normal, 2-urgent, 3-critical, 4-completed, 5-paused
-  case ATask.Status of
-    1: Result := 7;
-    2: Result := 8;
-    3: Result := 9;
-    4: Result := 10;
-    5: Result := 11;
-  else
-    Result := -1;
-  end;
-end;
-
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
 
   // Set images lists to templates
   // Local orders
   //FrameLocalOrders.ActionList1.Images:=self.ImageList24;
-  FrameLocalOrders.toolbarLocOrders.Images:=self.ImageList24;
-  FrameLocalOrders.pmLocOrdersList.Images:=self.ImageList24;
+  //FrameLocalOrders.toolbarLocOrders.Images:=self.ImageList24;
+  //FrameLocalOrders.pmLocOrdersList.Images:=self.ImageList24;
   // Mail
   FrameMailboxGeneral.ToolBarMailbox.Images:=self.ImageList24;
   FrameMailboxGeneral.ToolBarMsg.Images:=self.ImageList24;

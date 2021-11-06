@@ -95,6 +95,7 @@ type
     procedure actTableEditExecute(Sender: TObject);
     procedure actPersAddExecute(Sender: TObject);
     procedure actPersSaveExecute(Sender: TObject);
+    procedure lvPersonnelDblClick(Sender: TObject);
   private
     { Private declarations }
     ItemsList: TPersList;
@@ -103,6 +104,7 @@ type
     SelItemLocalOrders: TLocOrderList;
     SelectedGroup: TPersItem;
     SelectedTask: TTaskItem;
+    SelectedLocOrd: TLocOrderItem;
     procedure ReadSelectedItem();
     procedure ReadSelectedGroup();
     procedure WriteSelectedItem();
@@ -295,7 +297,7 @@ begin
     imgPersPhoto.Visible := False;
   end;
 
-  // Fill tasks list
+  // === Fill tasks list
   lvPersTasks.Clear();
   memoPersTaskText.Text := '';
   if not Assigned(SelItemTasks) then
@@ -313,7 +315,7 @@ begin
   RefreshTasksList(lvPersTasks, SelItemTasks, -1, SelectedTask, False);
   lvPersTasksChange(lvPersTasks, lvPersTasks.Selected, TItemChange.ctState);
 
-  // Fill local orders list
+  // === Fill local orders list
   lvPersLocalOrders.Clear();
   memoPersLocalOrderText.Text := '';
   if not Assigned(SelItemLocalOrders) then
@@ -325,28 +327,7 @@ begin
   SelItemLocalOrders.SetFilter('from=' + IntToStr(Item.ID));
   SelItemLocalOrders.Sort();
 
-  for i := 0 to SelItemLocalOrders.Count - 1 do
-  begin
-    // LocOrder: TLocOrderItem
-    LocOrder := (SelItemLocalOrders[i] as TLocOrderItem);
-    lvItem := lvPersLocalOrders.Items.Add;
-    lvItem.Data := LocOrder;
-    if LocOrder.Signed then
-    begin
-      lvItem.StateIndex := 16; // tick-circle
-      lvItem.Caption := 'S';
-    end
-    else
-    begin
-      lvItem.StateIndex := 15; // question-white
-      lvItem.Caption := '';
-    end;
-    lvItem.SubItems.Add(LocOrder.GetValue('Timestamp'));
-    lvItem.SubItems.Add(LocOrder.Dest);
-    lvItem.SubItems.Add(LocOrder.Text);
-  end;
-  if lvPersLocalOrders.Items.Count > 0 then
-    lvPersLocalOrders.ItemIndex := 0;
+  RefreshLocOrdList(lvPersLocalOrders, SelItemLocalOrders, -1, SelectedLocOrd, False);
 end;
 
 // ----
@@ -566,6 +547,11 @@ begin
   WriteSelectedItem();
   SelectedItem := TPersItem(Item.Data);
   ReadSelectedItem();
+end;
+
+procedure TFramePersonnel.lvPersonnelDblClick(Sender: TObject);
+begin
+  //ShowPersListDialog(SelectedItem);
 end;
 
 procedure TFramePersonnel.tvPersonnelEdited(Sender: TObject;

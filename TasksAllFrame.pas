@@ -58,7 +58,6 @@ type
     procedure DeleteItem();
     procedure ReadSelectedTask();
     procedure WriteSelectedTask();
-    procedure TaskToListItem(ATask: TTaskItem; li: TListItem);
     procedure RefreshTasksList(SelectedOnly: Boolean = False);
   public
     { Public declarations }
@@ -68,7 +67,7 @@ type
 
 implementation
 
-uses Main, MainFunc;
+uses Main, MainFunc, EnterpiseControls;
 
 {$R *.dfm}
 
@@ -168,20 +167,11 @@ begin
   self.TaskList.SaveList();
 end;
 
-procedure TFrameTasksAll.TaskToListItem(ATask: TTaskItem; li: TListItem);
-begin
-  li.Data := ATask;
-  li.StateIndex := TaskStateToIconIndex(ATask);
-  li.Caption := ATask.Name;
-  li.SubItems.Add(FormatDateTime('DD.MM.YY', ATask.BeginDate));
-  li.SubItems.Add(ATask.Author);
-end;
-
 procedure TFrameTasksAll.NewItem(ASubItem: boolean = false);
 var
   Task: TTaskItem;
   li: TListItem;
-  i: integer;
+  i: Integer;
 begin
   Task := TTaskItem.Create();
   Task.Name := 'Новая задача';
@@ -190,7 +180,7 @@ begin
   Task.Author := 'Admin';
   Task.BeginDate := Now();
   Task.EndDate := Now();
-  self.TaskList.Add(Task);
+  self.TaskList.AddItem(Task, True);
 
   li := lvAllTasks.Items.Add();
   TaskToListItem(Task, li);

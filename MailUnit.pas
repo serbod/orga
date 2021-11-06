@@ -24,7 +24,7 @@ type
     GroupName: string;
     GroupFullName: string;
     constructor Create(ATableName: string = 'mail'); reintroduce;
-    function NewItem(): TDbItem; override;
+    function NewItem(ASetNewID: Boolean): TDbItem; override;
     procedure LoadList();
     procedure SaveList();
     procedure Sort();
@@ -114,12 +114,12 @@ begin
   inherited Create(ti);
 end;
 
-function TMailMsgList.NewItem(): TDbItem;
+function TMailMsgList.NewItem(ASetNewID: Boolean): TDbItem;
 var
   NewItem: TMailMsg;
 begin
   NewItem:=TMailMsg.Create();
-  self.AddItem(NewItem, true);
+  AddItem(NewItem, ASetNewID);
   result:=NewItem;
 end;
 

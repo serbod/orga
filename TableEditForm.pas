@@ -24,7 +24,7 @@ type
   private
     { Private declarations }
     CurItem: TDbItem;
-    procedure ReadItem(ARow: integer);
+    procedure ReadItem(ARow: Integer);
     procedure SaveItem(Item: TDbItem);
     procedure CopyItem(Item: TDbItem);
   public
@@ -37,115 +37,123 @@ var
   frmTableEdit: TfrmTableEdit;
 
 implementation
+
 uses Main;
 
 {$R *.dfm}
 
+
 procedure TfrmTableEdit.ReadList();
 var
   Item: TDbItem;
-  i, n, m: integer;
+  i, n, m: Integer;
   fn, s: string;
   ti: TDbTableInfo;
-  Len: array of integer;
+  Len: array of Integer;
 begin
-  if not Assigned(DbItemList) then Exit;
+  if not Assigned(DbItemList) then
+    Exit;
 
-  ti:=DbItemList.DbTableInfo;
+  ti := DbItemList.DbTableInfo;
 
   // ItemEdit
   vleItemEdit.Strings.Clear();
-  for i:=0 to ti.FieldsCount-1 do
+  for i := 0 to ti.FieldsCount - 1 do
   begin
-    vleItemEdit.InsertRow('['+ti.Types[i]+'] '+ti.Fields[i], '', true);
+    vleItemEdit.InsertRow('[' + ti.Types[i] + '] ' + ti.Fields[i], '', true);
   end;
 
-  sgTable.Visible:=false;
-  sgTable.ColWidths[0]:=32;
-  sgTable.RowCount:=DbItemList.Count+1;
+  sgTable.Visible := false;
+  sgTable.ColWidths[0] := 32;
+  sgTable.RowCount := DbItemList.Count + 1;
   // колонки
-  sgTable.ColCount:=ti.FieldsCount+1;
-  for i:=0 to sgTable.ColCount-1 do
+  sgTable.ColCount := ti.FieldsCount + 1;
+  for i := 0 to sgTable.ColCount - 1 do
   begin
-    if i=0 then
+    if i = 0 then
     begin
-      sgTable.Cells[i, 0]:='№';
+      sgTable.Cells[i, 0] := '№';
     end
     else
     begin
-      fn:=ti.Fields[i-1];
-      sgTable.Cells[i, 0]:=fn;
+      fn := ti.Fields[i - 1];
+      sgTable.Cells[i, 0] := fn;
     end;
   end;
   SetLength(Len, ti.FieldsCount);
-  for i:=0 to ti.FieldsCount-1 do Len[i]:=0;
+  for i := 0 to ti.FieldsCount - 1 do
+    Len[i] := 0;
 
   // строки
-  for n:=0 to DbItemList.Count-1 do
+  for n := 0 to DbItemList.Count - 1 do
   begin
-    Item:=(DbItemList[n] as TDbItem);
-    for i:=0 to sgTable.ColCount-1 do
+    Item := (DbItemList[n] as TDbItem);
+    for i := 0 to sgTable.ColCount - 1 do
     begin
-      if i=0 then
+      if i = 0 then
       begin
-        sgTable.Cells[i, n+1]:=IntToStr(n+1);
+        sgTable.Cells[i, n + 1] := IntToStr(n + 1);
       end
       else
       begin
-        fn:=ti.Fields[i-1];
-        s:=Item.GetValue(fn);
-        sgTable.Cells[i, n+1]:=s;
-        Inc(Len[i-1], Length(s));
+        fn := ti.Fields[i - 1];
+        s := Item.GetValue(fn);
+        sgTable.Cells[i, n + 1] := s;
+        Inc(Len[i - 1], Length(s));
       end;
     end;
   end;
 
-  n:=DbItemList.Count;
-  if n=0 then n:=1;
-  for i:=0 to ti.FieldsCount-1 do
+  n := DbItemList.Count;
+  if n = 0 then
+    n := 1;
+  for i := 0 to ti.FieldsCount - 1 do
   begin
-    m:=Round(Len[i] / n * 8);
-    if m < 24 then m:=24;
-    sgTable.ColWidths[i+1]:=m;
+    m := Round(Len[i] / n * 8);
+    if m < 24 then
+      m := 24;
+    sgTable.ColWidths[i + 1] := m;
   end;
   SetLength(Len, 0);
 
-  sgTable.Visible:=true;
+  sgTable.Visible := true;
 end;
 
-procedure TfrmTableEdit.ReadItem(ARow: integer);
+procedure TfrmTableEdit.ReadItem(ARow: Integer);
 var
   Item: TDbItem;
-  i: integer;
+  i: Integer;
   fn: string;
   ti: TDbTableInfo;
 begin
-  if ARow<1 then Exit;
-  ti:=DbItemList.DbTableInfo;
-  Item:=(DbItemList[ARow-1] as TDbItem);
-  CurItem:=Item;
+  if ARow < 1 then
+    Exit;
+  ti := DbItemList.DbTableInfo;
+  Item := (DbItemList[ARow - 1] as TDbItem);
+  CurItem := Item;
 
   vleItemEdit.Strings.Clear();
-  for i:=0 to ti.FieldsCount-1 do
+  for i := 0 to ti.FieldsCount - 1 do
   begin
-    fn:=ti.Fields[i];
-    vleItemEdit.InsertRow('['+ti.Types[i]+'] '+fn, Item.GetValue(fn), true);
+    fn := ti.Fields[i];
+    vleItemEdit.InsertRow('[' + ti.Types[i] + '] ' + fn, Item.GetValue(fn), true);
   end;
 end;
 
 procedure TfrmTableEdit.SaveItem(Item: TDbItem);
 var
-  i: integer;
+  i: Integer;
   fn: string;
   ti: TDbTableInfo;
 begin
-  if not Assigned(Item) then Exit;
-  ti:=DbItemList.DbTableInfo;
+  if not Assigned(Item) then
+    Exit;
+  ti := DbItemList.DbTableInfo;
 
-  for i:=0 to ti.FieldsCount-1 do
+  for i := 0 to ti.FieldsCount - 1 do
   begin
-    fn:=ti.Fields[i];
-    Item.SetValue(fn, vleItemEdit.Values['['+ti.Types[i]+'] '+fn]);
+    fn := ti.Fields[i];
+    Item.SetValue(fn, vleItemEdit.Values['[' + ti.Types[i] + '] ' + fn]);
   end;
 
 end;
@@ -153,21 +161,22 @@ end;
 procedure TfrmTableEdit.CopyItem(Item: TDbItem);
 var
   NewItem: TDbItem;
-  i: integer;
+  i: Integer;
   fn: string;
   ti: TDbTableInfo;
 begin
-  if not Assigned(Item) then Exit;
-  ti:=DbItemList.DbTableInfo;
-  NewItem:=DbItemList.NewItem();
+  if not Assigned(Item) then
+    Exit;
+  ti := DbItemList.DbTableInfo;
+  NewItem := DbItemList.NewItem(false);
 
-  for i:=0 to ti.FieldsCount-1 do
+  for i := 0 to ti.FieldsCount - 1 do
   begin
-    fn:=ti.Fields[i];
-    if fn='id' then Continue;
+    fn := ti.Fields[i];
+    if fn = 'id' then
+      Continue;
     NewItem.SetValue(fn, Item.GetValue(fn));
   end;
-
 end;
 
 procedure TfrmTableEdit.FormClose(Sender: TObject;
@@ -186,7 +195,7 @@ procedure TfrmTableEdit.ToolButtonClick(Sender: TObject);
 begin
   if Sender = tbNewItem then
   begin
-    DbItemList.NewItem();
+    DbItemList.NewItem(True);
     ReadList();
   end
   else if Sender = tbCopyItem then
@@ -201,7 +210,7 @@ begin
   end
   else if Sender = tbDeleteItem then
   begin
-    DbItemList.Delete(sgTable.Row-1);
+    DbItemList.Delete(sgTable.Row - 1);
     ReadList();
   end;
 

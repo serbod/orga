@@ -23,7 +23,7 @@ type
   TPersDataTypesList = class(TDBItemList)
   public
     constructor Create(); reintroduce;
-    function NewItem(): TDBItem; override;
+    function NewItem(ASetNewID: Boolean): TDBItem; override;
     procedure UpdateItem(AName, AFullName: string);
     function GetItemByIndex(Index: Integer): TPersDataType;
   end;
@@ -31,8 +31,8 @@ type
   // Свойство персоны
   TPersDataItem = class(TDBItem)
   public
-    OwnerID: Integer;
-    DataTypeID: Integer;
+    OwnerID: Integer;  // TPersItem
+    DataTypeID: Integer; // TPersDataType
     Name: string;
     Text: string;
     function GetValue(const FName: string): string; override;
@@ -51,7 +51,7 @@ type
     // function AddItem(AItem: TContactItem): integer;
     procedure UpdateItem(Name, Value: string);
     function GetItemByName(AName: string): TPersDataItem;
-    function NewItem(): TDBItem; override;
+    function NewItem(ASetNewID: Boolean): TDBItem; override;
   end;
 
   TPersItemType = (Person, Group);
@@ -76,6 +76,8 @@ type
     destructor Destroy(); override;
     function GetDataByName(AName: string): string;
 
+    function ContainsText(AText: string): Boolean;
+
     property DataList: TPersDataList read FDataList;
   end;
 
@@ -83,7 +85,7 @@ type
   TPersList = class(TDBItemList)
   public
     constructor Create(); reintroduce;
-    function NewItem(): TDBItem; override;
+    function NewItem(ASetNewID: Boolean): TDBItem; override;
     procedure LoadList();
     procedure SaveList();
     procedure Sort();
@@ -143,12 +145,12 @@ begin
   inherited Create(ti);
 end;
 
-function TPersDataTypesList.NewItem(): TDBItem;
+function TPersDataTypesList.NewItem(ASetNewID: Boolean): TDBItem;
 var
   NewItem: TPersDataType;
 begin
   NewItem := TPersDataType.Create();
-  self.AddItem(NewItem, True);
+  AddItem(NewItem, ASetNewID);
   Result := NewItem;
 end;
 
@@ -168,7 +170,7 @@ begin
       Exit;
     end;
   end;
-  Item := (self.NewItem() as TPersDataType);
+  Item := (NewItem(True) as TPersDataType);
   Item.Name := AName;
   Item.FullName := AFullName;
 end;
@@ -255,12 +257,12 @@ begin
   Owner := AOwner;
 end;
 
-function TPersDataList.NewItem(): TDBItem;
+function TPersDataList.NewItem(ASetNewID: Boolean): TDBItem;
 var
   NewItem: TPersDataItem;
 begin
   NewItem := TPersDataItem.Create();
-  self.AddItem(NewItem, True);
+  AddItem(NewItem, ASetNewID);
   Result := NewItem;
 end;
 
@@ -321,6 +323,23 @@ end;
 // ===========================================
 // TPersItem
 // ===========================================
+function TPersItem.ContainsText(AText: string): Boolean;
+var
+  i: Integer;
+begin
+  Result := True;
+  if Pos(AText, LowerCase(Name)) > 0 then Exit;
+  if Pos(AText, LowerCase(Text)) > 0 then Exit;
+  if Pos(AText, LowerCase(Author)) > 0 then Exit;
+  // find in subitems
+  for i := 0 to FDataList.Count-1 do
+  begin
+    if Pos(AText, LowerCase((FDataList[i] as TPersDataItem).Text)) > 0 then Exit;
+  end;
+
+  Result := False;
+end;
+
 constructor TPersItem.Create();
 begin
   FDataList := TPersDataList.Create(Self);
@@ -487,12 +506,12 @@ begin
   end;
 end;
 
-function TPersList.NewItem(): TDBItem;
+function TPersList.NewItem(ASetNewID: Boolean): TDBItem;
 var
   NewItem: TPersItem;
 begin
   NewItem := TPersItem.Create();
-  self.AddItem(NewItem, True);
+  AddItem(NewItem, ASetNewID);
   Result := NewItem;
 end;
 

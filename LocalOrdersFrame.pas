@@ -3,16 +3,13 @@ unit LocalOrdersFrame;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, ToolWin, LocalOrdersUnit, Menus,
-  ActnList, ImgList, Buttons, System.ImageList, System.Actions;
+  ActnList, ImgList, Buttons, System.ImageList, System.Actions,
+  DbUnit;
 
 type
   TFrameLocalOrders = class(TFrame)
-    toolbarLocOrders: TToolBar;
-    tbLoadList: TToolButton;
-    tbSaveList: TToolButton;
-    tbApply: TToolButton;
     panRight: TPanel;
     lvOrdersList: TListView;
     Splitter1: TSplitter;
@@ -26,7 +23,7 @@ type
     lbFrom: TLabel;
     lbTo: TLabel;
     gbList: TGroupBox;
-    ActionList1: TActionList;
+    alLocalOrders: TActionList;
     actNew: TAction;
     actApply: TAction;
     pmLocOrdersList: TPopupMenu;
@@ -36,23 +33,30 @@ type
     mApply: TMenuItem;
     btnSelectReply: TButton;
     bbtnSignOn: TBitBtn;
-    ilSignOnIcons: TImageList;
-    ToolButton1: TToolButton;
-    ToolButton2: TToolButton;
+    actSignOn: TAction;
+    actSelectAnswer: TAction;
+    pmNoteText: TPopupMenu;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    btnToPerson: TButton;
     procedure actNewExecute(Sender: TObject);
     procedure lvOrdersListChange(Sender: TObject; Item: TListItem;
       Change: TItemChange);
     procedure btnSignOnClick(Sender: TObject);
+    procedure btnToPersonClick(Sender: TObject);
   private
     { Private declarations }
     ItemsList: TLocOrderList;
     SelectedItem: TLocOrderItem;
+    function GetNameOfPersonByID(AID: Integer): string;
     procedure ReadSelectedItem();
     procedure WriteSelectedItem();
-    procedure RefreshItemsList(SelectedOnly: boolean = false);
+    procedure RefreshItemsList(SelectedOnly: Boolean = False);
     procedure NewItem();
     procedure LoadList();
     procedure SaveList();
+    procedure OnItemSelectedHandler(Sender: TObject; DbItem: TDbItem);
   public
     { Public declarations }
     constructor Create(AOwner: TComponent); override;
@@ -60,22 +64,26 @@ type
   end;
 
 implementation
-uses Main, MainFunc;
 
-const iIconSign: integer = 1;
-const iIconUnSign: integer = 0;
-const sCaptSign: string = 'Подписать';
-const sCaptUnSign: string = 'Отменить';
+uses Main, MainFunc, EnterpiseControls;
+
+const
+  iIconSign: Integer = 16;
+  iIconUnSign: Integer = 15;
+  sCaptSign: string = 'Подписать';
+  sCaptUnSign: string = 'Отменить';
 
 {$R *.dfm}
 
-//===========================================
+
+  // ===========================================
 constructor TFrameLocalOrders.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  self.Align:=alClient;
-  if not Assigned(ItemsList) then ItemsList:=TLocOrderList.Create();
-  self.LoadList();
+  self.Align := alClient;
+  if not Assigned(ItemsList) then
+    ItemsList := TLocOrderList.Create();
+  LoadList();
 end;
 
 destructor TFrameLocalOrders.Destroy();
@@ -84,58 +92,40 @@ begin
   inherited Destroy();
 end;
 
-//===========================================
-// List operations
-//===========================================
-procedure TFrameLocalOrders.RefreshItemsList(SelectedOnly: boolean = false);
+function TFrameLocalOrders.GetNameOfPersonByID(AID: Integer): string;
 var
-  Item: TLocOrderItem;
-  tn: TListItem;
-  i: integer;
+  TmpItem: TDbItem;
+  s: string;
 begin
-  if SelectedOnly then
+  Result := '';
+  TmpItem := DbDriver.GetDBItem('personnel~' + IntToStr(AID));
+  if Assigned(TmpItem) then
   begin
-    if not Assigned(SelectedItem) then Exit;
-    for i:=0 to lvOrdersList.Items.Count-1 do
-    begin
-      Item:=TLocOrderItem(lvOrdersList.Items[i].Data);
-      if Item=SelectedItem then
-      begin
-        tn:=lvOrdersList.Items[i];
-        tn.SubItems.Clear();
-        if Item.Signed then tn.Caption:='S' else tn.Caption:='';
-        tn.SubItems.Add(Item.From);
-        Exit;
-      end;
-    end;
-    Exit;
+    Result := TmpItem.Name;
+   { // не работает, потому что DbDriver.GetDBItem возвращает нетипизированный TDbItem
+    s := (TmpItem as TPersItem).GetDataByName('Должность');
+    if s <> '' then
+      Result := Result + ' (' + s + ')'; }
+    FreeAndNil(TmpItem);
   end;
+end;
 
-  lvOrdersList.Items.Clear();
-  ItemsList.Sort();
-  for i:=0 to ItemsList.Count-1 do
-  begin
-    Item:=TLocOrderItem(ItemsList[i]);
-    tn:=lvOrdersList.Items.Add();
-    //tn.Caption:='';
-    if Item.Signed then tn.Caption:='S';
-    tn.SubItems.Add(Item.From);
-    tn.Data:=Item;
-    if Item=SelectedItem then
-    begin
-      tn.Selected:=true;
-      tn.Focused:=true;
-    end;
-  end;
+// ===========================================
+// List operations
+// ===========================================
+procedure TFrameLocalOrders.RefreshItemsList(SelectedOnly: Boolean = False);
+begin
+  RefreshLocOrdList(lvOrdersList, ItemsList, -1, SelectedItem, SelectedOnly);
 end;
 
 procedure TFrameLocalOrders.LoadList();
 begin
   lvOrdersList.Items.Clear();
-  SelectedItem:=nil;
+  SelectedItem := nil;
   ItemsList.Clear();
   ItemsList.LoadList();
-  RefreshItemsList();
+  //RefreshItemsList();
+  RefreshLocOrdList(lvOrdersList, ItemsList, -1, SelectedItem, False);
 end;
 
 procedure TFrameLocalOrders.SaveList();
@@ -147,67 +137,81 @@ procedure TFrameLocalOrders.NewItem();
 var
   Item: TLocOrderItem;
   tn: TListItem;
-  i: integer;
 begin
-  Item:=TLocOrderItem.Create();
-  Item.Dest:='кому-то';
-  Item.Author:=conf['UserName'];
-  Item.Timestamp:=Now();
-  self.ItemsList.Add(Item);
+  Item := TLocOrderItem.Create();
+  //Item.Dest := 'кому-то';
+  Item.Author := conf['UserName'];
+  Item.Timestamp := Now();
+  ItemsList.Add(Item);
 
-  tn:=lvOrdersList.Items.Add();
-  tn.Data:=Item;
+  tn := lvOrdersList.Items.Add();
+  tn.Data := Item;
 
-  self.SelectedItem:=Item;
+  SelectedItem := Item;
   ReadSelectedItem();
+end;
+
+procedure TFrameLocalOrders.OnItemSelectedHandler(Sender: TObject;
+  DbItem: TDbItem);
+begin
+  if Assigned(SelectedItem) then
+  begin
+    SelectedItem.ToPersID := DbItem.ID;
+    lbTo.Caption := GetNameOfPersonByID(SelectedItem.ToPersID);
+  end;
 end;
 
 procedure TFrameLocalOrders.ReadSelectedItem();
 var
   Item: TLocOrderItem;
-  Avail: boolean;
-  i: integer;
+  Avail: Boolean;
+  i: Integer;
   s: string;
-  Image: TBitmap;
 begin
-  if not Assigned(self.SelectedItem) then Exit;
-  Item:=self.SelectedItem;
+  if not Assigned(self.SelectedItem) then
+    Exit;
+  Item := self.SelectedItem;
 
   // Set availability
-  Avail:=(conf['UserName']=Item.Author);
-  memoText.Enabled:=Avail;
-  memoReply.Enabled:=Avail;
+  Avail := (conf['UserName'] = Item.Author);
+  memoText.Enabled := Avail;
+  memoReply.Enabled := Avail;
 
-  lbFrom.Caption:=Item.From;
-  lbTo.Caption:=Item.Dest;
-  memoText.Text:=Item.Text;
-  memoReply.Text:=Item.Reply;
+  lbFrom.Caption := GetNameOfPersonByID(Item.FromPersID);
+  lbTo.Caption := GetNameOfPersonByID(Item.ToPersID);
+  memoText.Text := Item.Text;
+  memoReply.Text := Item.Reply;
 
-  if Item.Signed then i:=iIconUnSign else i:=iIconSign;
-  if Item.Signed then s:=sCaptUnSign else s:=sCaptSign;
-  Image:=bbtnSignOn.Glyph;
-  ilSignOnIcons.GetBitmap(i, Image);
-  bbtnSignOn.Glyph:=Image;
-  bbtnSignOn.Caption:=s;
-  //lbPeriod.Caption:=''+DateTimeToStr(Item.BeginDate)+' - '+DateTimeToStr(Item.EndDate);
-  //TextEditor.RawText:=Item.Text;
-  //TextEditor.LoadFromFile(self.MsgBoardList.FileName+'.data\'+IntToStr(Item.ID)+'.rtf');
+  if Item.Signed then
+    i := iIconUnSign
+  else
+    i := iIconSign;
+  if Item.Signed then
+    s := sCaptUnSign
+  else
+    s := sCaptSign;
+  bbtnSignOn.ImageIndex := i;
+  bbtnSignOn.Caption := s;
+  // lbPeriod.Caption:=''+DateTimeToStr(Item.BeginDate)+' - '+DateTimeToStr(Item.EndDate);
+  // TextEditor.RawText:=Item.Text;
+  // TextEditor.LoadFromFile(self.MsgBoardList.FileName+'.data\'+IntToStr(Item.ID)+'.rtf');
 end;
 
 procedure TFrameLocalOrders.WriteSelectedItem();
 begin
-  if not Assigned(self.SelectedItem) then Exit;
-  //self.SelectedMBItem.Author:=glUserName;
-  self.SelectedItem.Text:=memoText.Text;
-  //TextEditor.SaveToFile(self.MsgBoardList.FileName+'.data\'+IntToStr(self.SelectedMBItem.ID)+'.rtf');
-  self.SelectedItem.Reply:=memoReply.Text;
-  //if TextEditor.Lines.Count>0 then self.SelectedMBItem.Desc:=TextEditor.Lines[0];
-  RefreshItemsList(true);
+  if not Assigned(self.SelectedItem) then
+    Exit;
+  // self.SelectedMBItem.Author:=glUserName;
+  self.SelectedItem.Text := memoText.Text;
+  // TextEditor.SaveToFile(self.MsgBoardList.FileName+'.data\'+IntToStr(self.SelectedMBItem.ID)+'.rtf');
+  self.SelectedItem.Reply := memoReply.Text;
+  // if TextEditor.Lines.Count>0 then self.SelectedMBItem.Desc:=TextEditor.Lines[0];
+  RefreshItemsList(True);
 end;
 
-//===========================================
+// ===========================================
 // Action handlers
-//===========================================
+// ===========================================
 procedure TFrameLocalOrders.actNewExecute(Sender: TObject);
 begin
   if Sender = actNew then
@@ -234,39 +238,45 @@ procedure TFrameLocalOrders.lvOrdersListChange(Sender: TObject;
 var
   AItem: TLocOrderItem;
 begin
-  if not Assigned(Item) then Exit;
-  if not Assigned(Item.Data) then Exit;
-  AItem:=TLocOrderItem(Item.Data);
-  if AItem=SelectedItem then Exit;
+  if not Assigned(Item) then
+    Exit;
+  if not Assigned(Item.Data) then
+    Exit;
+  AItem := TLocOrderItem(Item.Data);
+  if AItem = SelectedItem then
+    Exit;
   WriteSelectedItem();
-  SelectedItem:=AItem;
+  SelectedItem := AItem;
   ReadSelectedItem()
 end;
 
 procedure TFrameLocalOrders.btnSignOnClick(Sender: TObject);
 var
-  i: integer;
+  i: Integer;
   s: string;
-  Image: TBitmap;
 begin
-  if not Assigned(self.SelectedItem) then Exit;
-  if self.SelectedItem.Signed = false then
+  if not Assigned(SelectedItem) then
+    Exit;
+  if SelectedItem.Signed = False then
   begin
-    self.SelectedItem.Signed:=true;
-    i:=iIconUnSign;
-    s:=sCaptUnSign;
+    SelectedItem.Signed := True;
+    i := iIconUnSign;
+    s := sCaptUnSign;
   end
   else
   begin
-    self.SelectedItem.Signed:=false;
-    i:=iIconSign;
-    s:=sCaptSign;
+    SelectedItem.Signed := False;
+    i := iIconSign;
+    s := sCaptSign;
   end;
-  Image:=bbtnSignOn.Glyph;
-  ilSignOnIcons.GetBitmap(i, Image);
-  bbtnSignOn.Glyph:=Image;
-  bbtnSignOn.Caption:=s;
+  bbtnSignOn.ImageIndex := i;
+  bbtnSignOn.Caption := s;
   WriteSelectedItem();
+end;
+
+procedure TFrameLocalOrders.btnToPersonClick(Sender: TObject);
+begin
+  ShowPersListDialog(OnItemSelectedHandler);
 end;
 
 end.

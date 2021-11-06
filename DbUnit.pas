@@ -48,11 +48,15 @@ type
 
   // элемент таблицы БД, один ряд таблицы
   TDbItem = class(TObject)
-  private
+  protected
     // Массив значений (полей) элемента
     FValues: array of string;
     // Инициализирует массив значений, заполняет их пустыми значениями
     procedure InitValues();
+    procedure GetLocal();
+    procedure SetLocal();
+    procedure GetGlobal();
+    procedure SetGlobal();
   public
     ID: Integer; // идентификатор элемента
     Name: string; // строковое представление значения
@@ -73,11 +77,8 @@ type
     //
     function GetInteger(const FName: string): Integer;
     procedure SetInteger(const FName: string; Value: Integer);
-  protected
-    procedure GetLocal();
-    procedure SetLocal();
-    procedure GetGlobal();
-    procedure SetGlobal();
+    // скопировать все свойства из другого элемента
+    procedure Assign(AOther: TDbItem);
   end;
 
   // Список однотипных элементов базы данных
@@ -91,10 +92,12 @@ type
     function GetItemByName(ItemName: string; Wildcard: Boolean = False): TDbItem;
     function GetItemIDByName(ItemName: string; Wildcard: Boolean = False): Integer;
     function GetItemNameByID(ItemID: Integer): string;
-    function NewItem(): TDbItem; virtual;
+    function NewItem(ASetNewID: Boolean): TDbItem; virtual;
     procedure LoadLocal();
     procedure SaveLocal();
   end;
+
+  TItemSelectedEvent = procedure(Sender: TObject; DbItem: TDbItem) of object;
 
   // Драйвер базы данных - для доступа к хранилищу данных
   // Это базовый класс, должен быть переопределено для конкретных видов БД
@@ -209,7 +212,7 @@ var
   i: Integer;
 begin
   Result := -1;
-  for i := 0 to FFieldsCount do
+  for i := 0 to FFieldsCount-1 do
   begin
     if FFieldNames[i] = FName then
     begin
@@ -222,6 +225,7 @@ end;
 constructor TDbTableInfo.Create();
 begin
   self.Checked := False;
+  FLastID := 0;
   FFieldsCount := 0;
   SetLength(FFieldNames, FFieldsCount);
   SetLength(FFieldTypes, FFieldsCount);
@@ -247,13 +251,30 @@ procedure TDbItem.SetGlobal();
 begin
 end;
 
+procedure TDbItem.Assign(AOther: TDbItem);
+var
+  i: Integer;
+  sField: string;
+begin
+  Self.DbTableInfo := AOther.DbTableInfo;
+  Self.ID := AOther.ID;
+  Self.Name := AOther.Name;
+  Self.Actual := AOther.Actual;
+  Self.TimeStamp := AOther.TimeStamp;
+  for i := 0 to DbTableInfo.FieldsCount-1 do
+  begin
+    sField := DbTableInfo.Fields[i];
+    SetValue(sField, AOther.GetValue(sField));
+  end;
+end;
+
 procedure TDbItem.InitValues();
 var
   i: Integer;
 begin
-  SetLength(self.FValues, self.DbTableInfo.FieldsCount);
-  for i := 0 to self.DbTableInfo.FieldsCount - 1 do
-    self.FValues[i] := '';
+  SetLength(FValues, DbTableInfo.FieldsCount);
+  for i := 0 to DbTableInfo.FieldsCount - 1 do
+    FValues[i] := '';
 end;
 
 function TDbItem.GetValue(const FName: string): string;
@@ -268,13 +289,13 @@ begin
     Result := self.Name
   else
   begin
-    if Length(self.FValues) = 0 then
+    if Length(FValues) = 0 then
       InitValues();
-    i := self.DbTableInfo.FieldIndex(FName);
+    i := DbTableInfo.FieldIndex(FName);
     if i < 0 then
       Result := ''
     else
-      Result := self.FValues[i];
+      Result := FValues[i];
   end;
 end;
 
@@ -296,11 +317,11 @@ begin
     self.Name := FValue
   else
   begin
-    if Length(self.FValues) = 0 then
+    if Length(FValues) = 0 then
       InitValues();
-    i := self.DbTableInfo.FieldIndex(FName);
+    i := DbTableInfo.FieldIndex(FName);
     if i >= 0 then
-      self.FValues[i] := FValue;
+      FValues[i] := FValue;
   end;
 end;
 
@@ -410,12 +431,12 @@ begin
     Result := Item.Name;
 end;
 
-function TDbItemList.NewItem(): TDbItem;
+function TDbItemList.NewItem(ASetNewID: Boolean): TDbItem;
 var
   NewItem: TDbItem;
 begin
   NewItem := TDbItem.Create();
-  AddItem(NewItem, True);
+  AddItem(NewItem, ASetNewID);
   Result := NewItem;
 end;
 
@@ -577,7 +598,7 @@ begin
 
     Item := AItemList.GetItemByID(ID);
     if not Assigned(Item) then
-      Item := AItemList.NewItem();
+      Item := AItemList.NewItem(False);
     for n := 0 to AItemList.DbTableInfo.FieldsCount - 1 do
     begin
       fn := AItemList.DbTableInfo.GetField(n);
@@ -780,7 +801,7 @@ begin
       // Create new item
       Item := AItemList.GetItemByID(ID);
       if not Assigned(Item) then
-        Item := AItemList.NewItem();
+        Item := AItemList.NewItem(False);
 
       // fill item values
       for n := 0 to AItemList.DbTableInfo.FieldsCount - 1 do
@@ -855,15 +876,21 @@ begin
   TableInfo := self.GetDbTableInfo(sTableName);
   if not Assigned(TableInfo) then
     Exit;
+  try
+    ItemList := TDbItemList.Create(TableInfo);
+    Filter := 'id=' + sItemID;
 
-  ItemList := TDbItemList.Create(TableInfo);
-  Filter := 'id=' + sItemID;
-
-  if not GetTable(ItemList, Filter) then
-    Exit;
-  if ItemList.Count = 0 then
-    Exit;
-  Result := (ItemList[0] as TDbItem);
+    if GetTable(ItemList, Filter) then
+    begin
+      if ItemList.Count > 0 then
+      begin
+        Result := TDbItem.Create();
+        Result.Assign(ItemList[0] as TDbItem);
+      end;
+    end;
+  finally
+    FreeAndNil(ItemList);
+  end;
 end;
 
 function TDbDriverCSV.SetDBItem(FItem: TDbItem): Boolean;
@@ -875,20 +902,23 @@ var
 begin
   Result := False;
   AItemList := TDbItemList.Create(FItem.DbTableInfo);
-  self.GetTable(AItemList);
-  AItem := AItemList.GetItemByID(FItem.ID);
-  if not Assigned(AItem) then
-  begin
+  try
+    GetTable(AItemList);
+    AItem := AItemList.GetItemByID(FItem.ID);
+    if not Assigned(AItem) then
+    begin
+      FreeAndNil(AItemList);
+      Exit;
+    end;
+    for i := 0 to FItem.DbTableInfo.FieldsCount - 1 do
+    begin
+      fn := FItem.DbTableInfo.GetField(i);
+      AItem.Values[fn] := FItem.Values[fn];
+    end;
+    SetTable(AItemList);
+  finally
     FreeAndNil(AItemList);
-    Exit;
   end;
-  for i := 0 to FItem.DbTableInfo.FieldsCount - 1 do
-  begin
-    fn := FItem.DbTableInfo.GetField(i);
-    AItem.Values[fn] := FItem.Values[fn];
-  end;
-  self.SetTable(AItemList);
-  FreeAndNil(AItemList);
   Result := True;
 end;
 

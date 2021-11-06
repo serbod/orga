@@ -33,7 +33,7 @@ type
     BeginDate: TDateTime;
     EndDate: TDateTime;
     constructor Create(); reintroduce;
-    function NewItem(): TDbItem; override;
+    function NewItem(ASetNewID: Boolean): TDbItem; override;
     procedure LoadList();
     procedure SaveList();
     procedure Sort();
@@ -235,12 +235,12 @@ begin
   inherited Sort(@CompareFunc);
 end;
 
-function TTaskList.NewItem(): TDbItem;
+function TTaskList.NewItem(ASetNewID: Boolean): TDbItem;
 var
   NewItem: TTaskItem;
 begin
   NewItem := TTaskItem.Create();
-  self.AddItem(NewItem, True);
+  self.AddItem(NewItem, ASetNewID);
   Result := NewItem;
 end;
 

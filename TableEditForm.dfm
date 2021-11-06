@@ -1,9 +1,9 @@
 object frmTableEdit: TfrmTableEdit
   Left = 299
   Top = 126
-  Width = 549
-  Height = 415
   Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1090#1072#1073#1083#1080#1094#1099
+  ClientHeight = 376
+  ClientWidth = 533
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,30 +17,34 @@ object frmTableEdit: TfrmTableEdit
   object Splitter1: TSplitter
     Left = 0
     Top = 161
-    Width = 541
+    Width = 533
     Height = 3
     Cursor = crVSplit
     Align = alTop
+    ExplicitWidth = 541
   end
   object sgTable: TStringGrid
     Left = 0
     Top = 0
-    Width = 541
+    Width = 533
     Height = 161
     Align = alTop
     DefaultRowHeight = 16
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSizing, goColSizing, goRowSelect, goThumbTracking]
     TabOrder = 0
     OnSelectCell = sgTableSelectCell
+    ExplicitWidth = 541
   end
   object Panel1: TPanel
     Left = 0
     Top = 164
-    Width = 541
-    Height = 217
+    Width = 533
+    Height = 212
     Align = alClient
     Caption = 'Panel1'
     TabOrder = 1
+    ExplicitWidth = 541
+    ExplicitHeight = 217
     object vleItemEdit: TValueListEditor
       Left = 33
       Top = 1

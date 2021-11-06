@@ -1,11 +1,12 @@
 unit MiscFunc;
 
 interface
+
 uses SysUtils, Windows, Dialogs;
 
-function ShiftPressed(): boolean;
+function ShiftPressed(): Boolean;
 function SelectFilename(sFileName: string = ''; sFilter: string = ''): string;
-function CopySingleFile(SrcName, DestName: string): boolean;
+function CopySingleFile(SrcName, DestName: string): Boolean;
 
 // Возвращает имя пользователя windows
 function GetWinUserName(): string;
@@ -14,36 +15,35 @@ function GetWinCompName(): string;
 // Возвращает список IP-адресов компьютера
 function GetWinIpList(): string;
 
-
 implementation
 
-function ShiftPressed(): boolean;
+function ShiftPressed(): Boolean;
 var
   State: TKeyboardState;
 begin
   GetKeyboardState(State);
-  //State:=GetKeyState(Key);
-  result := ((State[VK_SHIFT] and 128) <> 0);
+  // State:=GetKeyState(Key);
+  Result := ((State[VK_SHIFT] and 128) <> 0);
 end;
 
 function SelectFilename(sFileName: string = ''; sFilter: string = ''): string;
 var
   OpenDialog: TOpenDialog;
 begin
-  OpenDialog:=TOpenDialog.Create(nil);
-  OpenDialog.FileName:=sFileName;
-  OpenDialog.Filter:=sFilter;
-  result:='';
+  OpenDialog := TOpenDialog.Create(nil);
+  OpenDialog.FileName := sFileName;
+  OpenDialog.Filter := sFilter;
+  Result := '';
   if OpenDialog.Execute() then
   begin
-    result:=OpenDialog.FileName;
+    Result := OpenDialog.FileName;
   end;
   OpenDialog.Free();
 end;
 
-function CopySingleFile(SrcName, DestName: string): boolean;
+function CopySingleFile(SrcName, DestName: string): Boolean;
 begin
-  Windows.CopyFile(PChar(SrcName), PChar(DestName), false);
+  Windows.CopyFile(PChar(SrcName), PChar(DestName), False);
 end;
 
 // Возвращает имя пользователя windows
@@ -52,10 +52,10 @@ var
   lpBuffer: PChar;
   n: cardinal;
 begin
-  n:=20;
-  lpBuffer:=StrAlloc(n);
+  n := 20;
+  lpBuffer := StrAlloc(n);
   GetUserName(lpBuffer, n);
-  result := String(lpBuffer);
+  Result := String(lpBuffer);
 end;
 
 // Возвращает имя компьютера
@@ -64,16 +64,16 @@ var
   lpBuffer: PChar;
   n: cardinal;
 begin
-  n:=20;
-  lpBuffer:=StrAlloc(n);
+  n := 20;
+  lpBuffer := StrAlloc(n);
   GetComputerName(lpBuffer, n);
-  result := String(lpBuffer);
+  Result := String(lpBuffer);
 end;
 
 // Возвращает список IP-адресов компьютера
 function GetWinIpList(): string;
 begin
-  result:='127.0.0.1';
+  Result := '127.0.0.1';
 end;
 
 end.

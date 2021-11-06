@@ -87,6 +87,7 @@ object FramePersonnel: TFramePersonnel
         TabOrder = 1
         ViewStyle = vsReport
         OnChange = lvPersonnelChange
+        OnDblClick = lvPersonnelDblClick
       end
     end
     object panBottom: TPanel
@@ -102,7 +103,7 @@ object FramePersonnel: TFramePersonnel
         Top = 0
         Width = 742
         Height = 256
-        ActivePage = tsPersTasks
+        ActivePage = tsPersOrders
         Align = alClient
         Images = frmMain.ilIcons16
         TabOrder = 0
@@ -247,7 +248,7 @@ object FramePersonnel: TFramePersonnel
             GridLines = True
             ReadOnly = True
             RowSelect = True
-            StateImages = frmMain.ilIcons16
+            SmallImages = frmMain.ilIcons16
             TabOrder = 0
             ViewStyle = vsReport
             OnSelectItem = lvPersLocalOrdersSelectItem

@@ -29,7 +29,7 @@ type
     procedure SaveList();
     procedure Sort();
     //function AddItem(AItem: TMsgBoardItem): integer;
-    function NewItem(): TDbItem; override;
+    function NewItem(ASetNewID: Boolean): TDbItem; override;
   end;
 
 
@@ -116,13 +116,13 @@ begin
   Add(AItem);
 end;}
 
-function TMsgBoardList.NewItem(): TDbItem;
+function TMsgBoardList.NewItem(ASetNewID: Boolean): TDbItem;
 var
   NewItem: TMsgBoardItem;
 begin
   NewItem:=TMsgBoardItem.Create();
-  self.AddItem(NewItem, true);
-  result:=NewItem;
+  self.AddItem(NewItem, ASetNewID);
+  Result := NewItem;
 end;
 
 function CompareFunc(Item1, Item2: Pointer): Integer;

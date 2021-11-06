@@ -18,7 +18,6 @@ uses
   TextEditorFrame in 'TextEditorFrame.pas' {FrameTextEditor: TFrame},
   Frame_CalendarYear in 'Frame_CalendarYear.pas' {FrameCalendarYear: TFrame},
   Frame_EnterpriseStructure in 'Frame_EnterpriseStructure.pas' {FrameEnterpiseStructure: TFrame},
-  PersonnelFrame in 'PersonnelFrame.pas' {FramePersonnel: TFrame},
   Frame_DayShedule in 'Frame_DayShedule.pas' {FrameDayShedule: TFrame},
   MiscFunc in 'MiscFunc.pas',
   LocalOrdersFrame in 'LocalOrdersFrame.pas' {FrameLocalOrders: TFrame},
@@ -30,7 +29,10 @@ uses
   UserOptionsFrame in 'UserOptionsFrame.pas' {FrameUserOptions: TFrame},
   DbBrowserFrame in 'DbBrowserFrame.pas' {FrameDbBrowser: TFrame},
   DrawBoardFrame in 'DrawBoardFrame.pas' {FrameDrawBoard: TFrame},
-  EnterpiseControls in 'EnterpiseControls.pas';
+  EnterpiseControls in 'EnterpiseControls.pas',
+  ItemSelectDialog in 'Forms\ItemSelectDialog.pas' {FormItemSelect},
+  PersonListFrame in 'Forms\PersonListFrame.pas' {FramePersonList: TFrame},
+  PersonnelFrame in 'Forms\PersonnelFrame.pas' {FramePersonnel: TFrame};
 
 {$R *.res}
 
@@ -38,6 +40,7 @@ begin
   Application.Initialize;
   MainFunc.OnProgramStart();
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TFormItemSelect, FormItemSelect);
   //Application.CreateForm(TfrmTableEdit, frmTableEdit);
   Application.Run;
 end.

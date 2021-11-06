@@ -6,10 +6,12 @@ unit EnterpiseControls;
 interface
 
 uses
-  SysUtils, ComCtrls, PersonnelUnit, TasksUnit;
+  SysUtils, Controls, ComCtrls, Forms,
+  PersonnelUnit, TasksUnit, LocalOrdersUnit, DbUnit;
 
 function IsIntInArray(AValue: Integer; AArray: array of Integer): Boolean;
 
+function TaskStateToIconIndex(ATask: TTaskItem): Integer;
 procedure TaskToListItem(AItem: TTaskItem; li: TListItem);
 { Заполнение визуального списка задач из списка элементов ItemsList }
 procedure RefreshTasksList(lvTasks: TListView; ItemsList: TTaskList;
@@ -25,10 +27,23 @@ procedure RefreshPersonItemsList(lvPersonnel: TListView; ItemsList: TPersList;
 procedure RefreshPersGroupsTree(tvPersonnel: TTreeView; ItemsList: TPersList;
   SelectedGroup: TPersItem; SelectedOnly: Boolean = False);
 
+procedure LocOrdToListItem(AItem: TLocOrderItem; li: TListItem);
+{ Заполнение визуального списка записок из списка элементов ItemsList }
+procedure RefreshLocOrdList(lv: TListView; ItemsList: TLocOrderList;
+  SelectedGroupID: Integer; SelectedItem: TLocOrderItem; SelectedOnly: Boolean);
+
+
+procedure ShowPersListDialog(ItemSelectedEvent: TItemSelectedEvent);
+
+
 implementation
 
 uses
-  Main;
+  ItemSelectDialog, PersonListFrame;
+
+var
+  PersListForm: TFormItemSelect;
+  PersListFrame: TFramePersonList;
 
 function IsIntInArray(AValue: Integer; AArray: array of Integer): Boolean;
 var
@@ -45,6 +60,20 @@ begin
   end;
 end;
 
+function TaskStateToIconIndex(ATask: TTaskItem): Integer;
+begin
+  // 0-none, 1-normal, 2-urgent, 3-critical, 4-completed, 5-paused
+  case ATask.Status of
+    1: Result := 7;   // pinned-note-small
+    2: Result := 8;   // fire
+    3: Result := 9;   // fire-big
+    4: Result := 10;  // tick-small
+    5: Result := 11;  // pause-small
+  else
+    Result := -1;
+  end;
+end;
+
 procedure PersonToListItem(AItem: TPersItem; li: TListItem);
 begin
   li.SubItems.Clear();
@@ -56,6 +85,7 @@ end;
 
 procedure TaskToListItem(AItem: TTaskItem; li: TListItem);
 begin
+  li.SubItems.Clear();
   li.Data := AItem;
   li.StateIndex := TaskStateToIconIndex(AItem);
   li.Caption := AItem.Name;
@@ -231,5 +261,90 @@ begin
   end;
 end;
 
+procedure LocOrdToListItem(AItem: TLocOrderItem; li: TListItem);
+begin
+  li.SubItems.Clear();
+  li.Data := AItem;
+  if AItem.Signed then
+  begin
+    li.ImageIndex := 16; // tick-circle
+    li.Caption := 'S';
+  end
+  else
+  begin
+    li.ImageIndex := 15; // question-white
+    li.Caption := '';
+  end;
+  li.SubItems.Add(AItem.GetValue('timestamp'));
+  li.SubItems.Add(AItem.Author);
+  li.SubItems.Add(AItem.Text);
+end;
 
+procedure RefreshLocOrdList(lv: TListView; ItemsList: TLocOrderList;
+  SelectedGroupID: Integer; SelectedItem: TLocOrderItem; SelectedOnly: Boolean);
+var
+  LocOrder: TLocOrderItem;
+  li: TListItem;
+  i: Integer;
+  //SelectedGroupIDArray: array of Integer;
+begin
+  if SelectedOnly then
+  begin
+    for i:=0 to ItemsList.Count-1 do
+    begin
+      LocOrder := ItemsList[i] as TLocOrderItem;
+      if LocOrder = SelectedItem then
+      begin
+        li := lv.Items[i];
+        LocOrdToListItem(LocOrder, li);
+        Exit;
+      end;
+    end;
+    Exit;
+  end;
+
+  lv.Clear();
+  ItemsList.Sort();
+  for i := 0 to ItemsList.Count-1 do
+  begin
+    LocOrder := ItemsList[i] as TLocOrderItem;
+
+    {if (SelectedGroupID <> -1) and (LocOrder.DepartID <> SelectedGroupID) then
+      Continue; }
+
+    li := lv.Items.Add();
+    LocOrdToListItem(LocOrder, li);
+    if not Assigned(SelectedItem) then
+      SelectedItem := LocOrder;
+    if LocOrder = SelectedItem then
+    begin
+      li.Selected := True;
+      li.Focused := True;
+    end;
+  end;
+end;
+
+
+procedure ShowPersListDialog(ItemSelectedEvent: TItemSelectedEvent);
+begin
+  if not Assigned(PersListForm) then
+  begin
+    PersListForm := TFormItemSelect.Create(Application.MainForm);
+    PersListFrame := TFramePersonList.Create(PersListForm);
+    //PersListForm.Width := PersListFrame.Width;
+    //PersListForm.Height := PersListFrame.Height;
+    PersListFrame.Parent := PersListForm;
+    PersListFrame.Align := alClient;
+  end;
+  PersListFrame.OnItemSelected := PersListForm.OnItemSelectedHandler;
+  PersListFrame.ItemsList.Clear();
+  PersListFrame.ItemsList.LoadList();
+  PersListFrame.RefreshList();
+  PersListForm.OnItemSelected := ItemSelectedEvent;
+  PersListForm.Show();
+end;
+
+initialization
+  PersListForm := nil;
+  PersListFrame := nil;
 end.
